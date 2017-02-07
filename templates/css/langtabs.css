@@ -1,0 +1,22 @@
+.srmd-lang-tabs {
+    margin-top: 15px !important;
+}
+
+.srmd-lang-tab {
+    text-decoration: none !important;
+    display: inline-block;
+    padding: 5px 12px;
+    font-size: 90%;
+    text-transform: uppercase;
+    margin-right: 2px;
+    color: #5b5b5b;
+}
+
+.srmd-lang-tab:hover {
+    background: #f4f4f4;
+}
+
+.srmd-lang-tab.active {
+    background: #e5e5e5;
+    color: #000000;
+}
