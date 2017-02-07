@@ -35,7 +35,12 @@ class ilLanguage implements Language
      */
     public function getLanguageOfCurrentUser()
     {
-        global $ilUser;
+        global $ilUser, $lng;
+
+        // The anonymous user always returns the default lang, also if platform language is switched
+        if ($ilUser->getId() == 0 || $ilUser->getId() == 13) {
+            return $lng->getLangKey();
+        }
 
         return $ilUser->getLanguage();
     }
