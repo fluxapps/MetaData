@@ -2,9 +2,7 @@
 namespace SRAG\ILIAS\Plugins\MetaData\Config;
 
 require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
-require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/EducationManagement/classes/Form/classes/class.ilMultiLineInputGUI.php');
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
-use SRAG\ILIAS\Plugins\MetaData\Field\FieldData;
 use SRAG\ILIAS\Plugins\MetaData\FormProperty\ilAsmSelectInputGUI;
 use SRAG\ILIAS\Plugins\MetaData\Language\Language;
 
