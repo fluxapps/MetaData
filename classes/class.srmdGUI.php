@@ -118,7 +118,7 @@ class srmdGUI
 
     protected function cancel()
     {
-        $this->show();
+        $this->redirectBack();
     }
 
 
