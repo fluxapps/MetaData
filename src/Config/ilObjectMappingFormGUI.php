@@ -29,7 +29,7 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
 
     public function __construct(ilObjectMapping $mapping, Language $language)
     {
-        parent::ilPropertyFormGUI();
+        parent::__construct();
         $this->mapping = $mapping;
         $this->language = $language;
         $this->setTitle(($mapping->getId()) ? "Edit Mapping: " . $mapping->getTabTitle() : "Add new Mapping");

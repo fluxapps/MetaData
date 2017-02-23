@@ -318,11 +318,11 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         $this->toolbar->addButtonInstance($button);
         $table = new SimpleTable(array(
             'Object Type',
-            'Tab Title',
             'Active',
             'Field Groups',
             'Editable',
             'Show in Block',
+            'Show on Info Screen',
             'Actions',
         ));
         foreach (ilObjectMapping::orderBy('obj_type')->get() as $mapping){
@@ -336,11 +336,11 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
             }, $mapping->getFieldGroups());
             $table->row(array(
                 $mapping->getObjType(),
-                $mapping->getTabTitle(),
                 $mapping->isActive(),
                 implode(', ', $groups_identifiers),
                 (int) $mapping->isEditable(),
                 (int) $mapping->isShowBlock(),
+                (int) $mapping->isShowInfoScreen(),
                 $actions,
             ));
         }

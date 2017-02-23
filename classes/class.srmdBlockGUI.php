@@ -9,7 +9,7 @@ class srmdBlockGUI extends ilBlockGUI
 {
     public function __construct()
     {
-        parent::ilBlockGUI();
+        parent::__construct();
         $this->setRowTemplate("tpl.srmd_block_row.html", "Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/MetaData");
     }
 

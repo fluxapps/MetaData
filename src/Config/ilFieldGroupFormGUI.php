@@ -28,7 +28,7 @@ class ilFieldGroupFormGUI extends \ilPropertyFormGUI
 
     public function __construct(FieldGroup $group, Language $lang)
     {
-        parent::ilPropertyFormGUI();
+        parent::__construct();
         $this->group = $group;
         $this->lang = $lang;
         $this->init();

@@ -29,7 +29,7 @@ class ilFieldFormGUI extends \ilPropertyFormGUI
      */
     public function __construct(Field $field, Language $language)
     {
-        parent::ilPropertyFormGUI();
+        parent::__construct();
         $this->field = $field;
         $this->language = $language;
         $this->init();
