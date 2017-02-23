@@ -54,14 +54,13 @@ class MultiDropdownValueFormatter implements Formatter
         }
         $out = array();
         $field = $record->getField();
-        foreach ($field->getData() as $data) {
-            foreach ($value as $id) {
+        foreach ($value as $id) {
+            foreach ($field->getData() as $data) {
                 if ($data->getId() == $id) {
                     $out[$id] = $data->getValue($this->language->getLanguageOfCurrentUser());
                 }
             }
         }
-
         return $out;
     }
 }

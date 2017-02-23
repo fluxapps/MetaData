@@ -16,3 +16,8 @@ SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping::installDB();
 \SRAG\ILIAS\Plugins\MetaData\RecordValue\LocationRecordValue::installDB();
 \SRAG\ILIAS\Plugins\MetaData\RecordValue\FloatRecordValue::installDB();
 ?>
+<#2>
+<?php
+require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/MetaData/vendor/autoload.php');
+SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping::updateDB();
+?>

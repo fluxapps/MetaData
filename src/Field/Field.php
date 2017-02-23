@@ -361,7 +361,7 @@ abstract class Field extends \ActiveRecord
         if (isset($cache[$this->getId()])) {
             return $cache[$this->getId()];
         }
-        $data = FieldData::where(array(
+        $data = ArFieldData::where(array(
             'field_id' => $this->getId()
         ))->orderBy('sort')->get();
         $cache[$this->getId()] = $data;
@@ -386,29 +386,6 @@ abstract class Field extends \ActiveRecord
     {
         $this->class = $class;
     }
-
-
-
-//    /**
-//     * Get a field option by key
-//     *
-//     * @param string $key
-//     * @return mixed
-//     */
-//    public function getOption($key)
-//    {
-//        return $this->getOptions()->get($key);
-//    }
-//
-//
-//    /**
-//     * @param $key
-//     * @param $value
-//     */
-//    public function setOption($key, $value)
-//    {
-//        $this->options->set($key, $value);
-//    }
 
 
     /**

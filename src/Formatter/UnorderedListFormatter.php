@@ -48,7 +48,6 @@ class UnorderedListFormatter implements Formatter
             $out .= '<li>' . $item . '</li>';
         }
         $out .= '</ul>';
-
         return $out;
     }
 }
