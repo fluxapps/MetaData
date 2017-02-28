@@ -8,6 +8,8 @@ use SRAG\ILIAS\Plugins\MetaData\Language\ilLanguage;
 use SRAG\ILIAS\Plugins\MetaData\Language\Language;
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 
+require_once('./Services/Form/classes/class.ilMultiSelectInputGUI.php');
+
 /**
  * Class InputfieldCheckboxes
  *

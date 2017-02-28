@@ -156,22 +156,25 @@ class ilObjectMapping extends \ActiveRecord
 
     /**
      * @param string $lang
+     * @param bool $substitute_default
      * @return string
      */
-    public function getTabTitle($lang = '')
+    public function getTabTitle($lang = '', $substitute_default = true)
     {
         if ($lang && isset($this->tab_title[$lang])) {
             return $this->tab_title[$lang];
         }
-
+        if (!$substitute_default) {
+            return '';
+        }
         // Try to return in default language if available, otherwise empty string
         $default = $this->language->getDefaultLanguage();
-
         return (isset($this->tab_title[$default])) ? $this->tab_title[$default] : '';
-
     }
 
-
+    /**
+     * @param array $titles
+     */
     public function setTabTitleArray(array $titles)
     {
         $this->tab_title = $titles;
@@ -211,7 +214,7 @@ class ilObjectMapping extends \ActiveRecord
      */
     public function isActive()
     {
-        return (bool) $this->active;
+        return (bool)$this->active;
     }
 
 

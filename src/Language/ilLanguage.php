@@ -16,8 +16,16 @@ class ilLanguage implements Language
     public function getAvailableLanguages()
     {
         global $lng;
-
-        return $lng->getInstalledLanguages();
+        static $languages = null;
+        if (is_array($languages)) {
+            return $languages;
+        }
+        $languages = $lng->getInstalledLanguages();
+        // Move default language to first position
+        $key = array_search($this->getDefaultLanguage(), $languages);
+        unset ($languages[$key]);
+        array_unshift($languages, $this->getDefaultLanguage());
+        return $languages;
     }
 
     /**
@@ -41,9 +49,6 @@ class ilLanguage implements Language
         if ($ilUser->getId() == 0 || $ilUser->getId() == 13) {
             return $lng->getLangKey();
         }
-
         return $ilUser->getLanguage();
     }
-
-
 }

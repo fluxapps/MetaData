@@ -89,10 +89,10 @@ class ilFieldFormGUI extends \ilPropertyFormGUI
         foreach ($this->language->getAvailableLanguages() as $lang) {
             $item = new \ilTextInputGUI("Label $lang", "label_$lang");
             $item->setRequired($this->language->getDefaultLanguage() == $lang);
-            $item->setValue($this->field->getLabel($lang));
+            $item->setValue($this->field->getLabel($lang, false));
             $this->addItem($item);
             $item = new \ilTextAreaInputGUI("Description $lang", "description_$lang");
-            $item->setValue($this->field->getDescription($lang));
+            $item->setValue($this->field->getDescription($lang, false));
             $this->addItem($item);
         }
     }

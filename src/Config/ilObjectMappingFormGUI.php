@@ -82,7 +82,7 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
 
         foreach ($this->language->getAvailableLanguages() as $lang) {
             $item = new \ilTextInputGUI('Tab Title ' . strtoupper($lang), 'tab_title_' . $lang);
-            $item->setValue($this->mapping->getTabTitle($lang));
+            $item->setValue($this->mapping->getTabTitle($lang, false));
             $editable->addSubItem($item);
         }
 

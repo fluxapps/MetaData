@@ -120,7 +120,7 @@ abstract class Field extends \ActiveRecord
     {
         parent::__construct($primary_key, $connector);
         $this->language = new ilLanguage();
-        $this->field_options = $this->getFieldOptions((array) $this->options);
+        $this->field_options = $this->getFieldOptions((array)$this->options);
     }
 
 
@@ -300,17 +300,19 @@ abstract class Field extends \ActiveRecord
 
     /**
      * @param string $lang
+     * @param bool $substitute_default
      * @return string
      */
-    public function getLabel($lang = '')
+    public function getLabel($lang = '', $substitute_default = true)
     {
         if ($lang && isset($this->label[$lang])) {
             return $this->label[$lang];
         }
-
+        if (!$substitute_default) {
+            return '';
+        }
         // Try to return in default language if available, otherwise empty string
         $default = $this->language->getDefaultLanguage();
-
         return (isset($this->label[$default])) ? $this->label[$default] : '';
     }
 
@@ -327,17 +329,19 @@ abstract class Field extends \ActiveRecord
 
     /**
      * @param string $lang
+     * @param bool $substitute_default
      * @return string
      */
-    public function getDescription($lang = '')
+    public function getDescription($lang = '', $substitute_default = true)
     {
         if ($lang && isset($this->description[$lang])) {
             return $this->description[$lang];
         }
-
+        if (!$substitute_default) {
+            return '';
+        }
         // Try to return in default language if available, otherwise empty string
         $default = $this->language->getDefaultLanguage();
-
         return (isset($this->description[$default])) ? $this->description[$default] : '';
     }
 
