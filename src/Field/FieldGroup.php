@@ -1,5 +1,6 @@
 <?php
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
+
 use arConnector;
 use SRAG\ILIAS\Plugins\MetaData\Language\ilLanguage;
 use SRAG\ILIAS\Plugins\MetaData\Language\Language;
@@ -98,7 +99,7 @@ class FieldGroup extends \ActiveRecord
             case 'field_ids':
             case 'title':
             case 'description':
-            return json_decode($field_value, true);
+                return json_decode($field_value, true);
         }
 
         return parent::wakeUp($field_name, $field_value);
@@ -141,14 +142,17 @@ class FieldGroup extends \ActiveRecord
 
     /**
      * @param string $lang
-* @return string
-*/
-    public function getTitle($lang = '')
+     * @param bool $substitute_default
+     * @return string
+     */
+    public function getTitle($lang = '', $substitute_default = true)
     {
         if ($lang && isset($this->title[$lang])) {
             return $this->title[$lang];
         }
-
+        if (!$substitute_default) {
+            return '';
+        }
         // Try to return in default language if available, otherwise empty string
         $default = $this->lang->getDefaultLanguage();
         return (isset($this->title[$default])) ? $this->title[$default] : '';
@@ -165,14 +169,17 @@ class FieldGroup extends \ActiveRecord
 
     /**
      * @param string $lang
+     * @param bool $substitute_default
      * @return string
      */
-    public function getDescription($lang = '')
+    public function getDescription($lang = '', $substitute_default = true)
     {
         if ($lang && isset($this->description[$lang])) {
             return $this->description[$lang];
         }
-
+        if (!$substitute_default) {
+            return '';
+        }
         // Try to return in default language if available, otherwise empty string
         $default = $this->lang->getDefaultLanguage();
         return (isset($this->description[$default])) ? $this->description[$default] : '';

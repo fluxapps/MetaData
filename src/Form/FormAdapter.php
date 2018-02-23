@@ -64,7 +64,7 @@ class FormAdapter
     /**
      * @param \ilPropertyFormGUI $form
      * @param ConsumerObject $object
-     * @param string $lang
+     * @param string $lang Language code which is used to display data of fields and groups
      */
     public function __construct(\ilPropertyFormGUI $form, ConsumerObject $object, $lang = '')
     {

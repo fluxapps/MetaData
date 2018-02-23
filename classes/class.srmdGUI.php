@@ -45,7 +45,15 @@ class srmdGUI
      */
     protected $lng;
 
+	/**
+	 * @var ilTemplate
+	 */
     protected $tpl;
+
+	/**
+	 * @var ilObjUser
+	 */
+    protected $user;
 
     /**
      * @var ilObject
@@ -54,13 +62,14 @@ class srmdGUI
 
     public function __construct()
     {
-        global $ilCtrl, $ilTabs, $ilAccess, $lng, $tpl;
+        global $ilCtrl, $ilTabs, $ilAccess, $lng, $tpl, $ilUser;
 
         $this->ctrl = $ilCtrl;
         $this->tabs = $ilTabs;
         $this->access = $ilAccess;
         $this->lng = $lng;
         $this->tpl = $tpl;
+        $this->user = $ilUser;
         $this->tpl->getStandardTemplate();
     }
 
@@ -86,7 +95,7 @@ class srmdGUI
     protected function show()
     {
         $form = $this->initForm();
-        $adapter = new FormAdapter($form, new \SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject($this->object));
+        $adapter = new FormAdapter($form, new \SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject($this->object), $this->user->getLanguage());
         foreach ($this->mapping->getFieldGroups() as $group) {
             $adapter->addFields($group);
         }
@@ -97,7 +106,7 @@ class srmdGUI
     protected function save()
     {
         $form = $this->initForm();
-        $adapter = new FormAdapter($form, new \SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject($this->object));
+        $adapter = new FormAdapter($form, new \SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject($this->object), $this->user->getLanguage());
         foreach ($this->mapping->getFieldGroups() as $group) {
             $adapter->addFields($group);
         }

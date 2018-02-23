@@ -28,7 +28,7 @@ class ilFieldGroupFormGUI extends \ilPropertyFormGUI
 
     public function __construct(FieldGroup $group, Language $lang)
     {
-        parent::ilPropertyFormGUI();
+        parent::__construct();
         $this->group = $group;
         $this->lang = $lang;
         $this->init();
@@ -64,10 +64,10 @@ class ilFieldGroupFormGUI extends \ilPropertyFormGUI
         foreach ($this->lang->getAvailableLanguages() as $lang) {
             $item = new \ilTextInputGUI("Title $lang", "title_$lang");
             $item->setRequired($this->lang->getDefaultLanguage() == $lang);
-            $item->setValue($this->group->getTitle($lang));
+            $item->setValue($this->group->getTitle($lang, false));
             $this->addItem($item);
             $item = new \ilTextAreaInputGUI("Description $lang", "description_$lang");
-            $item->setValue($this->group->getDescription($lang));
+            $item->setValue($this->group->getDescription($lang, false));
             $this->addItem($item);
         }
     }

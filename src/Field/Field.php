@@ -120,7 +120,7 @@ abstract class Field extends \ActiveRecord
     {
         parent::__construct($primary_key, $connector);
         $this->language = new ilLanguage();
-        $this->field_options = $this->getFieldOptions((array) $this->options);
+        $this->field_options = $this->getFieldOptions((array)$this->options);
     }
 
 
@@ -300,17 +300,19 @@ abstract class Field extends \ActiveRecord
 
     /**
      * @param string $lang
+     * @param bool $substitute_default
      * @return string
      */
-    public function getLabel($lang = '')
+    public function getLabel($lang = '', $substitute_default = true)
     {
         if ($lang && isset($this->label[$lang])) {
             return $this->label[$lang];
         }
-
+        if (!$substitute_default) {
+            return '';
+        }
         // Try to return in default language if available, otherwise empty string
         $default = $this->language->getDefaultLanguage();
-
         return (isset($this->label[$default])) ? $this->label[$default] : '';
     }
 
@@ -327,17 +329,19 @@ abstract class Field extends \ActiveRecord
 
     /**
      * @param string $lang
+     * @param bool $substitute_default
      * @return string
      */
-    public function getDescription($lang = '')
+    public function getDescription($lang = '', $substitute_default = true)
     {
         if ($lang && isset($this->description[$lang])) {
             return $this->description[$lang];
         }
-
+        if (!$substitute_default) {
+            return '';
+        }
         // Try to return in default language if available, otherwise empty string
         $default = $this->language->getDefaultLanguage();
-
         return (isset($this->description[$default])) ? $this->description[$default] : '';
     }
 
@@ -361,7 +365,7 @@ abstract class Field extends \ActiveRecord
         if (isset($cache[$this->getId()])) {
             return $cache[$this->getId()];
         }
-        $data = FieldData::where(array(
+        $data = ArFieldData::where(array(
             'field_id' => $this->getId()
         ))->orderBy('sort')->get();
         $cache[$this->getId()] = $data;
@@ -386,29 +390,6 @@ abstract class Field extends \ActiveRecord
     {
         $this->class = $class;
     }
-
-
-
-//    /**
-//     * Get a field option by key
-//     *
-//     * @param string $key
-//     * @return mixed
-//     */
-//    public function getOption($key)
-//    {
-//        return $this->getOptions()->get($key);
-//    }
-//
-//
-//    /**
-//     * @param $key
-//     * @param $value
-//     */
-//    public function setOption($key, $value)
-//    {
-//        $this->options->set($key, $value);
-//    }
 
 
     /**

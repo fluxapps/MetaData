@@ -4,13 +4,11 @@ use SRAG\ILIAS\Plugins\MetaData\Config\ilObjectMappingFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Config\SimpleTable;
 use SRAG\ILIAS\Plugins\MetaData\Config\ilFieldFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
-use SRAG\ILIAS\Plugins\MetaData\Field\FieldData;
+use SRAG\ILIAS\Plugins\MetaData\Field\ArFieldData;
 use SRAG\ILIAS\Plugins\MetaData\Field\FieldGroup;
 use SRAG\ILIAS\Plugins\MetaData\Field\NullField;
-use SRAG\ILIAS\Plugins\MetaData\Form\FormAdapter;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
 use SRAG\ILIAS\Plugins\MetaData\Language\ilLanguage;
-use SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject;
 
 require_once('./Services/Component/classes/class.ilPluginConfigGUI.php');
 require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
@@ -201,7 +199,7 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
             $value = json_decode($value, true);
             // Could not parse to json -> may be one string in the default language
             $value = ($value === null) ? array($this->language->getDefaultLanguage() => $value) : $value;
-            $field_data = new FieldData();
+            $field_data = new ArFieldData();
             $field_data->setFieldId($field->getId());
             $field_data->setValues($value);
             $field_data->save();
@@ -320,9 +318,11 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         $this->toolbar->addButtonInstance($button);
         $table = new SimpleTable(array(
             'Object Type',
-            'Tab Title',
             'Active',
             'Field Groups',
+            'Editable',
+            'Show in Block',
+            'Show on Info Screen',
             'Actions',
         ));
         foreach (ilObjectMapping::orderBy('obj_type')->get() as $mapping){
@@ -331,11 +331,16 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
             $url = $this->ctrl->getLinkTarget($this, 'editObjectMapping');
             $this->ctrl->clearParameters($this);
             $actions = "<a href='{$url}'>Edit</a>";
+            $groups_identifiers = array_map(function ($group) {
+                return $group->getIdentifier();
+            }, $mapping->getFieldGroups());
             $table->row(array(
                 $mapping->getObjType(),
-                $mapping->getTabTitle(),
-                $mapping->getActive(),
-                implode(', ', $mapping->getFieldGroupIds()),
+                $mapping->isActive(),
+                implode(', ', $groups_identifiers),
+                (int) $mapping->isEditable(),
+                (int) $mapping->isShowBlock(),
+                (int) $mapping->isShowInfoScreen(),
                 $actions,
             ));
         }
@@ -351,10 +356,17 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
             $mapping = ilObjectMapping::findOrGetInstance($form->getInput('object_mapping_id'));
             $mapping->setObjType($form->getInput('obj_type'));
             $mapping->setActive($form->getInput('active'));
+            $mapping->setEditable($form->getInput('editable'));
+            $mapping->setShowBlock($form->getInput('show_block'));
+            $mapping->setShowInfoScreen($form->getInput('show_info_screen'));
             foreach ($this->language->getAvailableLanguages() as $lang) {
                 $mapping->setTabTitle($form->getInput('tab_title_' . $lang), $lang);
             }
             $mapping->setFieldGroupIds($form->getInput('field_group_ids'));
+            foreach ($mapping->getFieldGroupIds() as $group_id) {
+                $mapping->setShowBlockFieldIds($group_id, (array) $form->getInput('show_block_group_' . $group_id));
+                $mapping->setShowInfoFieldIds($group_id, (array) $form->getInput('show_info_group_' . $group_id));
+            }
             try {
                 $mapping->save();
                 ilUtil::sendSuccess('Saved Object Mapping', true);

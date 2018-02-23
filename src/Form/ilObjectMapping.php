@@ -34,6 +34,45 @@ class ilObjectMapping extends \ActiveRecord
      */
     protected $obj_type;
 
+    /**
+     * @var bool
+     * @db_has_field    true
+     * @db_fieldtype    integer
+     * @db_length       8
+     */
+    protected $editable = true;
+
+    /**
+     * @var bool
+     * @db_has_field    true
+     * @db_fieldtype    integer
+     * @db_length       8
+     */
+    protected $show_block = false;
+
+    /**
+     * @var bool
+     * @db_has_field    true
+     * @db_fieldtype    integer
+     * @db_length       8
+     */
+    protected $show_info_screen = false;
+
+    /**
+     * @var array
+     * @db_has_field    true
+     * @db_fieldtype    text
+     * @db_length       1024
+     */
+    protected $show_block_field_ids = array();
+
+    /**
+     * @var array
+     * @db_has_field    true
+     * @db_fieldtype    text
+     * @db_length       1024
+     */
+    protected $show_info_field_ids = array();
 
     /**
      * @var string
@@ -52,7 +91,7 @@ class ilObjectMapping extends \ActiveRecord
     protected $field_group_ids = array();
 
     /**
-     * @var int
+     * @var bool
      * @db_has_field    true
      * @db_fieldtype    integer
      * @db_length       8
@@ -85,6 +124,8 @@ class ilObjectMapping extends \ActiveRecord
     {
         switch ($field_name) {
             case 'field_group_ids':
+            case 'show_block_field_ids':
+            case 'show_info_field_ids':
             case 'tab_title':
                 return json_encode($this->{$field_name});
         }
@@ -97,6 +138,8 @@ class ilObjectMapping extends \ActiveRecord
     {
         switch ($field_name) {
             case 'field_group_ids':
+            case 'show_block_field_ids':
+            case 'show_info_field_ids':
             case 'tab_title':
                 return json_decode($field_value, true);
         }
@@ -112,22 +155,26 @@ class ilObjectMapping extends \ActiveRecord
 
 
     /**
+     * @param string $lang
+     * @param bool $substitute_default
      * @return string
      */
-    public function getTabTitle($lang = '')
+    public function getTabTitle($lang = '', $substitute_default = true)
     {
         if ($lang && isset($this->tab_title[$lang])) {
             return $this->tab_title[$lang];
         }
-
+        if (!$substitute_default) {
+            return '';
+        }
         // Try to return in default language if available, otherwise empty string
         $default = $this->language->getDefaultLanguage();
-
         return (isset($this->tab_title[$default])) ? $this->tab_title[$default] : '';
-
     }
 
-
+    /**
+     * @param array $titles
+     */
     public function setTabTitleArray(array $titles)
     {
         $this->tab_title = $titles;
@@ -163,11 +210,11 @@ class ilObjectMapping extends \ActiveRecord
 
 
     /**
-     * @return int
+     * @return bool
      */
-    public function getActive()
+    public function isActive()
     {
-        return $this->active;
+        return (bool)$this->active;
     }
 
 
@@ -176,7 +223,7 @@ class ilObjectMapping extends \ActiveRecord
      */
     public function setActive($active)
     {
-        $this->active = $active;
+        $this->active = $active ? 1 : 0;
     }
 
 
@@ -195,6 +242,90 @@ class ilObjectMapping extends \ActiveRecord
     public function setObjType($obj_type)
     {
         $this->obj_type = $obj_type;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEditable()
+    {
+        return (bool)$this->editable;
+    }
+
+    /**
+     * @param bool $editable
+     */
+    public function setEditable($editable)
+    {
+        $this->editable = $editable ? 1 : 0;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowBlock()
+    {
+        return (bool)$this->show_block;
+    }
+
+    /**
+     * @param bool $show_block
+     */
+    public function setShowBlock($show_block)
+    {
+        $this->show_block = $show_block ? 1 : 0;
+    }
+
+    /**
+     * @param int $group_id
+     * @return array
+     */
+    public function getShowBlockFieldIds($group_id)
+    {
+        return isset($this->show_block_field_ids[$group_id]) ? $this->show_block_field_ids[$group_id] : array();
+    }
+
+    /**
+     * @param int $group_id
+     * @param array $field_ids
+     */
+    public function setShowBlockFieldIds($group_id, array $field_ids)
+    {
+        $this->show_block_field_ids[$group_id] = $field_ids;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowInfoScreen()
+    {
+        return $this->show_info_screen;
+    }
+
+    /**
+     * @param bool $show_info_screen
+     */
+    public function setShowInfoScreen($show_info_screen)
+    {
+        $this->show_info_screen = $show_info_screen;
+    }
+
+    /**
+     * @param $group_id
+     * @return array|mixed
+     */
+    public function getShowInfoFieldIds($group_id)
+    {
+        return isset($this->show_info_field_ids[$group_id]) ? $this->show_info_field_ids[$group_id] : array();
+    }
+
+    /**
+     * @param $group_id
+     * @param array $field_ids
+     */
+    public function setShowInfoFieldIds($group_id, array $field_ids)
+    {
+        $this->show_info_field_ids[$group_id] = $field_ids;
     }
 
 
