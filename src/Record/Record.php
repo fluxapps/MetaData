@@ -145,7 +145,10 @@ class Record extends \ActiveRecord
     {
         global $ilUser;
 
-        $this->created_user_id = $ilUser->getId();
+	    if(is_object($ilUser)) {
+	       $this->created_user_id = $ilUser->getId();
+		}
+
         $this->created_at = date('Y-m-d H:i:s');
         parent::create();
         $this->getField()->getStorage()->saveValue($this, $this->getValue());
