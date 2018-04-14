@@ -117,6 +117,7 @@ class FormAdapter
                 }
             }
         }
+
         return (count($this->errors) == 0);
     }
 
@@ -185,6 +186,8 @@ class FormAdapter
      */
     protected function saveRecord(FieldGroup $group, Field $field)
     {
+    	global $ilAppEventHandler;
+
         $class = $field->getInputfieldClass();
         /** @var Inputfield $inputfield */
         $inputfield = new $class($field, $this->lang);
@@ -192,6 +195,15 @@ class FormAdapter
         $record->setValue($inputfield->getRecordValue($record, $this->form));
         try {
             $record->save();
+
+	        $ilAppEventHandler->raise('Plugin/Sragmetadata',
+		        'aftersave',
+		        array('group' => $group,
+			          'field' => $field,
+			          'record'  => $record,
+			          'obj_type' => $record->getObjType(),
+			          'obj_id' => $record->getObjId()));
+
         } catch (Exception $e) {
             $this->errors[] = new Error($record, $e);
         }
