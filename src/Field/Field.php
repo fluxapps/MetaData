@@ -96,6 +96,15 @@ abstract class Field extends \ActiveRecord
      */
     protected $formatters = array();
 
+	/**
+	 * @var int
+	 *
+	 * @db_has_field    true
+	 * @db_fieldtype    integer
+	 * @db_length       8
+	 */
+	protected $sort;
+
     /**
      * @var Language
      */
@@ -110,6 +119,8 @@ abstract class Field extends \ActiveRecord
      * @var FieldOptions
      */
     protected $field_options;
+
+
 
 
     /**
@@ -296,6 +307,22 @@ abstract class Field extends \ActiveRecord
     {
         $this->identifier = $identifier;
     }
+
+
+	/**
+	 * @return int
+	 */
+	public function getSort() {
+		return $this->sort;
+	}
+
+
+	/**
+	 * @param int $sort
+	 */
+	public function setSort($sort) {
+		$this->sort = $sort;
+	}
 
 
     /**
