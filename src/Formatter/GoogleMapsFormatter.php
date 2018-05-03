@@ -48,6 +48,11 @@ class GoogleMapsFormatter implements Formatter
     {
         include_once("./Services/Maps/classes/class.ilMapUtil.php");
         $map_gui = \ilMapUtil::getMapGUI();
+
+        if(!$value['lat'] && !$value['long']) {
+        	return NULL;
+        }
+
         $map_gui->setMapId("map_" . uniqid())//
         ->setLatitude($value['lat'])
             ->setLongitude($value['long'])

@@ -112,6 +112,8 @@ abstract class Field extends \ActiveRecord
     protected $field_options;
 
 
+
+
     /**
      * @param int $primary_key
      * @param \arConnector|NULL $connector
