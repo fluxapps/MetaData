@@ -119,7 +119,7 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
                 }
                 $info->addSection($group->getTitle($this->user->getLanguage()));
                 foreach ($records as $record) {
-                    $info->addProperty($record->getField()->getLabel($this->user->getLanguage()), $record->getFormattedValue());
+		                $info->addProperty($record->getField()->getLabel($this->user->getLanguage()), $record->getFormattedValue());
                 }
             }
         }
