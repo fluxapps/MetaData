@@ -101,9 +101,17 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
             $this->ctrl->clearParameters($this);
             $actions = "<a href='{$url}'>Edit</a>";
             $type = str_replace('SRAG\\ILIAS\\Plugins\\MetaData\\Field\\', '', $field->getClass());
-            $formatters = array_map(function ($class) {
+
+            //TODO
+	        if(!is_array($field->getFormatters())) {
+		        $arr_formatters = array();
+	        } else {
+		        $arr_formatters = $field->getFormatters();
+	        }
+
+	        $formatters = array_map(function ($class) {
                 return str_replace('SRAG\\ILIAS\\Plugins\\MetaData\\Formatter\\', '', $class);
-            }, $field->getFormatters());
+            }, $arr_formatters);
             $table->row(array(
                 $field->getIdentifier(),
                 $field->getlabel(),
