@@ -98,17 +98,21 @@ EOL;
 
         // We must remove the selected values from options and append them to the end, so we don't loose the sorting!
         $selected_options = $this->getValue();
-        foreach($selected_options as $id) {
-            if(!isset($this->options[$id])) continue;
-            $label = $this->options[$id];
-            unset($this->options[$id]);
-            $this->options[$id] = $label;
-        }
+	    if(count($selected_options) > 0 && is_array($selected_options)) {
+		    foreach ($selected_options as $id) {
+			    if (!isset($this->options[$id])) {
+				    continue;
+			    }
+			    $label = $this->options[$id];
+			    unset($this->options[$id]);
+			    $this->options[$id] = $label;
+		    }
+	    }
 
         foreach($this->getOptions() as $option_value => $option_text) {
             $tpl->setCurrentBlock("prop_select_option");
             $tpl->setVariable("VAL_SELECT_OPTION", \ilUtil::prepareFormOutput($option_value));
-            if (in_array($option_value, $this->value)) {
+            if (is_array($this->value) && in_array($option_value, $this->value)) {
                 $tpl->setVariable("CHK_SEL_OPTION", 'selected="selected"');
             }
             $tpl->setVariable("TXT_SELECT_OPTION", $option_text);
