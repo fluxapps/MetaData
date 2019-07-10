@@ -64,7 +64,7 @@ class IntegerMultiStorage extends AbstractStorage
     public function saveValue(Record $record, $value)
     {
         $this->validateValue($value);
-        $record_values = array_values($this->getRecordValue($record)); // Re-index zero based
+        $record_values = array_values((array)$this->getRecordValue($record)); // Re-index zero based
         // Note: $sort is zero based!
         foreach ($this->normalizeValue($value) as $sort => $int) {
             if (isset($record_values[$sort])) {

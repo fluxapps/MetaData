@@ -389,6 +389,10 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         $this->tpl->setContent($form->getHTML());
     }
 
+	protected function cancelObjectMapping()
+	{
+		$this->listObjectMappings();
+	}
 
     protected function addTabs($active = '')
     {
