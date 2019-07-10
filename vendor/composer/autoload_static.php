@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd556886c5cf1c597b31e7e419881de3e
+class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
 {
     public static $prefixLengthsPsr4 = array (
         'S' => 
@@ -20,11 +20,22 @@ class ComposerStaticInitd556886c5cf1c597b31e7e419881de3e
         ),
     );
 
+    public static $classMap = array (
+        'ilMetaDataConfigGUI' => __DIR__ . '/../..' . '/classes/class.ilMetaDataConfigGUI.php',
+        'ilMetaDataPlugin' => __DIR__ . '/../..' . '/classes/class.ilMetaDataPlugin.php',
+        'ilMetaDataUIHookGUI' => __DIR__ . '/../..' . '/classes/class.ilMetaDataUIHookGUI.php',
+        'srmdBlockGUI' => __DIR__ . '/../..' . '/classes/class.srmdBlockGUI.php',
+        'srmdBlockGUI53' => __DIR__ . '/../..' . '/classes/class.srmdBlockGUI53.php',
+        'srmdBlockGUI54' => __DIR__ . '/../..' . '/classes/class.srmdBlockGUI54.php',
+        'srmdGUI' => __DIR__ . '/../..' . '/classes/class.srmdGUI.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd556886c5cf1c597b31e7e419881de3e::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd556886c5cf1c597b31e7e419881de3e::$prefixDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314::$classMap;
 
         }, null, ClassLoader::class);
     }
