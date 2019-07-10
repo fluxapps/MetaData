@@ -12,6 +12,7 @@ use SRAG\ILIAS\Plugins\MetaData\Language\Language;
  */
 class ArFieldData extends \ActiveRecord implements FieldData
 {
+	const TABLE_NAME = 'srmd_field_data';
 
     /**
      * @var int
@@ -171,6 +172,6 @@ class ArFieldData extends \ActiveRecord implements FieldData
      */
     static function returnDbTableName()
     {
-        return 'srmd_field_data';
+        return self::TABLE_NAME;
     }
 }

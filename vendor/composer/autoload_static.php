@@ -7,6 +7,13 @@ namespace Composer\Autoload;
 class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
 {
     public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'srag\\RemovePluginDataConfirm\\MetaData\\' => 38,
+            'srag\\LibrariesNamespaceChanger\\' => 31,
+            'srag\\DIC\\MetaData\\' => 18,
+            'srag\\CustomInputGUIs\\MetaData\\' => 30,
+        ),
         'S' => 
         array (
             'SRAG\\ILIAS\\Plugins\\MetaData\\' => 28,
@@ -14,6 +21,22 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
     );
 
     public static $prefixDirsPsr4 = array (
+        'srag\\RemovePluginDataConfirm\\MetaData\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
+        ),
+        'srag\\LibrariesNamespaceChanger\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
+        ),
+        'srag\\DIC\\MetaData\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/dic/src',
+        ),
+        'srag\\CustomInputGUIs\\MetaData\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/custominputguis/src',
+        ),
         'SRAG\\ILIAS\\Plugins\\MetaData\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
@@ -21,6 +44,7 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
     );
 
     public static $classMap = array (
+        'MetaDataRemoveDataConfirm' => __DIR__ . '/../..' . '/classes/uninstall/class.MetaDataRemoveDataConfirm.php',
         'ilMetaDataConfigGUI' => __DIR__ . '/../..' . '/classes/class.ilMetaDataConfigGUI.php',
         'ilMetaDataPlugin' => __DIR__ . '/../..' . '/classes/class.ilMetaDataPlugin.php',
         'ilMetaDataUIHookGUI' => __DIR__ . '/../..' . '/classes/class.ilMetaDataUIHookGUI.php',

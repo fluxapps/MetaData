@@ -9,6 +9,8 @@ namespace SRAG\ILIAS\Plugins\MetaData\RecordValue;
  */
 class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
 {
+	const TABLE_NAME = 'srmd_integer_multi';
+
     /**
      * @var int
      *
@@ -111,6 +113,6 @@ class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
      */
     static function returnDbTableName()
     {
-        return 'srmd_integer_multi';
+        return self::TABLE_NAME;
     }
 }

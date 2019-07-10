@@ -9,6 +9,8 @@ namespace SRAG\ILIAS\Plugins\MetaData\RecordValue;
  */
 class DateTimeRecordValue extends \ActiveRecord implements RecordValue
 {
+	const TABLE_NAME = 'srmd_datetime';
+
     /**
      * @var int
      *
@@ -85,6 +87,6 @@ class DateTimeRecordValue extends \ActiveRecord implements RecordValue
      */
     static function returnDbTableName()
     {
-        return 'srmd_datetime';
+        return self::TABLE_NAME;
     }
 }

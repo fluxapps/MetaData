@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'MetaDataRemoveDataConfirm' => $baseDir . '/classes/uninstall/class.MetaDataRemoveDataConfirm.php',
     'ilMetaDataConfigGUI' => $baseDir . '/classes/class.ilMetaDataConfigGUI.php',
     'ilMetaDataPlugin' => $baseDir . '/classes/class.ilMetaDataPlugin.php',
     'ilMetaDataUIHookGUI' => $baseDir . '/classes/class.ilMetaDataUIHookGUI.php',

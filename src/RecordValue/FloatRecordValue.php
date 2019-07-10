@@ -9,6 +9,8 @@ namespace SRAG\ILIAS\Plugins\MetaData\RecordValue;
  */
 class FloatRecordValue extends \ActiveRecord implements RecordValue
 {
+	const TABLE_NAME = 'srmd_float';
+
     /**
      * @var int
      *
@@ -85,6 +87,6 @@ class FloatRecordValue extends \ActiveRecord implements RecordValue
      */
     static function returnDbTableName()
     {
-        return 'srmd_float';
+        return self::TABLE_NAME;
     }
 }

@@ -15,6 +15,8 @@ use SRAG\ILIAS\Plugins\MetaData\Language\Language;
  */
 class FieldGroup extends \ActiveRecord
 {
+	const TABLE_NAME = 'srmd_field_group';
+
     /**
      * @var int
      *
@@ -229,6 +231,6 @@ class FieldGroup extends \ActiveRecord
      */
     static function returnDbTableName()
     {
-        return 'srmd_field_group';
+        return self::TABLE_NAME;
     }
 }

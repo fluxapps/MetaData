@@ -11,6 +11,8 @@ use SRAG\ILIAS\Plugins\MetaData\Formatter\Formatter;
  */
 class Record extends \ActiveRecord
 {
+	const TABLE_NAME = 'srmd_record';
+
     /**
      * @var int
      *
@@ -286,6 +288,6 @@ class Record extends \ActiveRecord
      */
     public static function returnDbTableName()
     {
-        return 'srmd_record';
+        return self::TABLE_NAME;
     }
 }

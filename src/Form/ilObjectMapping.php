@@ -13,6 +13,7 @@ use SRAG\ILIAS\Plugins\MetaData\Language\Language;
  */
 class ilObjectMapping extends \ActiveRecord
 {
+	const TABLE_NAME = 'srmd_object_mapping';
 
     /**
      * @var int
@@ -347,6 +348,6 @@ class ilObjectMapping extends \ActiveRecord
      */
     static function returnDbTableName()
     {
-        return 'srmd_object_mapping';
+        return self::TABLE_NAME;
     }
 }
