@@ -9,6 +9,8 @@ namespace SRAG\ILIAS\Plugins\MetaData\RecordValue;
  */
 class LocationRecordValue extends \ActiveRecord implements RecordValue
 {
+	const TABLE_NAME = 'srmd_location';
+
     /**
      * @var int
      *
@@ -159,6 +161,6 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
      */
     static function returnDbTableName()
     {
-        return 'srmd_location';
+        return self::TABLE_NAME;
     }
 }

@@ -15,6 +15,7 @@ use SRAG\ILIAS\Plugins\MetaData\Storage\Storage;
  */
 abstract class Field extends \ActiveRecord
 {
+	const TABLE_NAME = 'srmd_field';
 
     /**
      * @var int
@@ -446,6 +447,6 @@ abstract class Field extends \ActiveRecord
      */
     static function returnDbTableName()
     {
-        return 'srmd_field';
+        return self::TABLE_NAME;
     }
 }

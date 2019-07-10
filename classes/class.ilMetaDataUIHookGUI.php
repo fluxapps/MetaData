@@ -1,17 +1,19 @@
 <?php
+
+use srag\DIC\MetaData\DICTrait;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
 use SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject;
 use SRAG\ILIAS\Plugins\MetaData\Record\RecordQuery;
-
-require_once('./Services/UIComponent/classes/class.ilUIHookPluginGUI.php');
-require_once(__DIR__ . '/class.srmdBlockGUI.php');
 
 /**
  * Class ilMetaDataUIHookGUI
  */
 class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
 {
+	use DICTrait;
+	const PLUGIN_CLASS_NAME = ilMetaDataPlugin::class;
+
     /**
      * @var ilCtrl
      */
@@ -153,7 +155,11 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
                 if (!count($records)) {
                     continue;
                 }
-                $gui = new srmdBlockGUI();
+                if (self::version()->is54()) {
+	                $gui = new srmdBlockGUI54();
+                } else {
+	                $gui = new srmdBlockGUI53();
+                }
                 $gui->setTitle($group->getTitle());
                 $gui->setData($records);
                 $out .= $gui->getHTML();

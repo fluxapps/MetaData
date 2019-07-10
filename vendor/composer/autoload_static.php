@@ -4,9 +4,16 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitd556886c5cf1c597b31e7e419881de3e
+class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
 {
     public static $prefixLengthsPsr4 = array (
+        's' => 
+        array (
+            'srag\\RemovePluginDataConfirm\\MetaData\\' => 38,
+            'srag\\LibrariesNamespaceChanger\\' => 31,
+            'srag\\DIC\\MetaData\\' => 18,
+            'srag\\CustomInputGUIs\\MetaData\\' => 30,
+        ),
         'S' => 
         array (
             'SRAG\\ILIAS\\Plugins\\MetaData\\' => 28,
@@ -14,17 +21,45 @@ class ComposerStaticInitd556886c5cf1c597b31e7e419881de3e
     );
 
     public static $prefixDirsPsr4 = array (
+        'srag\\RemovePluginDataConfirm\\MetaData\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
+        ),
+        'srag\\LibrariesNamespaceChanger\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
+        ),
+        'srag\\DIC\\MetaData\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/dic/src',
+        ),
+        'srag\\CustomInputGUIs\\MetaData\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/custominputguis/src',
+        ),
         'SRAG\\ILIAS\\Plugins\\MetaData\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
     );
 
+    public static $classMap = array (
+        'MetaDataRemoveDataConfirm' => __DIR__ . '/../..' . '/classes/uninstall/class.MetaDataRemoveDataConfirm.php',
+        'ilMetaDataConfigGUI' => __DIR__ . '/../..' . '/classes/class.ilMetaDataConfigGUI.php',
+        'ilMetaDataPlugin' => __DIR__ . '/../..' . '/classes/class.ilMetaDataPlugin.php',
+        'ilMetaDataUIHookGUI' => __DIR__ . '/../..' . '/classes/class.ilMetaDataUIHookGUI.php',
+        'srmdBlockGUI' => __DIR__ . '/../..' . '/classes/class.srmdBlockGUI.php',
+        'srmdBlockGUI53' => __DIR__ . '/../..' . '/classes/class.srmdBlockGUI53.php',
+        'srmdBlockGUI54' => __DIR__ . '/../..' . '/classes/class.srmdBlockGUI54.php',
+        'srmdGUI' => __DIR__ . '/../..' . '/classes/class.srmdGUI.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitd556886c5cf1c597b31e7e419881de3e::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitd556886c5cf1c597b31e7e419881de3e::$prefixDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314::$classMap;
 
         }, null, ClassLoader::class);
     }

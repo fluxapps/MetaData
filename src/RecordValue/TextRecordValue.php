@@ -9,6 +9,8 @@ namespace SRAG\ILIAS\Plugins\MetaData\RecordValue;
  */
 class TextRecordValue extends \ActiveRecord implements RecordValue
 {
+	const TABLE_NAME = 'srmd_text';
+
     /**
      * @var int
      *
@@ -110,6 +112,6 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
      */
     static function returnDbTableName()
     {
-        return 'srmd_text';
+        return self::TABLE_NAME;
     }
 }

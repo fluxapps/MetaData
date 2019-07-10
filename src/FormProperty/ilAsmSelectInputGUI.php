@@ -65,7 +65,7 @@ class ilAsmSelectInputGUI extends \ilSelectInputGUI
     function setValueByArray($a_values)
     {
         $post_var = str_replace('[]', '', $this->getPostVar());
-        $this->setValue(array_values($a_values[$post_var]));
+        $this->setValue(array_values((array)$a_values[$post_var]));
     }
 
 
