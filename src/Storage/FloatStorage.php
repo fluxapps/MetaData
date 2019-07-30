@@ -21,6 +21,21 @@ class FloatStorage extends AbstractStorage
         }
     }
 
+	/**
+	 * @inheritdoc
+	 */
+	public function saveValue(Record $record, $value)
+	{
+		if($value == '') {
+			$value = null;
+		}
+
+		$this->validateValue($value);
+		$record_value = $this->getRecordValue($record);
+		$record_value->setValue($this->normalizeValue($value));
+		$record_value->save();
+	}
+
     /**
      * @inheritdoc
      */
