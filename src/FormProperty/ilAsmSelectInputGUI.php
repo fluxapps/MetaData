@@ -98,7 +98,7 @@ EOL;
 
         // We must remove the selected values from options and append them to the end, so we don't loose the sorting!
         $selected_options = $this->getValue();
-	    if(count($selected_options) > 0 && is_array($selected_options)) {
+        if(!is_null($selected_options)  && is_array($selected_options) && count($selected_options) > 0) {
 		    foreach ($selected_options as $id) {
 			    if (!isset($this->options[$id])) {
 				    continue;
