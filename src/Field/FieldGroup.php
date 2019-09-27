@@ -219,7 +219,10 @@ class FieldGroup extends \ActiveRecord
     {
         $fields = array();
         foreach ($this->getFieldIds() as $field_id) {
-            $fields[] = Field::find($field_id);
+            $field = Field::find($field_id);
+            if ($field) {
+                $fields[] = $field;
+            }
         }
 
         return $fields;

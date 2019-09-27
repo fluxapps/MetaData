@@ -337,7 +337,10 @@ class ilObjectMapping extends \ActiveRecord
     {
         $groups = array();
         foreach ($this->field_group_ids as $id) {
-            $groups[] = FieldGroup::find($id);
+            $group =  FieldGroup::find($id);
+            if ($group) {
+                $groups[] = $group;
+            }
         }
 
         return $groups;
