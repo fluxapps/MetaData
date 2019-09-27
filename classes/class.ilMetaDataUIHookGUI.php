@@ -1,5 +1,6 @@
 <?php
 
+use ILIAS\DI\Container;
 use srag\DIC\MetaData\DICTrait;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
@@ -28,13 +29,18 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
      * @var ilObjUser
      */
     protected $user;
+    /**
+     * @var Container
+     */
+    protected $dic;
 
     public function __construct()
     {
-        global $ilCtrl, $ilAccess, $ilUser;
+        global $ilCtrl, $ilAccess, $ilUser, $DIC;
         $this->ctrl = $ilCtrl;
         $this->access = $ilAccess;
         $this->user = $ilUser;
+        $this->dic = $DIC;
     }
 
     function modifyGUI($a_comp, $a_part, $a_par = array())
@@ -110,6 +116,9 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
         $object = ilObjectFactory::getInstanceByObjId($this->ctrl->getContextObjId());
         $query = new RecordQuery(new ilConsumerObject($object));
         foreach ($mappings as $mapping) {
+            if (!$this->checkOnlyShowInCertainPlaces($mapping)) {
+                continue;
+            }
             foreach ($mapping->getFieldGroups() as $group) {
                 $records = array_map(function($field_id) use ($query, $group) {
                     $field = Field::find($field_id);
@@ -146,6 +155,9 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
         $query = new RecordQuery(new ilConsumerObject($object));
         /** @var ilObjectMapping $mapping */
         foreach ($mappings as $mapping) {
+            if (!$this->checkOnlyShowInCertainPlaces($mapping)) {
+                continue;
+            }
             foreach ($mapping->getFieldGroups() as $group) {
                 $records = array_map(function($field_id) use ($query, $group) {
                     $field = Field::find($field_id);
@@ -185,6 +197,9 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
         });
         static $added = false;
         foreach ($mappings as $mapping) {
+            if (!$this->checkOnlyShowInCertainPlaces($mapping)) {
+                continue;
+            }
             /** @var $mapping ilObjectMapping */
             $this->ctrl->setParameterByClass('srmdGUI', 'ref_id', (int)$_GET['ref_id']);
             $this->ctrl->setParameterByClass('srmdGUI', 'back_target', urlencode(base64_encode($_SERVER['REQUEST_URI'])));
@@ -226,4 +241,29 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
         return $mappings;
     }
 
+
+    /**
+     * @param ilObjectMapping $mapping
+     *
+     * @return bool
+     */
+    protected function checkOnlyShowInCertainPlaces(ilObjectMapping $mapping) : bool
+    {
+        if (!$mapping->isOnlyShowInCertainPlaces()) {
+            return true;
+        }
+
+        $parent_ref_id = intval(filter_input(INPUT_GET, 'ref_id'));
+
+        while (($parent_ref_id = intval($this->dic->repositoryTree()->getParentId($parent_ref_id))) !== false) {
+            if ($mapping->getOnlyShowInCertainPlacesRefId() === $parent_ref_id) {
+                return true;
+            }
+            if (!$mapping->isOnlyShowInCertainPlacesWholeTree()) {
+                break;
+            }
+        }
+
+        return false;
+    }
 }

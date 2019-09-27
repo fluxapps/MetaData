@@ -367,6 +367,9 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
             $mapping->setEditable($form->getInput('editable'));
             $mapping->setShowBlock($form->getInput('show_block'));
             $mapping->setShowInfoScreen($form->getInput('show_info_screen'));
+            $mapping->setOnlyShowInCertainPlaces(boolval($form->getInput('only_show_in_certain_places')));
+            $mapping->setOnlyShowInCertainPlacesRefId(intval($form->getInput('only_show_in_certain_places_ref_id')));
+            $mapping->setOnlyShowInCertainPlacesWholeTree(boolval($form->getInput('only_show_in_certain_places_whole_tree')));
             foreach ($this->language->getAvailableLanguages() as $lang) {
                 $mapping->setTabTitle($form->getInput('tab_title_' . $lang), $lang);
             }

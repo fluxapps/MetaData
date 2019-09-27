@@ -21,3 +21,7 @@ SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping::installDB();
 require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/MetaData/vendor/autoload.php');
 SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping::updateDB();
 ?>
+<#3>
+<?php
+\SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping::updateDB();
+?>

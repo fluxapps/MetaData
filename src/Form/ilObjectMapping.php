@@ -98,6 +98,27 @@ class ilObjectMapping extends \ActiveRecord
      * @db_length       8
      */
     protected $active = 1;
+    /**
+     * @var bool
+     * @db_has_field    true
+     * @db_fieldtype    integer
+     * @db_length       8
+     */
+    protected $only_show_in_certain_places = false;
+    /**
+     * @var int
+     * @db_has_field    true
+     * @db_fieldtype    integer
+     * @db_length       8
+     */
+    protected $only_show_in_certain_places_ref_id = 0;
+    /**
+     * @var bool
+     * @db_has_field    true
+     * @db_fieldtype    integer
+     * @db_length       8
+     */
+    protected $only_show_in_certain_places_whole_tree = false;
 
     /**
      * @var Language
@@ -349,5 +370,59 @@ class ilObjectMapping extends \ActiveRecord
     static function returnDbTableName()
     {
         return self::TABLE_NAME;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isOnlyShowInCertainPlaces() : bool
+    {
+        return boolval($this->only_show_in_certain_places);
+    }
+
+
+    /**
+     * @param bool $only_show_in_certain_places
+     */
+    public function setOnlyShowInCertainPlaces(bool $only_show_in_certain_places)
+    {
+        $this->only_show_in_certain_places = $only_show_in_certain_places;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getOnlyShowInCertainPlacesRefId() : int
+    {
+        return intval($this->only_show_in_certain_places_ref_id);
+    }
+
+
+    /**
+     * @param int $only_show_in_certain_places_ref_id
+     */
+    public function setOnlyShowInCertainPlacesRefId(int $only_show_in_certain_places_ref_id)
+    {
+        $this->only_show_in_certain_places_ref_id = $only_show_in_certain_places_ref_id;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isOnlyShowInCertainPlacesWholeTree() : bool
+    {
+        return boolval($this->only_show_in_certain_places_whole_tree);
+    }
+
+
+    /**
+     * @param bool $only_show_in_certain_places_whole_tree
+     */
+    public function setOnlyShowInCertainPlacesWholeTree(bool $only_show_in_certain_places_whole_tree)
+    {
+        $this->only_show_in_certain_places_whole_tree = $only_show_in_certain_places_whole_tree;
     }
 }
