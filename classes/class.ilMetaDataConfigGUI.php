@@ -1,12 +1,12 @@
 <?php
 
 use ILIAS\DI\Container;
+use SRAG\ILIAS\Plugins\MetaData\Config\ilFieldFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Config\ilFieldGroupFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Config\ilObjectMappingFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Config\SimpleTable;
-use SRAG\ILIAS\Plugins\MetaData\Config\ilFieldFormGUI;
-use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Field\ArFieldData;
+use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Field\FieldGroup;
 use SRAG\ILIAS\Plugins\MetaData\Field\NullField;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
@@ -225,10 +225,11 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         }
     }
 
+
     protected function deleteFieldConfirm()
     {
         $this->addTabs('fields');
-        $field = Field::findOrFail((int)$_GET['field_id']);
+        $field = Field::findOrFail((int) $_GET['field_id']);
         $this->ctrl->saveParameter($this, 'field_id');
         $confirmation = new ilConfirmationGUI();
         $confirmation->setFormAction($this->ctrl->getFormAction($this));
@@ -238,13 +239,15 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         $this->tpl->setContent($confirmation->getHTML());
     }
 
+
     protected function deleteField()
     {
-        $field = Field::findOrFail((int)$_GET['field_id']);
+        $field = Field::findOrFail((int) $_GET['field_id']);
         $field->delete();
         ilUtil::sendSuccess('Deleted Field ' . $field->getLabel(), true);
         $this->ctrl->redirect($this, 'listFields');
     }
+
 
     protected function listFieldGroups()
     {
@@ -326,6 +329,7 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         $this->tpl->setContent($form->getHTML());
     }
 
+
     protected function deleteFieldGroupConfirm()
     {
         $this->addTabs('field_groups');
@@ -339,6 +343,7 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         $this->tpl->setContent($confirmation->getHTML());
     }
 
+
     protected function deleteFieldGroup()
     {
         $group = FieldGroup::findOrFail((int) $_GET['field_group_id']);
@@ -346,6 +351,7 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         ilUtil::sendSuccess('Deleted Field Group ' . $group->getTitle(), true);
         $this->ctrl->redirect($this, 'listFieldGroups');
     }
+    
 
     protected function cancelFieldGroup()
     {
@@ -449,6 +455,7 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         $this->tpl->setContent($form->getHTML());
     }
 
+
     protected function deleteObjectMappingConfirm()
     {
         $this->addTabs('object_mapping');
@@ -462,6 +469,7 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         $this->tpl->setContent($confirmation->getHTML());
     }
 
+
     protected function deleteObjectMapping()
     {
         $object_mapping = ilObjectMapping::findOrFail((int) $_GET['object_mapping_id']);
@@ -469,6 +477,7 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         ilUtil::sendSuccess('Deleted Object Mapping ' . $object_mapping->getTitle(), true);
         $this->ctrl->redirect($this, 'listObjectMappings');
     }
+
 
 	protected function cancelObjectMapping()
 	{
