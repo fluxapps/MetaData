@@ -130,6 +130,7 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
         $this->addItem($only_certain_places);
 
         $only_certain_places_ref_id = new ilRepositorySelector2InputGUI('Parent Object', 'only_certain_places_ref_id');
+        $only_certain_places_ref_id->getExplorerGUI()->setSelectableTypes(["root", "cat", "grp", "fold"]);
         $only_certain_places_ref_id->setValue($this->mapping->getOnlyCertainPlacesRefId());
         $only_certain_places->addSubItem($only_certain_places_ref_id);
 
