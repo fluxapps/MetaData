@@ -25,7 +25,7 @@ require_once('./Modules/Course/classes/class.ilObjCourse.php');
  */
 class ilMetaDataConfigGUI extends ilPluginConfigGUI
 {
-    
+
     /**
      * @var ilMetaDataPlugin
      */
