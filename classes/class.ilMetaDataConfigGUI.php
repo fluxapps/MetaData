@@ -1,12 +1,12 @@
 <?php
 
 use ILIAS\DI\Container;
-use SRAG\ILIAS\Plugins\MetaData\Config\ilFieldFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Config\ilFieldGroupFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Config\ilObjectMappingFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Config\SimpleTable;
-use SRAG\ILIAS\Plugins\MetaData\Field\ArFieldData;
+use SRAG\ILIAS\Plugins\MetaData\Config\ilFieldFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
+use SRAG\ILIAS\Plugins\MetaData\Field\ArFieldData;
 use SRAG\ILIAS\Plugins\MetaData\Field\FieldGroup;
 use SRAG\ILIAS\Plugins\MetaData\Field\NullField;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
