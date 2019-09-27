@@ -255,7 +255,7 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
 
         $parent_ref_id = intval(filter_input(INPUT_GET, 'ref_id'));
 
-        while (($parent_ref_id = intval($this->dic->repositoryTree()->getParentId($parent_ref_id))) !== false) {
+        while (($parent_ref_id = intval($this->dic->repositoryTree()->getParentId($parent_ref_id))) !== null) {
             if ($mapping->getOnlyShowInCertainPlacesRefId() === $parent_ref_id) {
                 return true;
             }

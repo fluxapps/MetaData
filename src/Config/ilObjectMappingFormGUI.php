@@ -129,7 +129,7 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
         $only_show_in_certain_places->setChecked($this->mapping->isOnlyShowInCertainPlaces());
         $this->addItem($only_show_in_certain_places);
 
-        $only_show_in_certain_places_ref_id = new ilRepositorySelector2InputGUI('Object', 'only_show_in_certain_places_ref_id');
+        $only_show_in_certain_places_ref_id = new ilRepositorySelector2InputGUI('Parent Object', 'only_show_in_certain_places_ref_id');
         $only_show_in_certain_places_ref_id->setValue($this->mapping->getOnlyShowInCertainPlacesRefId());
         $only_show_in_certain_places->addSubItem($only_show_in_certain_places_ref_id);
 
