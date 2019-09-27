@@ -253,15 +253,15 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
             return true;
         }
 
-        $parent_ref_id = intval(filter_input(INPUT_GET, 'ref_id'));
+        $ref_id = intval(filter_input(INPUT_GET, 'ref_id'));
+        $parent_ref_id = intval($this->dic->repositoryTree()->getParentId($ref_id));
 
-        while (($parent_ref_id = intval($this->dic->repositoryTree()->getParentId($parent_ref_id))) !== null) {
-            if ($mapping->getOnlyShowInCertainPlacesRefId() === $parent_ref_id) {
-                return true;
-            }
-            if (!$mapping->isOnlyShowInCertainPlacesWholeTree()) {
-                break;
-            }
+        if ($mapping->getOnlyShowInCertainPlacesRefId() === $parent_ref_id) {
+            return true;
+        }
+
+        if ($mapping->isOnlyShowInCertainPlacesWholeTree()) {
+            return in_array($parent_ref_id, $this->dic->repositoryTree()->getSubTree($mapping->getOnlyShowInCertainPlacesRefId(), false));
         }
 
         return false;
