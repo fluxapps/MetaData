@@ -261,7 +261,7 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
         }
 
         if ($mapping->isOnlyCertainPlacesWholeTree()) {
-            return in_array($parent_ref_id, $this->dic->repositoryTree()->getSubTree($mapping->getOnlyCertainPlacesRefId(), false));
+            return in_array($parent_ref_id, $this->dic->repositoryTree()->getSubTree(self::dic()->tree()->getNodeData($mapping->getOnlyCertainPlacesRefId()), false));
         }
 
         return false;

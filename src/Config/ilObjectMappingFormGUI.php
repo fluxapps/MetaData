@@ -134,8 +134,8 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
         $only_certain_places_ref_id->setValue($this->mapping->getOnlyCertainPlacesRefId());
         $only_certain_places->addSubItem($only_certain_places_ref_id);
 
-        $only_certain_places_whole_tree = new ilCheckboxInputGUI('Whole tree', 'only_certain_places_whole_tree');
-        $only_certain_places_whole_tree->setValue($this->mapping->isOnlyCertainPlacesWholeTree());
+        $only_certain_places_whole_tree = new ilCheckboxInputGUI('Whole sub tree', 'only_certain_places_whole_tree');
+        $only_certain_places_whole_tree->setChecked($this->mapping->isOnlyCertainPlacesWholeTree());
         $only_certain_places->addSubItem($only_certain_places_whole_tree);
     }
 }
