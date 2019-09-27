@@ -226,6 +226,9 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
     }
 
 
+    /**
+     *
+     */
     protected function deleteFieldConfirm()
     {
         $this->addTabs('fields');
@@ -240,6 +243,9 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
     }
 
 
+    /**
+     *
+     */
     protected function deleteField()
     {
         $field = Field::findOrFail((int) $_GET['field_id']);
@@ -330,6 +336,9 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
     }
 
 
+    /**
+     *
+     */
     protected function deleteFieldGroupConfirm()
     {
         $this->addTabs('field_groups');
@@ -344,6 +353,9 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
     }
 
 
+    /**
+     *
+     */
     protected function deleteFieldGroup()
     {
         $group = FieldGroup::findOrFail((int) $_GET['field_group_id']);
@@ -351,7 +363,7 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         ilUtil::sendSuccess('Deleted Field Group ' . $group->getTitle(), true);
         $this->ctrl->redirect($this, 'listFieldGroups');
     }
-    
+
 
     protected function cancelFieldGroup()
     {
@@ -456,6 +468,9 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
     }
 
 
+    /**
+     *
+     */
     protected function deleteObjectMappingConfirm()
     {
         $this->addTabs('object_mapping');
@@ -470,6 +485,9 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
     }
 
 
+    /**
+     *
+     */
     protected function deleteObjectMapping()
     {
         $object_mapping = ilObjectMapping::findOrFail((int) $_GET['object_mapping_id']);
