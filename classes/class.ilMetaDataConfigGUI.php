@@ -149,7 +149,7 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
             $field->setIdentifier($form->getInput('identifier'));
             $field->setClass($class);
             $field->setInputfieldClass($form->getInput('inputfield'));
-            $field->setFormatters($form->getInput('formatters'));
+            $field->setFormatters((array) $form->getInput('formatters'));
             foreach ($this->language->getAvailableLanguages() as $lang) {
                 $field->setLabel($form->getInput("label_$lang"), $lang);
                 $field->setDescription($form->getInput("description_$lang"), $lang);
