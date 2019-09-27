@@ -116,7 +116,7 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
         $object = ilObjectFactory::getInstanceByObjId($this->ctrl->getContextObjId());
         $query = new RecordQuery(new ilConsumerObject($object));
         foreach ($mappings as $mapping) {
-            if (!$this->checkOnlyShowInCertainPlaces($mapping)) {
+            if (!$this->checkOnlyCertainPlaces($mapping)) {
                 continue;
             }
             foreach ($mapping->getFieldGroups() as $group) {
@@ -155,7 +155,7 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
         $query = new RecordQuery(new ilConsumerObject($object));
         /** @var ilObjectMapping $mapping */
         foreach ($mappings as $mapping) {
-            if (!$this->checkOnlyShowInCertainPlaces($mapping)) {
+            if (!$this->checkOnlyCertainPlaces($mapping)) {
                 continue;
             }
             foreach ($mapping->getFieldGroups() as $group) {
@@ -197,7 +197,7 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
         });
         static $added = false;
         foreach ($mappings as $mapping) {
-            if (!$this->checkOnlyShowInCertainPlaces($mapping)) {
+            if (!$this->checkOnlyCertainPlaces($mapping)) {
                 continue;
             }
             /** @var $mapping ilObjectMapping */
@@ -247,21 +247,21 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
      *
      * @return bool
      */
-    protected function checkOnlyShowInCertainPlaces(ilObjectMapping $mapping) : bool
+    protected function checkOnlyCertainPlaces(ilObjectMapping $mapping) : bool
     {
-        if (!$mapping->isOnlyShowInCertainPlaces()) {
+        if (!$mapping->isOnlyCertainPlaces()) {
             return true;
         }
 
         $ref_id = intval(filter_input(INPUT_GET, 'ref_id'));
         $parent_ref_id = intval($this->dic->repositoryTree()->getParentId($ref_id));
 
-        if ($mapping->getOnlyShowInCertainPlacesRefId() === $parent_ref_id) {
+        if ($mapping->getOnlyCertainPlacesRefId() === $parent_ref_id) {
             return true;
         }
 
-        if ($mapping->isOnlyShowInCertainPlacesWholeTree()) {
-            return in_array($parent_ref_id, $this->dic->repositoryTree()->getSubTree($mapping->getOnlyShowInCertainPlacesRefId(), false));
+        if ($mapping->isOnlyCertainPlacesWholeTree()) {
+            return in_array($parent_ref_id, $this->dic->repositoryTree()->getSubTree($mapping->getOnlyCertainPlacesRefId(), false));
         }
 
         return false;

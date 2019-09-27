@@ -104,21 +104,21 @@ class ilObjectMapping extends \ActiveRecord
      * @db_fieldtype    integer
      * @db_length       8
      */
-    protected $only_show_in_certain_places = false;
+    protected $only_certain_places = false;
     /**
      * @var int
      * @db_has_field    true
      * @db_fieldtype    integer
      * @db_length       8
      */
-    protected $only_show_in_certain_places_ref_id = 0;
+    protected $only_certain_places_ref_id = 0;
     /**
      * @var bool
      * @db_has_field    true
      * @db_fieldtype    integer
      * @db_length       8
      */
-    protected $only_show_in_certain_places_whole_tree = false;
+    protected $only_certain_places_whole_tree = false;
 
     /**
      * @var Language
@@ -376,53 +376,53 @@ class ilObjectMapping extends \ActiveRecord
     /**
      * @return bool
      */
-    public function isOnlyShowInCertainPlaces() : bool
+    public function isOnlyCertainPlaces() : bool
     {
-        return boolval($this->only_show_in_certain_places);
+        return boolval($this->only_certain_places);
     }
 
 
     /**
-     * @param bool $only_show_in_certain_places
+     * @param bool $only_certain_places
      */
-    public function setOnlyShowInCertainPlaces(bool $only_show_in_certain_places)
+    public function setOnlyCertainPlaces(bool $only_certain_places)
     {
-        $this->only_show_in_certain_places = $only_show_in_certain_places;
+        $this->only_certain_places = $only_certain_places;
     }
 
 
     /**
      * @return int
      */
-    public function getOnlyShowInCertainPlacesRefId() : int
+    public function getOnlyCertainPlacesRefId() : int
     {
-        return intval($this->only_show_in_certain_places_ref_id);
+        return intval($this->only_certain_places_ref_id);
     }
 
 
     /**
-     * @param int $only_show_in_certain_places_ref_id
+     * @param int $only_certain_places_ref_id
      */
-    public function setOnlyShowInCertainPlacesRefId(int $only_show_in_certain_places_ref_id)
+    public function setOnlyCertainPlacesRefId(int $only_certain_places_ref_id)
     {
-        $this->only_show_in_certain_places_ref_id = $only_show_in_certain_places_ref_id;
+        $this->only_certain_places_ref_id = $only_certain_places_ref_id;
     }
 
 
     /**
      * @return bool
      */
-    public function isOnlyShowInCertainPlacesWholeTree() : bool
+    public function isOnlyCertainPlacesWholeTree() : bool
     {
-        return boolval($this->only_show_in_certain_places_whole_tree);
+        return boolval($this->only_certain_places_whole_tree);
     }
 
 
     /**
-     * @param bool $only_show_in_certain_places_whole_tree
+     * @param bool $only_certain_places_whole_tree
      */
-    public function setOnlyShowInCertainPlacesWholeTree(bool $only_show_in_certain_places_whole_tree)
+    public function setOnlyCertainPlacesWholeTree(bool $only_certain_places_whole_tree)
     {
-        $this->only_show_in_certain_places_whole_tree = $only_show_in_certain_places_whole_tree;
+        $this->only_certain_places_whole_tree = $only_certain_places_whole_tree;
     }
 }

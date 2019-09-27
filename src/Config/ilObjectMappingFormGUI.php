@@ -125,16 +125,16 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
             $show_info->addSubItem($item);
         }
 
-        $only_show_in_certain_places = new ilCheckboxInputGUI('Only show in certain places', 'only_show_in_certain_places');
-        $only_show_in_certain_places->setChecked($this->mapping->isOnlyShowInCertainPlaces());
-        $this->addItem($only_show_in_certain_places);
+        $only_certain_places = new ilCheckboxInputGUI('Only show in certain places', 'only_certain_places');
+        $only_certain_places->setChecked($this->mapping->isOnlyCertainPlaces());
+        $this->addItem($only_certain_places);
 
-        $only_show_in_certain_places_ref_id = new ilRepositorySelector2InputGUI('Parent Object', 'only_show_in_certain_places_ref_id');
-        $only_show_in_certain_places_ref_id->setValue($this->mapping->getOnlyShowInCertainPlacesRefId());
-        $only_show_in_certain_places->addSubItem($only_show_in_certain_places_ref_id);
+        $only_certain_places_ref_id = new ilRepositorySelector2InputGUI('Parent Object', 'only_certain_places_ref_id');
+        $only_certain_places_ref_id->setValue($this->mapping->getOnlyCertainPlacesRefId());
+        $only_certain_places->addSubItem($only_certain_places_ref_id);
 
-        $only_show_in_certain_places_whole_tree = new ilCheckboxInputGUI('Whole tree', 'only_show_in_certain_places_whole_tree');
-        $only_show_in_certain_places_whole_tree->setValue($this->mapping->isOnlyShowInCertainPlacesWholeTree());
-        $only_show_in_certain_places->addSubItem($only_show_in_certain_places_whole_tree);
+        $only_certain_places_whole_tree = new ilCheckboxInputGUI('Whole tree', 'only_certain_places_whole_tree');
+        $only_certain_places_whole_tree->setValue($this->mapping->isOnlyCertainPlacesWholeTree());
+        $only_certain_places->addSubItem($only_certain_places_whole_tree);
     }
 }
