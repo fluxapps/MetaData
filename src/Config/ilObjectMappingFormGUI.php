@@ -3,12 +3,14 @@ namespace SRAG\ILIAS\Plugins\MetaData\Config;
 
 require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
 
+use ilRepositorySelector2InputGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Field\FieldGroup;
 use SRAG\ILIAS\Plugins\MetaData\Field\NullField;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
 use SRAG\ILIAS\Plugins\MetaData\FormProperty\ilAsmSelectInputGUI;
 use SRAG\ILIAS\Plugins\MetaData\Language\Language;
+use ilCheckboxInputGUI;
 
 /**
  * Class ilObjectMappingFormGUI
@@ -123,5 +125,17 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
             $show_info->addSubItem($item);
         }
 
+        $only_certain_places = new ilCheckboxInputGUI('Only show in certain places', 'only_certain_places');
+        $only_certain_places->setChecked($this->mapping->isOnlyCertainPlaces());
+        $this->addItem($only_certain_places);
+
+        $only_certain_places_ref_id = new ilRepositorySelector2InputGUI('Parent Object', 'only_certain_places_ref_id');
+        $only_certain_places_ref_id->getExplorerGUI()->setSelectableTypes(["root", "cat", "grp", "fold"]);
+        $only_certain_places_ref_id->setValue($this->mapping->getOnlyCertainPlacesRefId());
+        $only_certain_places->addSubItem($only_certain_places_ref_id);
+
+        $only_certain_places_whole_tree = new ilCheckboxInputGUI('Whole sub tree', 'only_certain_places_whole_tree');
+        $only_certain_places_whole_tree->setChecked($this->mapping->isOnlyCertainPlacesWholeTree());
+        $only_certain_places->addSubItem($only_certain_places_whole_tree);
     }
 }

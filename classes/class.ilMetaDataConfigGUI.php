@@ -22,6 +22,8 @@ require_once('./Modules/Course/classes/class.ilObjCourse.php');
  * Class ilMetaDataConfigGUI
  *
  * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ *
+ * @ilCtrl_Calls      ilMetaDataConfigGUI: ilPropertyFormGUI
  */
 class ilMetaDataConfigGUI extends ilPluginConfigGUI
 {
@@ -445,6 +447,9 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
             $mapping->setEditable($form->getInput('editable'));
             $mapping->setShowBlock($form->getInput('show_block'));
             $mapping->setShowInfoScreen($form->getInput('show_info_screen'));
+            $mapping->setOnlyCertainPlaces(boolval($form->getInput('only_certain_places')));
+            $mapping->setOnlyCertainPlacesRefId(intval($form->getInput('only_certain_places_ref_id')));
+            $mapping->setOnlyCertainPlacesWholeTree(boolval($form->getInput('only_certain_places_whole_tree')));
             foreach ($this->language->getAvailableLanguages() as $lang) {
                 $mapping->setTabTitle($form->getInput('tab_title_' . $lang), $lang);
             }
@@ -512,4 +517,13 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         }
     }
 
+
+    /**
+     *
+     */
+    protected function handleExplorerCommand() {
+        $form = new ilObjectMappingFormGUI(ilObjectMapping::findOrFail((int) $_GET['object_mapping_id']), $this->language);
+
+        $form->getItemByPostVar("only_certain_places_ref_id")->handleExplorerCommand();
+    }
 }
