@@ -6,3 +6,4 @@
 - Implement uninstaller
 - Fix cancel object mapping button
 - Fix no array pass to `array_values`
+- Min PHP 7.0
