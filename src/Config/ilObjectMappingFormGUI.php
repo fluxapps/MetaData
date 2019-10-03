@@ -118,6 +118,10 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
 
         foreach ($this->mapping->getFieldGroups() as $group) {
             $item = new ilAsmSelectInputGUI($group->getTitle(), 'show_info_group_' . $group->getId());
+            $options = array();
+            foreach ($group->getFields() as $field) {
+                $options[$field->getId()] = $field->getLabel() . ' [' . $field->getIdentifier() . ']';
+            }
             $item->setOptions($options);
             $item->setValue($this->mapping->getShowInfoFieldIds($group->getId()));
             $show_info->addSubItem($item);
