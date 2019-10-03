@@ -1,4 +1,6 @@
 <?php
+
+use ILIAS\DI\Container;
 use SRAG\ILIAS\Plugins\MetaData\Config\ilFieldGroupFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Config\ilObjectMappingFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Config\SimpleTable;
@@ -20,6 +22,8 @@ require_once('./Modules/Course/classes/class.ilObjCourse.php');
  * Class ilMetaDataConfigGUI
  *
  * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ *
+ * @ilCtrl_Calls      ilMetaDataConfigGUI: ilPropertyFormGUI
  */
 class ilMetaDataConfigGUI extends ilPluginConfigGUI
 {
@@ -50,16 +54,21 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
      * @var ilLanguage
      */
     protected $language;
+    /**
+     * @var Container
+     */
+    protected $dic;
 
     public function __construct()
     {
-        global $ilCtrl, $tpl, $ilTabs, $ilToolbar;
+        global $ilCtrl, $tpl, $ilTabs, $ilToolbar, $DIC;
         $this->pl = ilMetaDataPlugin::getInstance();
         $this->ctrl = $ilCtrl;
         $this->tpl = $tpl;
         $this->tabs = $ilTabs;
         $this->toolbar = $ilToolbar;
         $this->language = new ilLanguage();
+        $this->dic = $DIC;
     }
 
 
@@ -97,9 +106,13 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         /** @var Field $field */
         foreach (NullField::orderBy('class')->orderBy('identifier')->get() as $field) {
             $this->ctrl->setParameter($this, 'field_id', $field->getId());
-            $url = $this->ctrl->getLinkTarget($this, 'editField');
+            $edit_url = $this->ctrl->getLinkTarget($this, 'editField');
+            $delete_url = $this->ctrl->getLinkTarget($this, 'deleteFieldConfirm');
             $this->ctrl->clearParameters($this);
-            $actions = "<a href='{$url}'>Edit</a>";
+            $actions = $this->dic->ui()->renderer()->render($this->dic->ui()->factory()->dropdown()->standard([
+                $this->dic->ui()->factory()->button()->shy("Edit", $edit_url),
+                $this->dic->ui()->factory()->button()->shy("Delete", $delete_url)
+            ])->withLabel("Actions"));
             $type = str_replace('SRAG\\ILIAS\\Plugins\\MetaData\\Field\\', '', $field->getClass());
 
             //TODO
@@ -149,7 +162,7 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
             $field->setIdentifier($form->getInput('identifier'));
             $field->setClass($class);
             $field->setInputfieldClass($form->getInput('inputfield'));
-            $field->setFormatters($form->getInput('formatters'));
+            $field->setFormatters((array) $form->getInput('formatters'));
             foreach ($this->language->getAvailableLanguages() as $lang) {
                 $field->setLabel($form->getInput("label_$lang"), $lang);
                 $field->setDescription($form->getInput("description_$lang"), $lang);
@@ -215,6 +228,35 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
     }
 
 
+    /**
+     *
+     */
+    protected function deleteFieldConfirm()
+    {
+        $this->addTabs('fields');
+        $field = Field::findOrFail((int) $_GET['field_id']);
+        $this->ctrl->saveParameter($this, 'field_id');
+        $confirmation = new ilConfirmationGUI();
+        $confirmation->setFormAction($this->ctrl->getFormAction($this));
+        $confirmation->setHeaderText('Delete Field ' . $field->getLabel() . '?');
+        $confirmation->setConfirm('Delete', 'deleteField');
+        $confirmation->setCancel("Cancel", 'listFields');
+        $this->tpl->setContent($confirmation->getHTML());
+    }
+
+
+    /**
+     *
+     */
+    protected function deleteField()
+    {
+        $field = Field::findOrFail((int) $_GET['field_id']);
+        $field->delete();
+        ilUtil::sendSuccess('Deleted Field ' . $field->getLabel(), true);
+        $this->ctrl->redirect($this, 'listFields');
+    }
+
+
     protected function listFieldGroups()
     {
         $this->addTabs('field_groups');
@@ -231,9 +273,13 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         ));
         foreach (FieldGroup::orderBy('identifier')->get() as $group) {
             $this->ctrl->setParameter($this, 'field_group_id', $group->getId());
-            $url = $this->ctrl->getLinkTarget($this, 'editFieldGroup');
+            $edit_url = $this->ctrl->getLinkTarget($this, 'editFieldGroup');
+            $delete_url = $this->ctrl->getLinkTarget($this, 'deleteFieldGroupConfirm');
             $this->ctrl->clearParameters($this);
-            $actions = "<a href='{$url}'>Edit</a>";
+            $actions = $this->dic->ui()->renderer()->render($this->dic->ui()->factory()->dropdown()->standard([
+                $this->dic->ui()->factory()->button()->shy("Edit", $edit_url),
+                $this->dic->ui()->factory()->button()->shy("Delete", $delete_url)
+            ])->withLabel("Actions"));
             /** @var FieldGroup $group */
             $fields = $group->getFields();
             $field_labels = array_map(function($field) { return $field->getIdentifier(); }, $fields);
@@ -291,6 +337,36 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         $this->tpl->setContent($form->getHTML());
     }
 
+
+    /**
+     *
+     */
+    protected function deleteFieldGroupConfirm()
+    {
+        $this->addTabs('field_groups');
+        $group = FieldGroup::findOrFail((int) $_GET['field_group_id']);
+        $this->ctrl->saveParameter($this, 'field_group_id');
+        $confirmation = new ilConfirmationGUI();
+        $confirmation->setFormAction($this->ctrl->getFormAction($this));
+        $confirmation->setHeaderText('Delete Field Group ' . $group->getTitle() . '?');
+        $confirmation->setConfirm('Delete', 'deleteFieldGroup');
+        $confirmation->setCancel("Cancel", 'listFieldGroups');
+        $this->tpl->setContent($confirmation->getHTML());
+    }
+
+
+    /**
+     *
+     */
+    protected function deleteFieldGroup()
+    {
+        $group = FieldGroup::findOrFail((int) $_GET['field_group_id']);
+        $group->delete();
+        ilUtil::sendSuccess('Deleted Field Group ' . $group->getTitle(), true);
+        $this->ctrl->redirect($this, 'listFieldGroups');
+    }
+
+
     protected function cancelFieldGroup()
     {
         $this->listFieldGroups();
@@ -336,9 +412,13 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         foreach (ilObjectMapping::orderBy('obj_type')->get() as $mapping){
             /** @var $mapping ilObjectMapping */
             $this->ctrl->setParameter($this, 'object_mapping_id', $mapping->getId());
-            $url = $this->ctrl->getLinkTarget($this, 'editObjectMapping');
+            $edit_url = $this->ctrl->getLinkTarget($this, 'editObjectMapping');
+            $delete_url = $this->ctrl->getLinkTarget($this, 'deleteObjectMappingConfirm');
             $this->ctrl->clearParameters($this);
-            $actions = "<a href='{$url}'>Edit</a>";
+            $actions = $this->dic->ui()->renderer()->render($this->dic->ui()->factory()->dropdown()->standard([
+                $this->dic->ui()->factory()->button()->shy("Edit", $edit_url),
+                $this->dic->ui()->factory()->button()->shy("Delete", $delete_url)
+            ])->withLabel("Actions"));
             $groups_identifiers = array_map(function ($group) {
                 return $group->getIdentifier();
             }, $mapping->getFieldGroups());
@@ -367,6 +447,9 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
             $mapping->setEditable($form->getInput('editable'));
             $mapping->setShowBlock($form->getInput('show_block'));
             $mapping->setShowInfoScreen($form->getInput('show_info_screen'));
+            $mapping->setOnlyCertainPlaces(boolval($form->getInput('only_certain_places')));
+            $mapping->setOnlyCertainPlacesRefId(intval($form->getInput('only_certain_places_ref_id')));
+            $mapping->setOnlyCertainPlacesWholeTree(boolval($form->getInput('only_certain_places_whole_tree')));
             foreach ($this->language->getAvailableLanguages() as $lang) {
                 $mapping->setTabTitle($form->getInput('tab_title_' . $lang), $lang);
             }
@@ -389,6 +472,36 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         $this->tpl->setContent($form->getHTML());
     }
 
+
+    /**
+     *
+     */
+    protected function deleteObjectMappingConfirm()
+    {
+        $this->addTabs('object_mapping');
+        $object_mapping = ilObjectMapping::findOrFail((int) $_GET['object_mapping_id']);
+        $this->ctrl->saveParameter($this, 'object_mapping_id');
+        $confirmation = new ilConfirmationGUI();
+        $confirmation->setFormAction($this->ctrl->getFormAction($this));
+        $confirmation->setHeaderText('Delete Object Mapping ' . $object_mapping->getTitle() . '?');
+        $confirmation->setConfirm('Delete', 'deleteObjectMapping');
+        $confirmation->setCancel("Cancel", 'listObjectMappings');
+        $this->tpl->setContent($confirmation->getHTML());
+    }
+
+
+    /**
+     *
+     */
+    protected function deleteObjectMapping()
+    {
+        $object_mapping = ilObjectMapping::findOrFail((int) $_GET['object_mapping_id']);
+        $object_mapping->delete();
+        ilUtil::sendSuccess('Deleted Object Mapping ' . $object_mapping->getTitle(), true);
+        $this->ctrl->redirect($this, 'listObjectMappings');
+    }
+
+
 	protected function cancelObjectMapping()
 	{
 		$this->listObjectMappings();
@@ -404,4 +517,13 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         }
     }
 
+
+    /**
+     *
+     */
+    protected function handleExplorerCommand() {
+        $form = new ilObjectMappingFormGUI(ilObjectMapping::findOrFail((int) $_GET['object_mapping_id']), $this->language);
+
+        $form->getItemByPostVar("only_certain_places_ref_id")->handleExplorerCommand();
+    }
 }

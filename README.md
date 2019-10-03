@@ -134,6 +134,10 @@ if ($form->checkInput()) {
 }
 ```
 
+### Requirements
+* ILIAS 5.3 or ILIAS 5.4
+* PHP >=7.0
+
 ### ILIAS Plugin SLA
 
 Wir lieben und leben die Philosophie von Open Source Software! Die meisten unserer Entwicklungen, welche wir im Kundenauftrag oder in Eigenleistung entwickeln, stellen wir öffentlich allen Interessierten kostenlos unter https://github.com/studer-raimann zur Verfügung.
