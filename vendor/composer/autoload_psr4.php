@@ -9,6 +9,6 @@ return array(
     'srag\\RemovePluginDataConfirm\\MetaData\\' => array($vendorDir . '/srag/removeplugindataconfirm/src'),
     'srag\\LibrariesNamespaceChanger\\' => array($vendorDir . '/srag/librariesnamespacechanger/src'),
     'srag\\DIC\\MetaData\\' => array($vendorDir . '/srag/dic/src'),
-    'srag\\CustomInputGUIs\\MetaData\\' => array($vendorDir . '/srag/custominputguis/src'),
+    'srag\\CustomInputGUIs\\' => array($vendorDir . '/srag/custominputguis/src'),
     'SRAG\\ILIAS\\Plugins\\MetaData\\' => array($baseDir . '/src'),
 );

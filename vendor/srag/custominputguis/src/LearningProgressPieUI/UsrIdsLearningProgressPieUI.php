@@ -30,7 +30,7 @@ class UsrIdsLearningProgressPieUI extends AbstractLearningProgressPieUI {
 	 *
 	 * @return self
 	 */
-	public function withObjId($obj_id) {
+	public function withObjId(int $obj_id): self {
 		$this->obj_id = $obj_id;
 
 		return $this;
@@ -42,7 +42,7 @@ class UsrIdsLearningProgressPieUI extends AbstractLearningProgressPieUI {
 	 *
 	 * @return self
 	 */
-	public function withUsrIds(array $usr_ids) {
+	public function withUsrIds(array $usr_ids): self {
 		$this->usr_ids = $usr_ids;
 
 		return $this;
@@ -52,16 +52,19 @@ class UsrIdsLearningProgressPieUI extends AbstractLearningProgressPieUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function parseData() {
+	protected function parseData(): array {
 		if (count($this->usr_ids) > 0) {
-			return array_reduce($this->usr_ids, function (array $data, $usr_id) {
-    $status = $this->getStatus($usr_id);
-    if (!isset($data[$status])) {
-        $data[$status] = 0;
-    }
-    $data[$status]++;
-    return $data;
-}, []);
+			return array_reduce($this->usr_ids, function (array $data, int $usr_id): array {
+				$status = $this->getStatus($usr_id);
+
+				if (!isset($data[$status])) {
+					$data[$status] = 0;
+				}
+
+				$data[$status] ++;
+
+				return $data;
+			}, []);
 		} else {
 			return [];
 		}
@@ -71,7 +74,7 @@ class UsrIdsLearningProgressPieUI extends AbstractLearningProgressPieUI {
 	/**
 	 * @inheritdoc
 	 */
-	protected function getCount() {
+	protected function getCount(): int {
 		return count($this->usr_ids);
 	}
 
@@ -81,7 +84,7 @@ class UsrIdsLearningProgressPieUI extends AbstractLearningProgressPieUI {
 	 *
 	 * @return int
 	 */
-	private function getStatus($usr_id) {
+	private function getStatus(int $usr_id): int {
 		// Avoid exit
 		if (ilObjectLP::getInstance($this->obj_id)->getCurrentMode() != ilLPObjSettings::LP_MODE_UNDEFINED) {
 			$status = intval(ilLPStatus::_lookupStatus($this->obj_id, $usr_id));

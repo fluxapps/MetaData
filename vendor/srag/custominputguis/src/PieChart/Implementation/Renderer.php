@@ -26,7 +26,7 @@ class Renderer extends AbstractComponentRenderer {
 	/**
 	 * @inheritDoc
 	 */
-	protected function getComponentInterfaceName() {
+	protected function getComponentInterfaceName(): array {
 		return [ PieChartInterface::class ];
 	}
 
@@ -34,7 +34,7 @@ class Renderer extends AbstractComponentRenderer {
 	/**
 	 * @inheritDoc
 	 */
-	public function render(Component $component, RendererInterface $default_renderer) {
+	public function render(Component $component, RendererInterface $default_renderer): string {
 		$this->checkComponent($component);
 
 		return $this->renderStandard($component, $default_renderer);
@@ -47,7 +47,7 @@ class Renderer extends AbstractComponentRenderer {
 	 *
 	 * @return string
 	 */
-	protected function renderStandard(PieChartInterface $component, RendererInterface $default_renderer) {
+	protected function renderStandard(PieChartInterface $component, RendererInterface $default_renderer): string {
 		$tpl = $this->getTemplate("tpl.piechart.html", true, true);
 
 		foreach ($component->getSections() as $section) {
@@ -103,7 +103,7 @@ class Renderer extends AbstractComponentRenderer {
 	/**
 	 * @inheritDoc
 	 */
-	public function registerResources(ResourceRegistry $registry) {
+	public function registerResources(ResourceRegistry $registry): void {
 		parent::registerResources($registry);
 
 		$dir = __DIR__;
@@ -116,7 +116,7 @@ class Renderer extends AbstractComponentRenderer {
 	/**
 	 * @inheritDoc
 	 */
-	protected function getTemplatePath($name) {
+	protected function getTemplatePath(/*string*/ $name): string {
 		return __DIR__ . "/../templates/" . $name;
 	}
 }

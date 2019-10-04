@@ -91,7 +91,7 @@ class PieChart implements PieChartInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function getTotalValue() {
+	public function getTotalValue(): float {
 		return $this->totalValue;
 	}
 
@@ -99,7 +99,7 @@ class PieChart implements PieChartInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function getSections() {
+	public function getSections(): array {
 		return $this->sections;
 	}
 
@@ -107,7 +107,7 @@ class PieChart implements PieChartInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function withValuesInLegend($state) {
+	public function withValuesInLegend(bool $state): PieChartInterface {
 		//$this->checkBoolArg("state", $state);
 		$clone = clone $this;
 		$clone->valuesInLegend = $state;
@@ -119,7 +119,7 @@ class PieChart implements PieChartInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function isValuesInLegend() {
+	public function isValuesInLegend(): bool {
 		return $this->valuesInLegend;
 	}
 
@@ -127,7 +127,7 @@ class PieChart implements PieChartInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function withShowLegend($state) {
+	public function withShowLegend(bool $state): PieChartInterface {
 		//$this->checkBoolArg("state", $state);
 		$clone = clone $this;
 		$clone->showLegend = $state;
@@ -139,7 +139,7 @@ class PieChart implements PieChartInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function isShowLegend() {
+	public function isShowLegend(): bool {
 		return $this->showLegend;
 	}
 
@@ -147,7 +147,7 @@ class PieChart implements PieChartInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function withCustomTotalValue($custom_total_value = null) {
+	public function withCustomTotalValue(/*?*/float $custom_total_value = null): PieChartInterface {
 		if (!is_null($custom_total_value)) {
 			$this->checkFloatArg("custom_total_value", $custom_total_value);
 		}
@@ -161,7 +161,7 @@ class PieChart implements PieChartInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function getCustomTotalValue() {
+	public function getCustomTotalValue(): /*?*/float {
 		return $this->customTotalValue;
 	}
 }

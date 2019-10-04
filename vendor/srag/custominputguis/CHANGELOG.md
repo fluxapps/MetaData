@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.23.5]
+- MultiLineInputGUI: fix PHP 7.2
+
+## [0.23.4]
+- TextInputGUIWithModernAutoComplete
+
+## [0.23.3]
+- TextInputGUIWithModernAutoComplete
+
+## [0.23.2]
+- TextInputGUIWithModernAutoComplete
+
+## [0.23.1]
+- TextInputGUIWithModernAutoComplete
+
+## [0.23.0]
+- TextInputGUIWithModernAutoComplete
+
 ## [0.22.10]
 - Fixes
 

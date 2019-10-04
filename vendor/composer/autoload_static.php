@@ -12,7 +12,7 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
             'srag\\RemovePluginDataConfirm\\MetaData\\' => 38,
             'srag\\LibrariesNamespaceChanger\\' => 31,
             'srag\\DIC\\MetaData\\' => 18,
-            'srag\\CustomInputGUIs\\MetaData\\' => 30,
+            'srag\\CustomInputGUIs\\' => 21,
         ),
         'S' => 
         array (
@@ -33,7 +33,7 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
-        'srag\\CustomInputGUIs\\MetaData\\' => 
+        'srag\\CustomInputGUIs\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),

@@ -43,7 +43,7 @@ class SectionValue implements SectionValueInterface {
 	 * @param float $stroke_dashoffset
 	 * @param float $section_percentage
 	 */
-	public function __construct($value, $stroke_dasharray, $stroke_dashoffset, $section_percentage) {
+	public function __construct(float $value, float $stroke_dasharray, float $stroke_dashoffset, float $section_percentage) {
 		$this->checkFloatArg("value", $value);
 		$this->value = $value;
 		$this->checkFloatArg("stroke_dasharray", $stroke_dasharray);
@@ -58,7 +58,7 @@ class SectionValue implements SectionValueInterface {
 	 * @param float $stroke_dasharray
 	 * @param float $stroke_dashoffset
 	 */
-	private function calcChartCoords($stroke_dasharray, $stroke_dashoffset)/*: void*/ {
+	private function calcChartCoords(float $stroke_dasharray, float $stroke_dashoffset)/*: void*/ {
 		$angle_dasharray = abs($stroke_dasharray) * 3.6 * 2.549;
 		$angle_dashoffset = abs($stroke_dashoffset) * 3.6 * 2.549;
 		$final_angle_rad = deg2rad(360 - ($angle_dashoffset + $angle_dasharray / 2));
@@ -71,7 +71,7 @@ class SectionValue implements SectionValueInterface {
 	/**
 	 * @param float $section_percentage
 	 */
-	private function calcTextSize($section_percentage)/*: void*/ {
+	private function calcTextSize(float $section_percentage)/*: void*/ {
 		if ($section_percentage <= 7) {
 			$this->text_size = 0;
 		} else {
@@ -83,7 +83,7 @@ class SectionValue implements SectionValueInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function getValue() {
+	public function getValue(): float {
 		return $this->value;
 	}
 
@@ -91,7 +91,7 @@ class SectionValue implements SectionValueInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function getXPercentage() {
+	public function getXPercentage(): float {
 		return $this->x_percentage;
 	}
 
@@ -99,7 +99,7 @@ class SectionValue implements SectionValueInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function getYPercentage() {
+	public function getYPercentage(): float {
 		return $this->y_percentage;
 	}
 
@@ -107,7 +107,7 @@ class SectionValue implements SectionValueInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function getTextSize() {
+	public function getTextSize(): int {
 		return $this->text_size;
 	}
 }

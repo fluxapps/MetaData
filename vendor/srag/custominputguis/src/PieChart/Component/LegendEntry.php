@@ -18,7 +18,7 @@ interface LegendEntry {
 	 *
 	 * @return float
 	 */
-	public function getYPercentage();
+	public function getYPercentage(): float;
 
 
 	/**
@@ -26,7 +26,7 @@ interface LegendEntry {
 	 *
 	 * @return float
 	 */
-	public function getTextYPercentage();
+	public function getTextYPercentage(): float;
 
 
 	/**
@@ -34,7 +34,7 @@ interface LegendEntry {
 	 *
 	 * @return float
 	 */
-	public function getSquareSize();
+	public function getSquareSize(): float;
 
 
 	/**
@@ -42,7 +42,7 @@ interface LegendEntry {
 	 *
 	 * @return float
 	 */
-	public function getTextSize();
+	public function getTextSize(): float;
 
 
 	/**
@@ -50,5 +50,5 @@ interface LegendEntry {
 	 *
 	 * @return string
 	 */
-	public function getTitle();
+	public function getTitle(): string;
 }

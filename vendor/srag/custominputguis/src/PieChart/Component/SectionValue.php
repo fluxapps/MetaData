@@ -18,7 +18,7 @@ interface SectionValue {
 	 *
 	 * @return float
 	 */
-	public function getValue();
+	public function getValue(): float;
 
 
 	/**
@@ -26,7 +26,7 @@ interface SectionValue {
 	 *
 	 * @return float
 	 */
-	public function getXPercentage();
+	public function getXPercentage(): float;
 
 
 	/**
@@ -34,7 +34,7 @@ interface SectionValue {
 	 *
 	 * @return float
 	 */
-	public function getYPercentage();
+	public function getYPercentage(): float;
 
 
 	/**
@@ -42,5 +42,5 @@ interface SectionValue {
 	 *
 	 * @return int
 	 */
-	public function getTextSize();
+	public function getTextSize(): int;
 }

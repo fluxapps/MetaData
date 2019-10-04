@@ -25,7 +25,7 @@ interface PieChart extends Component {
 	 *
 	 * @return Section[]
 	 */
-	public function getSections();
+	public function getSections(): array;
 
 
 	/**
@@ -33,7 +33,7 @@ interface PieChart extends Component {
 	 *
 	 * @return float
 	 */
-	public function getTotalValue();
+	public function getTotalValue(): float;
 
 
 	/**
@@ -43,7 +43,7 @@ interface PieChart extends Component {
 	 *
 	 * @return self
 	 */
-	public function withValuesInLegend($state);
+	public function withValuesInLegend(bool $state): self;
 
 
 	/**
@@ -51,7 +51,7 @@ interface PieChart extends Component {
 	 *
 	 * @return bool
 	 */
-	public function isValuesInLegend();
+	public function isValuesInLegend(): bool;
 
 
 	/**
@@ -59,13 +59,13 @@ interface PieChart extends Component {
 	 *
 	 * @return self
 	 */
-	public function withShowLegend($state);
+	public function withShowLegend(bool $state): self;
 
 
 	/**
 	 * @return bool
 	 */
-	public function isShowLegend();
+	public function isShowLegend(): bool;
 
 
 	/**
@@ -73,11 +73,11 @@ interface PieChart extends Component {
 	 *
 	 * @return self
 	 */
-	public function withCustomTotalValue($custom_total_value = null);
+	public function withCustomTotalValue(/*?*/float $custom_total_value = null): self;
 
 
 	/**
 	 * @return float|null
 	 */
-	public function getCustomTotalValue();
+	public function getCustomTotalValue(): /*?*/float;
 }
