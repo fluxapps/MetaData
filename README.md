@@ -64,18 +64,41 @@ The `SRAG\ILIAS\Plugins\Metadata\Record\Record` object represents a metadata rec
 
 Note that you can use the MetaData service for your own objects, you just need to make sure to represent them with a unique object type.
 
-#### Querying Records
+### Service
 
-Use `SRAG\ILIAS\Plugins\MetaData\RecordQuery` to query records for a given object:
+To fetch and/or set Metadata, use the Service at `SRAG\ILIAS\Plugins\MetaData\MetadataService`. The Service uses the Singleton pattern and can be fetched by calling the static method MetadataService::getInstance(). It provides methods for getting and settings metadata using an ilObject, a Field Group ID and a Field ID.
+
+**Example**
+
 ```php
-$myConsumer = new ilConsumerObject(new ilObjCourse(123));
-$query = new RecordQuery($myConsumer);
-$fieldGroup = FieldGroup::findByIdentifier('course_metadata');
-$records = $query->getRecords($fieldGroup); // Returns an array of Record objects for the given field group
-// or to get a Record of a given field
-$field = Field::findByIdentifier('introduction');
-$record = $query->getRecord($fieldGroup, $field);
+use SRAG\ILIAS\Plugins\MetaData\MetadataService;
+
+// set value
+$course = new ilObjCourse($crs_ref_id);
+MetadataService::getInstance()->setValue(
+    $course, 
+    'course_templates', 
+    'course_uuid', 
+    $uuid
+);
+
+// get value
+$value = MetadataService::getInstance()->getValue(
+    $course, 
+    'course_templates',
+    'course_uuid'
+);
+
+// get formatted value
+$value = MetadataService::getInstance()->getFormattedValue(
+    $course, 
+    'course_templates',
+    'course_uuid'
+);
 ```
+
+Alternatively you can fetch a record object:
+`$record = MetadataService::getInstance()->getRecord($object, 'field_group_id', 'field_id');`
 
 #### Setting/Getting Values
 The field of a record uses a `StorageLocation` which controls how the values are stored in the databases. For example, the
