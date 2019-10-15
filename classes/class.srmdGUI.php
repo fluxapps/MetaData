@@ -1,4 +1,7 @@
 <?php
+
+use SRAG\ILIAS\Plugins\MetaData\Field\Field;
+use SRAG\ILIAS\Plugins\MetaData\Field\UserField;
 use SRAG\ILIAS\Plugins\MetaData\Form\FormAdapter;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
 
@@ -14,6 +17,7 @@ require_once('./Services/Object/classes/class.ilObjectListGUIFactory.php');
  */
 class srmdGUI
 {
+    const CMD_USER_AUTOCOMPLETE = "userAutoComplete";
 
     /**
      * @var ilObjectMapping
@@ -180,4 +184,28 @@ class srmdGUI
         }
     }
 
+
+    /**
+     *
+     */
+    protected function userAutoComplete() {
+        $field = Field::findOrFail(intval(filter_input(INPUT_GET, "field_id")));
+
+        if (!($field instanceof UserField) || $field->options()->isOnlyDisplay()) {
+            throw new InvalidArgumentException("Field need to be type " . UserField::class);
+        }
+
+        $auto = new ilUserAutoComplete();
+        $auto->setSearchFields(["login", "firstname", "lastname", "email", "usr_id"]);
+        $auto->setMoreLinkAvailable(true);
+        $auto->setResultField("usr_id");
+
+        if (filter_input(INPUT_GET, "fetchall")) {
+            $auto->setLimit(ilUserAutoComplete::MAX_ENTRIES);
+        }
+
+        echo $auto->getList(filter_input(INPUT_GET, "term"));
+
+        exit;
+    }
 }
