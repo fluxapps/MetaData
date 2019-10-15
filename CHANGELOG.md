@@ -2,6 +2,7 @@
 
 ## [x]
 - Only show in certain places config
+- User field type
 - Delete function
 - ILIAS 5.4 support
 - Drop ILIAS 5.1 and ILIAS 5.2 support

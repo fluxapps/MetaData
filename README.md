@@ -14,6 +14,7 @@ In contrast to the advanced metadata in the core, multi language support is buil
 * DateTime
 * Boolean
 * Location
+* User
 
 #### Field Type Options
 Each field type offers different options like "required", "multi language support" etc.
