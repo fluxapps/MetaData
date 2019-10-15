@@ -8,5 +8,6 @@
 - Implement uninstaller
 - Fix cancel object mapping button
 - Fix no array pass to `array_values`
+- Fix info block only show on info screen
 - Fix PHP 7.2
 - Min PHP 7.0
