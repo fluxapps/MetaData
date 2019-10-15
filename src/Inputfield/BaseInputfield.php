@@ -1,6 +1,8 @@
 <?php
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
+use ilMetaDataPlugin;
+use srag\DIC\MetaData\DICTrait;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 
@@ -12,6 +14,9 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
  */
 abstract class BaseInputfield implements Inputfield
 {
+    use DICTrait;
+    const PLUGIN_CLASS_NAME = ilMetaDataPlugin::class;
+
 
     /**
      * @var Field

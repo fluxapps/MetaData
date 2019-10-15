@@ -107,6 +107,9 @@ class FormAdapter
     {
         foreach ($this->groups as $group) {
             foreach ($group->getFields() as $field) {
+                if ($field->options()->isOnlyDisplay()) {
+                    continue;
+                }
                 if ($onSaveRecord !== null) {
                     $save = $onSaveRecord($group, $field);
                     if ($save && !$this->isIgnored($group, $field)) {

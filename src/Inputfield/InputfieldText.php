@@ -1,6 +1,7 @@
 <?php
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
+use ilNonEditableValueGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\TextField;
 use SRAG\ILIAS\Plugins\MetaData\Language\ilLanguage;
 use SRAG\ILIAS\Plugins\MetaData\Language\Language;
@@ -32,13 +33,10 @@ class InputfieldText extends BaseInputfield
         $value = $record->getValue();
         $options = $this->field->options();
         foreach ($this->getLanguages() as $lang) {
+            if ($options->isOnlyDisplay()) {
+                $input = new ilNonEditableValueGUI($this->field->getLabel($this->lang));
+            } else {
             $input = new \ilTextInputGUI($this->getLabel($lang), $this->getPostVar($record) . "_$lang");
-            if ($this->field->getDescription($this->lang)) {
-                $input->setInfo($this->field->getDescription($this->lang));
-            }
-            if (isset($value[$lang])) {
-                $input->setValue($value[$lang]);
-            }
             // Field is required only in the default language, even if rendered for multiple languages
             $input->setRequired($options->isRequired() && $lang == $this->language->getDefaultLanguage());
             if ($options->getMaxLength()) {
@@ -46,6 +44,13 @@ class InputfieldText extends BaseInputfield
             }
             if ($options->getRegex()) {
                 $input->setValidationRegexp($options->getRegex());
+            }
+            }
+            if ($this->field->getDescription($this->lang)) {
+                $input->setInfo($this->field->getDescription($this->lang));
+            }
+            if (isset($value[$lang])) {
+                $input->setValue($value[$lang]);
             }
             $inputs[] = $input;
         }

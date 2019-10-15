@@ -1,6 +1,7 @@
 <?php
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
+use ilNonEditableValueGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\TextareaField;
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 
@@ -26,14 +27,19 @@ class InputfieldTextarea extends InputfieldText
         $options = $this->field->options();
         // Check if this text field should be rendered for all languages or just the default
         foreach ($this->getLanguages() as $lang) {
+            if ($options->isOnlyDisplay()) {
+                $input = new ilNonEditableValueGUI($this->getLabel($lang));
+                $input->setValue($record->getValue());
+            } else {
             $input = new \ilTextAreaInputGUI($this->getLabel($lang), $this->getPostVar($record) . "_$lang");
             $rows = $options->getNRows() ? $options->getNRows() : 8;
             $input->setRows($rows);
+            // Field is required only in the default language, even if rendered for multiple languages
+            $input->setRequired($options->isRequired() && $lang == $this->language->getDefaultLanguage());
+            }
             if ($this->field->getDescription($this->lang)) {
                 $input->setInfo($this->field->getDescription($this->lang));
             }
-            // Field is required only in the default language, even if rendered for multiple languages
-            $input->setRequired($options->isRequired() && $lang == $this->language->getDefaultLanguage());
             if (isset($value[$lang])) {
                 $input->setValue($value[$lang]);
             }

@@ -17,6 +17,14 @@ class FieldOptions
     protected $required = false;
 
     /**
+     * @label Only display
+     * @description Make field not editable, only display it
+     * @formProperty ilCheckboxInputGUI
+     * @var bool
+     */
+    protected $only_display = false;
+
+    /**
      * @var array
      */
     protected $data = array();
@@ -28,6 +36,7 @@ class FieldOptions
     {
         $this->data = array_merge(array(
             'required' => false,
+            "only_display" => false
         ), (array) $data);
     }
 
@@ -63,4 +72,21 @@ class FieldOptions
         $this->data['required'] = (bool) $required;
     }
 
+
+    /**
+     * @return bool
+     */
+    public function isOnlyDisplay() : bool
+    {
+        return boolval($this->data["only_display"]);
+    }
+
+
+    /**
+     * @param bool $only_display
+     */
+    public function setOnlyDisplay(bool $only_display)
+    {
+        $this->data["only_display"] = $only_display;
+    }
 }

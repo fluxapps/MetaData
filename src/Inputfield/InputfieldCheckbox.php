@@ -1,6 +1,7 @@
 <?php
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
+use ilNonEditableValueGUI;
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 
 /**
@@ -14,11 +15,16 @@ class InputfieldCheckbox extends BaseInputfield
 
     public function getILIASFormInputs(Record $record)
     {
+        if ($this->field->options()->isOnlyDisplay()) {
+            $input = new ilNonEditableValueGUI($this->field->getLabel($this->lang));
+            $input->setValue($record->getValue() ? "Yes" : "No");
+        } else {
         $input = new \ilCheckboxInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
+        $input->setChecked((bool) $record->getValue());
+        }
         if ($this->field->getDescription($this->lang)) {
             $input->setInfo($this->field->getDescription($this->lang));
         }
-        $input->setChecked((bool) $record->getValue());
 
         return array($input);
     }

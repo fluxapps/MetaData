@@ -1,6 +1,7 @@
 <?php
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
+use ilNonEditableValueGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Field\IntegerField;
 use SRAG\ILIAS\Plugins\MetaData\Field\IntegerFieldOptions;
@@ -24,10 +25,10 @@ class InputfieldInteger extends BaseInputfield
     public function getILIASFormInputs(Record $record)
     {
         $options = $this->field->options();
+        if ($options->isOnlyDisplay()) {
+            $input = new ilNonEditableValueGUI($this->field->getLabel($this->lang));
+        } else {
         $input = new \ilNumberInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
-        if ($this->field->getDescription($this->lang)) {
-            $input->setInfo($this->field->getDescription($this->lang));
-        }
         if ($options->getMinValue()) {
             $input->setMinValue($options->getMinValue());
         }
@@ -35,6 +36,10 @@ class InputfieldInteger extends BaseInputfield
             $input->setMaxValue($options->getMaxValue());
         }
         $input->setRequired($options->isRequired());
+        }
+        if ($this->field->getDescription($this->lang)) {
+            $input->setInfo($this->field->getDescription($this->lang));
+        }
         $input->setValue($record->getValue());
 
         return array($input);
