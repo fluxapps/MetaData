@@ -1,6 +1,9 @@
 <?php
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
+use ilDate;
+use ilDatePresentation;
+use ilNonEditableValueGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\DateTimeField;
 use SRAG\ILIAS\Plugins\MetaData\Field\DateTimeFieldOptions;
 use SRAG\ILIAS\Plugins\MetaData\FormProperty\ilDateTimeInput2GUI;
@@ -28,11 +31,12 @@ class InputfieldDateTime extends BaseInputfield
     public function getILIASFormInputs(Record $record)
     {
         $options = $this->field->options();
+        if ($options->isOnlyDisplay()) {
+            $input = new ilNonEditableValueGUI($this->field->getLabel($this->lang));
+            $input->setValue(ilDatePresentation::formatDate(new ilDate($record->getValue(), IL_CAL_DATETIME)));
+        } else {
         $input = new ilDateTimeInput2GUI($this->field->getLabel($this->lang), $this->getPostVar($record));
         $input->setLocale($this->lang);
-        if ($this->field->getDescription($this->lang)) {
-            $input->setInfo($this->field->getDescription($this->lang));
-        }
         if ($record->getValue()) {
             $input->setValue(new \DateTime($record->getValue()));
         }
@@ -43,6 +47,11 @@ class InputfieldDateTime extends BaseInputfield
         if ($options->getDateFormat()) {
             $input->setOption('altFormat', $options->getDateFormat());
         }
+        }
+        if ($this->field->getDescription($this->lang)) {
+            $input->setInfo($this->field->getDescription($this->lang));
+        }
+
         return array($input);
     }
 

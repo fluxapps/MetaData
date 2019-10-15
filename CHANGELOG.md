@@ -1,6 +1,7 @@
 # Changelog
 
 ## [x]
+- Only display field
 - Only show in certain places config
 - User field type
 - Delete function

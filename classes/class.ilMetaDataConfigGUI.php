@@ -1,6 +1,7 @@
 <?php
 
 use ILIAS\DI\Container;
+use srag\CustomInputGUIs\MetaData\PropertyFormGUI\Items\Items;
 use SRAG\ILIAS\Plugins\MetaData\Config\ilFieldGroupFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Config\ilObjectMappingFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Config\SimpleTable;
@@ -169,12 +170,16 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
             }
             // Options
             foreach ($field->options()->getData() as $property => $value) {
-                $setter = 'set' . ucfirst($property);
+                $setter = 'set' . ucfirst(Items::strToCamelCase($property));
                 if (!method_exists($field->options(), $setter)) {
                     // Maybe a field option was removed in the class but still exists in DB, skip it!
                     continue;
                 }
+                try {
                 $field->options()->$setter($form->getInput('option_' . $property));
+                } catch (Throwable $ex) {
+                $field->options()->$setter(boolval($form->getInput('option_' . $property)));
+                }
             }
             try {
                 $field->save();
