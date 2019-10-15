@@ -74,19 +74,19 @@ interface DICInterface {
 	/**
 	 * @return ilAccessHandler
 	 */
-	public function access();
+	public function access(): ilAccessHandler;
 
 
 	/**
 	 * @return ilAppEventHandler
 	 */
-	public function appEventHandler();
+	public function appEventHandler(): ilAppEventHandler;
 
 
 	/**
 	 * @return ilAuthSession
 	 */
-	public function authSession();
+	public function authSession(): ilAuthSession;
 
 
 	/**
@@ -94,31 +94,31 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.3
 	 */
-	public function backgroundTasks();
+	public function backgroundTasks(): BackgroundTaskServices;
 
 
 	/**
 	 * @return ilBenchmark
 	 */
-	public function benchmark();
+	public function benchmark(): ilBenchmark;
 
 
 	/**
 	 * @return ilBrowser
 	 */
-	public function browser();
+	public function browser(): ilBrowser;
 
 
 	/**
 	 * @return ilIniFile
 	 */
-	public function clientIni();
+	public function clientIni(): ilIniFile;
 
 
 	/**
 	 * @return Collator
 	 */
-	public function collator();
+	public function collator(): Collator;
 
 
 	/**
@@ -128,19 +128,19 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.4
 	 */
-	public function conditions();
+	public function conditions(): ilConditionService;
 
 
 	/**
 	 * @return ilCtrl
 	 */
-	public function ctrl();
+	public function ctrl(): ilCtrl;
 
 
 	/**
 	 * @return ilCtrlStructureReader
 	 */
-	public function ctrlStructureReader();
+	public function ctrlStructureReader(): ilCtrlStructureReader;
 
 
 	/**
@@ -148,19 +148,19 @@ interface DICInterface {
 	 *
 	 * @throws DICException DatabaseDetector only supports ilDBPdoInterface!
 	 */
-	public function database();
+	public function database(): DatabaseInterface;
 
 
 	/**
 	 * @return ilDBInterface
 	 */
-	public function databaseCore();
+	public function databaseCore(): ilDBInterface;
 
 
 	/**
 	 * @return ilErrorHandling
 	 */
-	public function error();
+	public function error(): ilErrorHandling;
 
 
 	/**
@@ -168,7 +168,7 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.3
 	 */
-	public function filesystem();
+	public function filesystem(): Filesystems;
 
 
 	/**
@@ -178,19 +178,19 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.4
 	 */
-	public function globalScreen();
+	public function globalScreen(): GlobalScreenService;
 
 
 	/**
 	 * @return ilHelpGUI
 	 */
-	public function help();
+	public function help(): ilHelpGUI;
 
 
 	/**
 	 * @return ilNavigationHistory
 	 */
-	public function history();
+	public function history(): ilNavigationHistory;
 
 
 	/**
@@ -198,25 +198,25 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.3
 	 */
-	public function http();
+	public function http(): HTTPServices;
 
 
 	/**
 	 * @return ILIAS
 	 */
-	public function ilias();
+	public function ilias(): ILIAS;
 
 
 	/**
 	 * @return ilIniFile
 	 */
-	public function iliasIni();
+	public function iliasIni(): ilIniFile;
 
 
 	/**
 	 * @return ilLanguage
 	 */
-	public function language();
+	public function language(): ilLanguage;
 
 
 	/**
@@ -226,19 +226,19 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.4
 	 */
-	public function learningHistory();
+	public function learningHistory(): ilLearningHistoryService;
 
 
 	/**
 	 * @return ilLocatorGUI
 	 */
-	public function locator();
+	public function locator(): ilLocatorGUI;
 
 
 	/**
 	 * @return ilComponentLogger
 	 */
-	public function log();
+	public function log(): ilComponentLogger;
 
 
 	/**
@@ -246,13 +246,13 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.2
 	 */
-	public function logger();
+	public function logger(): LoggingServices;
 
 
 	/**
 	 * @return ilLoggerFactory
 	 */
-	public function loggerFactory();
+	public function loggerFactory(): ilLoggerFactory;
 
 
 	/**
@@ -260,7 +260,7 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.3
 	 */
-	public function mailMimeSenderFactory();
+	public function mailMimeSenderFactory(): ilMailMimeSenderFactory;
 
 
 	/**
@@ -268,13 +268,13 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.3
 	 */
-	public function mailMimeTransportFactory();
+	public function mailMimeTransportFactory(): ilMailMimeTransportFactory;
 
 
 	/**
 	 * @return ilMainMenuGUI
 	 */
-	public function mainMenu();
+	public function mainMenu(): ilMainMenuGUI;
 
 
 	/**
@@ -289,19 +289,19 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.4
 	 */
-	public function news();
+	public function news(): ilNewsService;
 
 
 	/**
 	 * @return ilObjectDataCache
 	 */
-	public function objDataCache();
+	public function objDataCache(): ilObjectDataCache;
 
 
 	/**
 	 * @return ilObjectDefinition
 	 */
-	public function objDefinition();
+	public function objDefinition(): ilObjectDefinition;
 
 
 	/**
@@ -311,67 +311,67 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.4
 	 */
-	public function object();
+	public function object(): ilObjectService;
 
 
 	/**
 	 * @return ilPluginAdmin
 	 */
-	public function pluginAdmin();
+	public function pluginAdmin(): ilPluginAdmin;
 
 
 	/**
 	 * @return ilRbacAdmin
 	 */
-	public function rbacadmin();
+	public function rbacadmin(): ilRbacAdmin;
 
 
 	/**
 	 * @return ilRbacReview
 	 */
-	public function rbacreview();
+	public function rbacreview(): ilRbacReview;
 
 
 	/**
 	 * @return ilRbacSystem
 	 */
-	public function rbacsystem();
+	public function rbacsystem(): ilRbacSystem;
 
 
 	/**
 	 * @return Session
 	 */
-	public function session();
+	public function session(): Session;
 
 
 	/**
 	 * @return ilSetting
 	 */
-	public function settings();
+	public function settings(): ilSetting;
 
 
 	/**
 	 * @return ilStyleDefinition
 	 */
-	public function systemStyle();
+	public function systemStyle(): ilStyleDefinition;
 
 
 	/**
 	 * @return ilTabsGUI
 	 */
-	public function tabs();
+	public function tabs(): ilTabsGUI;
 
 
 	/**
 	 * @return ilToolbarGUI
 	 */
-	public function toolbar();
+	public function toolbar(): ilToolbarGUI;
 
 
 	/**
 	 * @return ilTree
 	 */
-	public function tree();
+	public function tree(): ilTree;
 
 
 	/**
@@ -379,7 +379,7 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.2
 	 */
-	public function ui();
+	public function ui(): UIServices;
 
 
 	/**
@@ -389,7 +389,7 @@ interface DICInterface {
 	 * @since ILIAS 6.0
 	 *
 	 */
-	public function uiService();
+	public function uiService(): ilUIService;
 
 
 	/**
@@ -397,17 +397,17 @@ interface DICInterface {
 	 *
 	 * @since ILIAS 5.3
 	 */
-	public function upload();
+	public function upload(): FileUpload;
 
 
 	/**
 	 * @return ilObjUser
 	 */
-	public function user();
+	public function user(): ilObjUser;
 
 
 	/**
 	 * @return Container
 	 */
-	public function &dic();
+	public function &dic(): Container;
 }

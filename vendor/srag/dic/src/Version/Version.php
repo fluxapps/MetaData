@@ -22,7 +22,7 @@ final class Version implements VersionInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function getILIASVersion() {
+	public function getILIASVersion(): string {
 		return ILIAS_VERSION_NUMERIC;
 	}
 
@@ -30,7 +30,7 @@ final class Version implements VersionInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function isEqual($version) {
+	public function isEqual(string $version): bool {
 		return (version_compare($this->getILIASVersion(), $version) === 0);
 	}
 
@@ -38,7 +38,7 @@ final class Version implements VersionInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function isGreater($version) {
+	public function isGreater(string $version): bool {
 		return (version_compare($this->getILIASVersion(), $version) > 0);
 	}
 
@@ -46,7 +46,7 @@ final class Version implements VersionInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function isLower($version) {
+	public function isLower(string $version): bool {
 		return (version_compare($this->getILIASVersion(), $version) < 0);
 	}
 
@@ -54,7 +54,7 @@ final class Version implements VersionInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function isMaxVersion($version) {
+	public function isMaxVersion(string $version): bool {
 		return (version_compare($this->getILIASVersion(), $version) <= 0);
 	}
 
@@ -62,7 +62,7 @@ final class Version implements VersionInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function isMinVersion($version) {
+	public function isMinVersion(string $version): bool {
 		return (version_compare($this->getILIASVersion(), $version) >= 0);
 	}
 
@@ -70,7 +70,7 @@ final class Version implements VersionInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function is53() {
+	public function is53(): bool {
 		return $this->isMinVersion(self::ILIAS_VERSION_5_3);
 	}
 
@@ -78,7 +78,7 @@ final class Version implements VersionInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function is54() {
+	public function is54(): bool {
 		return $this->isMinVersion(self::ILIAS_VERSION_5_4);
 	}
 
@@ -86,7 +86,7 @@ final class Version implements VersionInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function is60() {
+	public function is60(): bool {
 		return $this->isMinVersion(self::ILIAS_VERSION_6_0);
 	}
 }
