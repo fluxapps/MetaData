@@ -90,7 +90,7 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
 //            );
 //        }
         static $rendered = false;
-        if ($a_part == 'template_get' && $a_par['tpl_id'] == 'Services/InfoScreen/tpl.infoscreen.html' && !$rendered) {
+        if ($this->ctrl->getCmdClass() === strtolower(ilInfoScreenGUI::class) && $a_part == 'template_get' && $a_par['tpl_id'] == 'Services/InfoScreen/tpl.infoscreen.html' && !$rendered) {
             $rendered = true;
             return array(
                 "mode" => ilUIHookPluginGUI::PREPEND,
