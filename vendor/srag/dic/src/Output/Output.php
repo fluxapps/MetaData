@@ -34,7 +34,7 @@ final class Output implements OutputInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function getHTML($value) {
+	public function getHTML($value): string {
 		if (is_array($value)) {
 			$html = "";
 			foreach ($value as $gui) {
@@ -86,7 +86,7 @@ final class Output implements OutputInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function output($value, $show = false, $main_template = true)/*: void*/ {
+	public function output($value, bool $show = false, bool $main_template = true)/*: void*/ {
 		$html = $this->getHTML($value);
 
 		if (self::dic()->ctrl()->isAsynch()) {
