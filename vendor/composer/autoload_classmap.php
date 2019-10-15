@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'MetaDataRemoveDataConfirm' => $baseDir . '/classes/uninstall/class.MetaDataRemoveDataConfirm.php',
+    'SRAG\\ILIAS\\Plugins\\MetaData\\AbstractMetadataGUI' => $baseDir . '/src/AbstractMetadataGUI.php',
     'SRAG\\ILIAS\\Plugins\\MetaData\\Config\\SimpleTable' => $baseDir . '/src/Config/SimpleTable.php',
     'SRAG\\ILIAS\\Plugins\\MetaData\\Config\\ilFieldFormGUI' => $baseDir . '/src/Config/ilFieldFormGUI.php',
     'SRAG\\ILIAS\\Plugins\\MetaData\\Config\\ilFieldGroupFormGUI' => $baseDir . '/src/Config/ilFieldGroupFormGUI.php',

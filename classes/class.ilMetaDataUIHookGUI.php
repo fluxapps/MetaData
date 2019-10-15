@@ -201,11 +201,9 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
                 continue;
             }
             /** @var $mapping ilObjectMapping */
-            $this->ctrl->setParameterByClass('srmdGUI', 'ref_id', (int)$_GET['ref_id']);
-            $this->ctrl->setParameterByClass('srmdGUI', 'back_target', urlencode(base64_encode($_SERVER['REQUEST_URI'])));
-            $this->ctrl->setParameterByClass('srmdGUI', 'mapping_id', $mapping->getId());
-            $this->ctrl->setParameterByClass('srmdGUI', 'mapping_obj_id', $this->ctrl->getContextObjId());
-            $link = $this->ctrl->getLinkTargetByClass(array('ilUIPluginRouterGUI', 'srmdGUI'));
+            $this->ctrl->setParameterByClass(srmdGUI::class, 'ref_id', (int)$_GET['ref_id']);
+            $this->ctrl->setParameterByClass(srmdGUI::class, 'mapping_id', $mapping->getId());
+            $link = $this->ctrl->getLinkTargetByClass(array(ilUIPluginRouterGUI::class, srmdGUI::class), srmdGUI::CMD_SHOW);
             $tabs->addTab('srmd_mapping_' . $mapping->getId(), $mapping->getTabTitle(), $link);
             if (!$added) {
                 $added = true;

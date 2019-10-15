@@ -11,7 +11,7 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         array (
             'srag\\RemovePluginDataConfirm\\MetaData\\' => 38,
             'srag\\LibrariesNamespaceChanger\\' => 31,
-            'srag\\DIC\\' => 9,
+            'srag\\DIC\\MetaData\\' => 18,
             'srag\\CustomInputGUIs\\MetaData\\' => 30,
         ),
         'S' => 
@@ -29,7 +29,7 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
         ),
-        'srag\\DIC\\' => 
+        'srag\\DIC\\MetaData\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
@@ -45,6 +45,7 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
 
     public static $classMap = array (
         'MetaDataRemoveDataConfirm' => __DIR__ . '/../..' . '/classes/uninstall/class.MetaDataRemoveDataConfirm.php',
+        'SRAG\\ILIAS\\Plugins\\MetaData\\AbstractMetadataGUI' => __DIR__ . '/../..' . '/src/AbstractMetadataGUI.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Config\\SimpleTable' => __DIR__ . '/../..' . '/src/Config/SimpleTable.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Config\\ilFieldFormGUI' => __DIR__ . '/../..' . '/src/Config/ilFieldFormGUI.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Config\\ilFieldGroupFormGUI' => __DIR__ . '/../..' . '/src/Config/ilFieldGroupFormGUI.php',
