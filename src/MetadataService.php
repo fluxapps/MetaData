@@ -19,6 +19,15 @@ class MetadataService
 {
     use SingletonTrait;
 
+
+    /**
+     * MetadataService constructor
+     */
+    protected function __construct() {
+
+    }
+
+
     /**
      * @param ilObject $object
      * @param string   $field_group_id
