@@ -22,7 +22,7 @@ class UserStorage extends IntegerStorage
     {
         parent::validateValue($value);
 
-        if (!ilObjUser::_exists($value)) {
+        if (empty($value) || !ilObjUser::_exists($value)) {
             throw new InvalidArgumentException("'$value' is not an exists user id!");
         }
     }

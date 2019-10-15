@@ -135,6 +135,13 @@ $record->getFormattedValue() // --> 'Guten Tag'
 $record->getFormattedValue() // --> 'Bonjour'
 ```
 
+### AbstractMetadataGUI
+Extends `AbstractMetadataGUI` and pass objects and object mappings
+
+From your plugin you can redirect to this class to edit metadata
+
+See the default used implementation [./classes/class.srmdGUI.php](./classes/class.srmdGUI.php)
+
 ### FormAdapter
 
 Use `SRAG\ILIAS\Plugins\Form\FormAdapter` to add metadata fields to a given form. The adapter is also used to save Record data after the form has been validated:
