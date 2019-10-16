@@ -15,7 +15,7 @@ use SRAG\ILIAS\Plugins\MetaData\Field\UserField;
 use SRAG\ILIAS\Plugins\MetaData\Form\Error;
 use SRAG\ILIAS\Plugins\MetaData\Form\FormAdapter;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
-use SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject;
+use SRAG\ILIAS\Plugins\MetaData\Object\ConsumerObject;
 
 /**
  * Class AbstractMetadataGUI
@@ -35,7 +35,7 @@ abstract class AbstractMetadataGUI
     const CMD_USER_AUTOCOMPLETE = "userAutoComplete";
     const CMD_BACK = "back";
     /**
-     * @var ilConsumerObject[]
+     * @var ConsumerObject[]
      */
     protected $objects = [];
     /**
@@ -47,8 +47,8 @@ abstract class AbstractMetadataGUI
     /**
      * MetadataGUI constructor
      *
-     * @param ilConsumerObject[] $objects
-     * @param ilObjectMapping[]  $object_mappings
+     * @param ConsumerObject[]  $objects
+     * @param ilObjectMapping[] $object_mappings
      */
     public function __construct(array $objects, array $object_mappings)
     {
@@ -130,26 +130,38 @@ abstract class AbstractMetadataGUI
     {
         $adapters = [];
 
-        $should_add_object_header = (count($this->objects) > 1);
-
         foreach ($this->objects as $object) {
+            $groups = [];
+
+            $adapter = new FormAdapter($form, $object, self::dic()->user()->getLanguage());
+
+            foreach ($this->objects_mapping as $object_mapping) {
+                if (!MetadataService::getInstance()->canBeShow($object, $object_mapping, MetadataService::SHOW_CONTEXT_EDIT_IN_TAB)) {
+                    continue;
+                }
+
+                foreach ($object_mapping->getFieldGroups() as $group) {
+                    $groups[] = $group;
+                }
+            }
+
+            $should_add_object_header = (count($this->objects) > 1 && count($groups) > 0);
+
             if ($should_add_object_header) {
                 $object_header = new ilFormSectionHeaderGUI();
                 $object_header->setTitle(self::dic()->language()->txt("obj_" . $object->getType()) . " : " . self::dic()->objDataCache()->lookupTitle($object->getId()));
                 $form->addItem($object_header);
             }
 
-            $adapter = new FormAdapter($form, $object, self::dic()->user()->getLanguage());
-            foreach ($this->objects_mapping as $object_mapping) {
-                foreach ($object_mapping->getFieldGroups() as $group) {
-                    $adapter->addFields($group);
-                }
+            foreach ($groups as $group) {
+                $adapter->addFields($group);
             }
-            $adapters[] = $adapter;
 
             if ($should_add_object_header) {
                 $form->addItem(new ilNonEditableValueGUI()); // Separator
             }
+
+            $adapters[] = $adapter;
         }
 
         return $adapters;
