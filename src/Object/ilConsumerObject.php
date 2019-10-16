@@ -33,4 +33,13 @@ class ilConsumerObject implements ConsumerObject
     {
         return $this->object->getType();
     }
+
+
+    /**
+     * @inheritDoc
+     */
+    public function getRefId() : int
+    {
+        return intval($this->object->getRefId());
+    }
 }

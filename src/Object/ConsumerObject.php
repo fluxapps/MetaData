@@ -20,4 +20,10 @@ interface ConsumerObject
      * @return string
      */
     public function getType();
+
+
+    /**
+     * @return int
+     */
+    public function getRefId() : int;
 }

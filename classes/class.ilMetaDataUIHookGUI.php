@@ -4,6 +4,8 @@ use ILIAS\DI\Container;
 use srag\DIC\MetaData\DICTrait;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
+use SRAG\ILIAS\Plugins\MetaData\MetadataService;
+use SRAG\ILIAS\Plugins\MetaData\Object\ConsumerObject;
 use SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject;
 use SRAG\ILIAS\Plugins\MetaData\Record\RecordQuery;
 
@@ -46,10 +48,13 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
     function modifyGUI($a_comp, $a_part, $a_par = array())
     {
         parent::modifyGUI($a_comp, $a_part, $a_par);
+        if (!$this->getObject()) {
+            return;
+        }
         if (!$this->ctrl->getContextObjType() || !$this->ctrl->getContextObjId()) {
             return;
         }
-        if (!count($this->getMappings($this->ctrl->getContextObjType()))) {
+        if (!count(MetadataService::getInstance()->getMappings($this->ctrl->getContextObjType()))) {
             return;
         }
         if ($a_part == 'tabs') {
@@ -59,6 +64,9 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
 
     public function getHTML($a_comp, $a_part, $a_par = array())
     {
+        if (!$this->getObject()) {
+            return parent::getHTML($a_comp, $a_part, $a_par);
+        }
         global $tpl;
 
         if (is_object($tpl)) {
@@ -67,7 +75,7 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
         if (!$this->ctrl->getContextObjType() || !$this->ctrl->getContextObjId()) {
             return parent::getHTML($a_comp, $a_part, $a_par);
         }
-        if (!count($this->getMappings($this->ctrl->getContextObjType()))) {
+        if (!count(MetadataService::getInstance()->getMappings($this->ctrl->getContextObjType()))) {
             return parent::getHTML($a_comp, $a_part, $a_par);
         }
         // Check if metadata should be displayed in blocks on the right side
@@ -109,16 +117,14 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
     {
         require_once('./Services/InfoScreen/classes/class.ilInfoScreenGUI.php');
         $info = new ilInfoScreenGUI(null);
-        $mappings = array_filter($this->getMappings($this->ctrl->getContextObjType()), function($mapping) {
-            /** @var $mapping ilObjectMapping */
-            return ($mapping->isShowInfoScreen());
+        $mappings = array_filter(MetadataService::getInstance()->getMappings($this->ctrl->getContextObjType()), function (ilObjectMapping $mapping) : bool {
+            return MetadataService::getInstance()->canBeShow($this->getObject(), $mapping, MetadataService::SHOW_CONTEXT_SHOW_INFO_SCREEN);
         });
-        $object = ilObjectFactory::getInstanceByObjId($this->ctrl->getContextObjId());
-        $query = new RecordQuery(new ilConsumerObject($object));
+        if (!count($mappings)) {
+            return '';
+        }
+        $query = new RecordQuery($this->getObject());
         foreach ($mappings as $mapping) {
-            if (!$this->checkOnlyCertainPlaces($mapping)) {
-                continue;
-            }
             foreach ($mapping->getFieldGroups() as $group) {
                 $records = array_map(function($field_id) use ($query, $group) {
                     $field = Field::find($field_id);
@@ -143,21 +149,16 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
      */
     protected function getRightColumnBoxes()
     {
-        $mappings = array_filter($this->getMappings($this->ctrl->getContextObjType()), function($mapping) {
-            /** @var $mapping ilObjectMapping */
-            return ($mapping->isShowBlock());
+        $mappings = array_filter(MetadataService::getInstance()->getMappings($this->ctrl->getContextObjType()), function (ilObjectMapping $mapping) : bool {
+            return MetadataService::getInstance()->canBeShow($this->getObject(), $mapping, MetadataService::SHOW_CONTEXT_SHOW_RIGHT_BLOCK);
         });
         if (!count($mappings)) {
             return '';
         }
         $out = '';
-        $object = ilObjectFactory::getInstanceByObjId($this->ctrl->getContextObjId());
-        $query = new RecordQuery(new ilConsumerObject($object));
+        $query = new RecordQuery($this->getObject());
         /** @var ilObjectMapping $mapping */
         foreach ($mappings as $mapping) {
-            if (!$this->checkOnlyCertainPlaces($mapping)) {
-                continue;
-            }
             foreach ($mapping->getFieldGroups() as $group) {
                 $records = array_map(function($field_id) use ($query, $group) {
                     $field = Field::find($field_id);
@@ -188,20 +189,14 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
     protected function addObjectMappingTab(ilTabsGUI $tabs)
     {
         global $tpl;
-        // We only add the tab if the user has write access to the current object
-        if (!$this->access->checkAccess('write', '', (int)$_GET['ref_id'])) {
-            return;
-        }
-        $mappings = array_filter($this->getMappings($this->ctrl->getContextObjType()), function($mapping) {
-            return ($mapping->isEditable());
+
+        $mappings = array_filter(MetadataService::getInstance()->getMappings($this->ctrl->getContextObjType()), function (ilObjectMapping $mapping) : bool {
+            return MetadataService::getInstance()->canBeShow($this->getObject(), $mapping, MetadataService::SHOW_CONTEXT_EDIT_IN_TAB);
         });
         static $added = false;
         foreach ($mappings as $mapping) {
-            if (!$this->checkOnlyCertainPlaces($mapping)) {
-                continue;
-            }
             /** @var $mapping ilObjectMapping */
-            $this->ctrl->setParameterByClass(srmdGUI::class, 'ref_id', (int)$_GET['ref_id']);
+            $this->ctrl->setParameterByClass(srmdGUI::class, 'ref_id', $this->getObject()->getRefId());
             $this->ctrl->setParameterByClass(srmdGUI::class, 'mapping_id', $mapping->getId());
             $link = $this->ctrl->getLinkTargetByClass(array(ilUIPluginRouterGUI::class, srmdGUI::class), srmdGUI::CMD_SHOW);
             $tabs->addTab('srmd_mapping_' . $mapping->getId(), $mapping->getTabTitle(), $link);
@@ -219,49 +214,22 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
         }
     }
 
-    /**
-     * Return the MetaData FieldGroups mapped to the given object type
-     *
-     * @param string $obj_type
-     * @return ilObjectMapping[]
-     */
-    protected function getMappings($obj_type)
-    {
-        static $cache = array();
-        if (isset($cache[$obj_type])) {
-            return $cache[$obj_type];
-        }
-        $mappings = ilObjectMapping::where(array(
-            'obj_type' => $obj_type,
-            'active' => 1,
-        ))->get();
-        $cache[$obj_type] = $mappings;
-        return $mappings;
-    }
-
 
     /**
-     * @param ilObjectMapping $mapping
-     *
-     * @return bool
+     * @return ConsumerObject|null
      */
-    protected function checkOnlyCertainPlaces(ilObjectMapping $mapping) : bool
+    protected function getObject()
     {
-        if (!$mapping->isOnlyCertainPlaces()) {
-            return true;
+        static $object = false;
+        if ($object === false) {
+            $object = ilObjectFactory::getInstanceByRefId(filter_input(INPUT_GET, 'ref_id'), false);
+            if ($object) {
+                $object = new ilConsumerObject($object);
+            } else {
+                $object = null;
+            }
         }
 
-        $ref_id = intval(filter_input(INPUT_GET, 'ref_id'));
-        $parent_ref_id = intval($this->dic->repositoryTree()->getParentId($ref_id));
-
-        if ($mapping->getOnlyCertainPlacesRefId() === $parent_ref_id) {
-            return true;
-        }
-
-        if ($mapping->isOnlyCertainPlacesWholeTree()) {
-            return in_array($parent_ref_id, $this->dic->repositoryTree()->getSubTree(self::dic()->tree()->getNodeData($mapping->getOnlyCertainPlacesRefId()), false));
-        }
-
-        return false;
+        return $object;
     }
 }
