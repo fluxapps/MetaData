@@ -4,7 +4,6 @@ namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
 use ilNonEditableValueGUI;
 use ilTextInputGUI;
-use ilUIPluginRouterGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\UserField;
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 use srmdGUI;
@@ -40,12 +39,11 @@ class InputfieldUser extends InputfieldInteger
             $input = new ilTextInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
             $input->setRequired($this->field->options()->isRequired());
             $input->setValue($record->getValue());
-            self::dic()->ctrl()->setParameterByClass(srmdGUI::class, "field_id", $this->field->getId());
-            $input->setDataSource(self::dic()->ctrl()->getLinkTargetByClass([
-                ilUIPluginRouterGUI::class,
-                srmdGUI::class
-            ], srmdGUI::CMD_USER_AUTOCOMPLETE, "", true, false));
-            self::dic()->ctrl()->clearParameterByClass(srmdGUI::class, "field_id");
+            //$cmdClass self::dic()->ctrl()->getCmdClass(); // is broken with namespace (ilCtrl), use with filter_input the original raw value
+            $cmdClass = filter_input(INPUT_GET, "cmdClass");
+            self::dic()->ctrl()->setParameterByClass($cmdClass , "field_id", $this->field->getId());
+            $input->setDataSource(self::dic()->ctrl()->getLinkTargetByClass($cmdClass, srmdGUI::CMD_USER_AUTOCOMPLETE, "", true, false));
+            self::dic()->ctrl()->clearParameterByClass($cmdClass , "field_id");
         }
 
         if ($this->field->getDescription($this->lang)) {
