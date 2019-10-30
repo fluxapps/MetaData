@@ -8,6 +8,7 @@ use SRAG\ILIAS\Plugins\MetaData\Config\SimpleTable;
 use SRAG\ILIAS\Plugins\MetaData\Config\ilFieldFormGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Field\ArFieldData;
+use SRAG\ILIAS\Plugins\MetaData\Field\FieldData;
 use SRAG\ILIAS\Plugins\MetaData\Field\FieldGroup;
 use SRAG\ILIAS\Plugins\MetaData\Field\NullField;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
@@ -530,5 +531,15 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
         $form = new ilObjectMappingFormGUI(ilObjectMapping::findOrFail((int) $_GET['object_mapping_id']), $this->language);
 
         $form->getItemByPostVar("only_certain_places_ref_id")->handleExplorerCommand();
+    }
+
+
+    /**
+     *
+     */
+    protected function deleteFieldData() {
+        $field_data = ArFieldData::findOrFail((int) $_GET['field_data_id']);
+        $field_data->delete();
+        exit;
     }
 }
