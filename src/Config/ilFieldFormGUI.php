@@ -2,6 +2,12 @@
 namespace SRAG\ILIAS\Plugins\MetaData\Config;
 
 require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
+
+use ilCustomInputGUI;
+use ilMetaDataConfigGUI;
+use ilMetaDataPlugin;
+use srag\CustomInputGUIs\MetaData\Waiter\Waiter;
+use srag\DIC\MetaData\DICTrait;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Field\UserField;
 use SRAG\ILIAS\Plugins\MetaData\FormProperty\ilAsmSelectInputGUI;
@@ -14,6 +20,8 @@ use SRAG\ILIAS\Plugins\MetaData\Language\Language;
  */
 class ilFieldFormGUI extends \ilPropertyFormGUI
 {
+    use DICTrait;
+    const PLUGIN_CLASS_NAME = ilMetaDataPlugin::class;
     /**
      * @var Field
      */
@@ -192,6 +200,29 @@ class ilFieldFormGUI extends \ilPropertyFormGUI
             $item = new \ilTextInputGUI($field_data->getId(), 'field_data_' . $field_data->getId());
             $item->setValue(json_encode($field_data->getValues()));
             $this->addItem($item);
+            $delete_item = new ilCustomInputGUI();
+            $delete_item->setHtml(self::output()->getHTML(self::dic()->ui()->factory()->glyph()->remove()->withAdditionalOnLoadCode(function (string $id) use($field_data) : string {
+                self::dic()->ctrl()->setParameterByClass(ilMetaDataConfigGUI::class, "field_data_id", $field_data->getId());
+                $delete_link = self::dic()->ctrl()->getLinkTargetByClass(ilMetaDataConfigGUI::class, "deleteFieldData", "", true, false);
+                self::dic()->ctrl()->clearParameterByClass(ilMetaDataConfigGUI::class, "field_data_id");
+
+                Waiter::init(Waiter::TYPE_WAITER);
+
+                return '
+            $("#' . $id . '").click(function() {
+                il.waiter.show();
+            $.ajax({
+                url: ' . json_encode($delete_link) . ',
+                type: "GET"
+            }).always(function() {
+                il.waiter.hide();
+            }).success(function () {
+                $("#' . $id . '").parent().parent().prev().remove();
+                $("#' . $id . '").parent().parent().remove();
+            });
+        });';
+            })));
+            $this->addItem($delete_item);
         }
         $item = new \ilTextAreaInputGUI('Add Data', 'add_data');
         $item->setRows(10);
