@@ -29,7 +29,7 @@ class InputfieldTextarea extends InputfieldText
         foreach ($this->getLanguages() as $lang) {
             if ($options->isOnlyDisplay()) {
                 $input = new ilNonEditableValueGUI($this->getLabel($lang));
-                $input->setValue($record->getValue());
+                $input->setValue(is_array($record->getValue()) ? implode('<br>', $record->getValue()) : $record->getValue());
             } else {
             $input = new \ilTextAreaInputGUI($this->getLabel($lang), $this->getPostVar($record) . "_$lang");
             $rows = $options->getNRows() ? $options->getNRows() : 8;
