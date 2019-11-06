@@ -90,7 +90,7 @@ class MetadataService
     {
         $consumer = new ilConsumerObject($object);
         $query = new RecordQuery($consumer);
-        $fieldGroup = FieldGroup::findByIdentifier($field_group_id);
+        $fieldGroup = $this->getFieldGroupByIdentifier($field_group_id);
         $field = Field::findByIdentifier($field_id);
         $record = $query->getRecord($fieldGroup, $field);
         if (!$record) {
@@ -200,5 +200,31 @@ class MetadataService
         }
 
         return ($cache[$cache_id] = false);
+    }
+
+
+    /**
+     * @return FieldGroup[]
+     */
+    public function getFieldGroups()
+    {
+        $field_groups = [];
+
+        foreach (FieldGroup::orderBy('identifier')->get() as $field_group) {
+            $field_groups[$field_group->getIdentifier()] = $field_group;
+        }
+
+        return $field_groups;
+    }
+
+
+    /**
+     * @param string $field_group_identifier
+     *
+     * @return FieldGroup|null
+     */
+    public function getFieldGroupByIdentifier(string $field_group_identifier)/*: ?FieldGroup*/
+    {
+        return FieldGroup::findByIdentifier($field_group_identifier);
     }
 }
