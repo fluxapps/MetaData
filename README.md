@@ -153,7 +153,7 @@ $form->addItem($item);
 // Now we want to add some metadata fields to the existing form
 $myConsumer = new ilConsumerObject(new ilObjCourse(123));
 $adapter = new FormAdapter($form, $myConsumer);
-$fieldGroup = FieldGroup::findByIdentifier('course_metadata');
+$fieldGroup = MetadataService::getInstance()->getFieldGroupByIdentifier('course_metadata');
 $adapter->addFields($fieldGroup); // Adds all fields of the group 'course_metadata' to the form
 
 // When the form is submitted, we use the adapter to save the records

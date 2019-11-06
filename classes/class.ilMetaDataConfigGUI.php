@@ -13,6 +13,7 @@ use SRAG\ILIAS\Plugins\MetaData\Field\FieldGroup;
 use SRAG\ILIAS\Plugins\MetaData\Field\NullField;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
 use SRAG\ILIAS\Plugins\MetaData\Language\ilLanguage;
+use SRAG\ILIAS\Plugins\MetaData\MetadataService;
 
 require_once('./Services/Component/classes/class.ilPluginConfigGUI.php');
 require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
@@ -277,7 +278,7 @@ class ilMetaDataConfigGUI extends ilPluginConfigGUI
             'Fields',
             'Actions',
         ));
-        foreach (FieldGroup::orderBy('identifier')->get() as $group) {
+        foreach (MetadataService::getInstance()->getFieldGroups() as $group) {
             $this->ctrl->setParameter($this, 'field_group_id', $group->getId());
             $edit_url = $this->ctrl->getLinkTarget($this, 'editFieldGroup');
             $delete_url = $this->ctrl->getLinkTarget($this, 'deleteFieldGroupConfirm');

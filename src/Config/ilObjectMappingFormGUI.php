@@ -11,6 +11,7 @@ use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
 use SRAG\ILIAS\Plugins\MetaData\FormProperty\ilAsmSelectInputGUI;
 use SRAG\ILIAS\Plugins\MetaData\Language\Language;
 use ilCheckboxInputGUI;
+use SRAG\ILIAS\Plugins\MetaData\MetadataService;
 
 /**
  * Class ilObjectMappingFormGUI
@@ -62,7 +63,7 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
 
         $options = array();
         /** @var FieldGroup $group */
-        foreach (FieldGroup::get() as $group) {
+        foreach (MetadataService::getInstance()->getFieldGroups() as $group) {
             $options[$group->getId()] = $group->getTitle(). ' [' . $group->getIdentifier() . ']';
         }
         $item = new ilAsmSelectInputGUI('Field Groups', 'field_group_ids');
