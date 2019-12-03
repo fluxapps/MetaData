@@ -91,7 +91,7 @@ class MetadataService
         $consumer = new ilConsumerObject($object);
         $query = new RecordQuery($consumer);
         $fieldGroup = $this->getFieldGroupByIdentifier($field_group_id);
-        $field = Field::findByIdentifier($field_id);
+        $field = $this->getFieldByIdentifier($field_id);
         $record = $query->getRecord($fieldGroup, $field);
         if (!$record) {
             $record = new Record();
@@ -226,5 +226,16 @@ class MetadataService
     public function getFieldGroupByIdentifier(string $field_group_identifier)/*: ?FieldGroup*/
     {
         return FieldGroup::findByIdentifier($field_group_identifier);
+    }
+
+
+    /**
+     * @param string $field_identifier
+     *
+     * @return Field|null
+     */
+    public function getFieldByIdentifier(string $field_identifier)/*: ?Field*/
+    {
+        return Field::findByIdentifier($field_identifier);
     }
 }
