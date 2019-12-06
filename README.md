@@ -165,6 +165,9 @@ if ($form->checkInput()) {
 }
 ```
 
+## SrUserEnrolment plugin
+The MetaData plugin delivers a metadata field operator rule for the [SrUserEnrolment plugin](https://github.com/studer-raimann/SrUserEnrolment), if you have installed this plugin
+
 ### Requirements
 * ILIAS 5.3 or ILIAS 5.4
 * PHP >=7.0

@@ -12,9 +12,14 @@ use SRAG\ILIAS\Plugins\MetaData\RecordValue\IntegerMultiRecordValue;
 use SRAG\ILIAS\Plugins\MetaData\RecordValue\LocationRecordValue;
 use SRAG\ILIAS\Plugins\MetaData\RecordValue\StringRecordValue;
 use SRAG\ILIAS\Plugins\MetaData\RecordValue\TextRecordValue;
+use SRAG\ILIAS\Plugins\MetaData\SrUserEnrolment\EnrolmentWorkflow\Rule\MetaDataField\MetaDataField;
+use SRAG\ILIAS\Plugins\MetaData\SrUserEnrolment\ExtendsSrUserEnrolment;
 use srag\RemovePluginDataConfirm\MetaData\PluginUninstallTrait;
 
 require_once __DIR__ . "/../vendor/autoload.php";
+if (file_exists(__DIR__ . "/../../SrUserEnrolment/vendor/autoload.php")) {
+    require_once __DIR__ . "/../../SrUserEnrolment/vendor/autoload.php";
+}
 
 /**
  * Class ilMetaDataPlugin
@@ -51,6 +56,30 @@ class ilMetaDataPlugin extends ilUserInterfaceHookPlugin {
 	}
 
 
+    /**
+     * @inheritDoc
+     */
+    public function handleEvent($a_component, $a_event, $a_parameter) {
+        if (file_exists(__DIR__ . "/../../SrUserEnrolment/vendor/autoload.php")) {
+            switch ($a_component) {
+                case "Plugins/" . ilSrUserEnrolmentPlugin::PLUGIN_NAME:
+                    switch ($a_event) {
+                        case ilSrUserEnrolmentPlugin::EVENT_EXTENDS_SRUSRENR;
+                            ExtendsSrUserEnrolment::getInstance()->handleExtends();
+                            break;
+
+                        default:
+                            break;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+
+
 	/**
 	 * @inheritdoc
 	 */
@@ -77,5 +106,8 @@ class ilMetaDataPlugin extends ilUserInterfaceHookPlugin {
 		self::dic()->database()->dropTable(TextRecordValue::TABLE_NAME, false);
 		self::dic()->database()->dropTable(LocationRecordValue::TABLE_NAME, false);
 		self::dic()->database()->dropTable(FloatRecordValue::TABLE_NAME, false);
+        if (file_exists(__DIR__ . "/../../SrUserEnrolment/vendor/autoload.php")) {
+            self::dic()->database()->dropTable(MetaDataField::getTableName(), false);
+        }
 	}
 }
