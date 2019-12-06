@@ -25,3 +25,9 @@ SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping::updateDB();
 <?php
 \SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping::updateDB();
 ?>
+<#4>
+<?php
+if (file_exists("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/SrUserEnrolment/vendor/autoload.php")) {
+    \SRAG\ILIAS\Plugins\MetaData\SrUserEnrolment\EnrolmentWorkflow\Rule\MetaDataField\MetaDataField::updateDB();
+}
+?>
