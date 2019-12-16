@@ -9,7 +9,6 @@ use ilMetaDataPlugin;
 use srag\CustomInputGUIs\MetaData\Waiter\Waiter;
 use srag\DIC\MetaData\DICTrait;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
-use SRAG\ILIAS\Plugins\MetaData\Field\OrgUnitField;
 use SRAG\ILIAS\Plugins\MetaData\Field\UserField;
 use SRAG\ILIAS\Plugins\MetaData\FormProperty\ilAsmSelectInputGUI;
 use SRAG\ILIAS\Plugins\MetaData\Language\Language;
@@ -88,8 +87,7 @@ class ilFieldFormGUI extends \ilPropertyFormGUI
             'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\DateTimeField' => 'DateTime',
             'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\BooleanField' => 'Boolean',
             'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\LocationField' => 'Location',
-            UserField::class => "User",
-            OrgUnitField::class => "Org unit"
+            UserField::class => "User"
         );
         $item = new \ilSelectInputGUI('Field Type', 'type');
         $item->setRequired(true);
