@@ -62,7 +62,7 @@ class ilMetaDataPlugin extends ilUserInterfaceHookPlugin {
     public function handleEvent($a_component, $a_event, $a_parameter) {
         if (file_exists(__DIR__ . "/../../SrUserEnrolment/vendor/autoload.php")) {
             switch ($a_component) {
-                case "Plugins/" . ilSrUserEnrolmentPlugin::PLUGIN_NAME:
+                case IL_COMP_PLUGIN . "/" . ilSrUserEnrolmentPlugin::PLUGIN_NAME:
                     switch ($a_event) {
                         case ilSrUserEnrolmentPlugin::EVENT_EXTENDS_SRUSRENR;
                             ExtendsSrUserEnrolment::getInstance()->handleExtends();

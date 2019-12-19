@@ -5,24 +5,24 @@ namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 use ilNonEditableValueGUI;
 use ilPropertyFormGUI;
 use ilTextInputGUI;
-use SRAG\ILIAS\Plugins\MetaData\Field\UserField;
+use SRAG\ILIAS\Plugins\MetaData\Field\OrgUnitField;
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 use srmdGUI;
 
 /**
- * Class InputfieldUser
+ * Class InputfieldOrgUnit
  *
  * @package SRAG\ILIAS\Plugins\MetaData\Inputfield
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class InputfieldUser extends BaseInputfield
+class InputfieldOrgUnit extends BaseInputfield
 {
 
     /**
      * @inheritDoc
      */
-    public function __construct(UserField $field, string $lang = "")
+    public function __construct(OrgUnitField $field, string $lang = "")
     {
         parent::__construct($field, $lang);
     }
@@ -35,7 +35,7 @@ class InputfieldUser extends BaseInputfield
     {
         if ($this->field->options()->isOnlyDisplay()) {
             $input = new ilNonEditableValueGUI($this->field->getLabel($this->lang));
-            $input->setValue(self::dic()->objDataCache()->lookupTitle($record->getValue()));
+            $input->setValue(self::dic()->objDataCache()->lookupTitle(self::dic()->objDataCache()->lookupObjId($record->getValue())));
         } else {
             $input = new ilTextInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
             $input->setRequired($this->field->options()->isRequired());
@@ -43,7 +43,7 @@ class InputfieldUser extends BaseInputfield
             //$cmdClass self::dic()->ctrl()->getCmdClass(); // is broken with namespace (ilCtrl), use with filter_input the original raw value
             $cmdClass = filter_input(INPUT_GET, "cmdClass");
             self::dic()->ctrl()->setParameterByClass($cmdClass, "field_id", $this->field->getId());
-            $input->setDataSource(self::dic()->ctrl()->getLinkTargetByClass($cmdClass, srmdGUI::CMD_USER_AUTOCOMPLETE, "", true, false));
+            $input->setDataSource(self::dic()->ctrl()->getLinkTargetByClass($cmdClass, srmdGUI::CMD_ORG_UNIT_AUTOCOMPLETE, "", true, false));
             self::dic()->ctrl()->clearParameterByClass($cmdClass, "field_id");
         }
 

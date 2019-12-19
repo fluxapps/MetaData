@@ -9,7 +9,10 @@ use ilMetaDataPlugin;
 use srag\CustomInputGUIs\MetaData\Waiter\Waiter;
 use srag\DIC\MetaData\DICTrait;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
+use SRAG\ILIAS\Plugins\MetaData\Field\OrgUnitField;
+use SRAG\ILIAS\Plugins\MetaData\Field\OrgUnitsField;
 use SRAG\ILIAS\Plugins\MetaData\Field\UserField;
+use SRAG\ILIAS\Plugins\MetaData\Formatter\ObjectTitleFormatter;
 use SRAG\ILIAS\Plugins\MetaData\FormProperty\ilAsmSelectInputGUI;
 use SRAG\ILIAS\Plugins\MetaData\Language\Language;
 
@@ -87,7 +90,9 @@ class ilFieldFormGUI extends \ilPropertyFormGUI
             'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\DateTimeField' => 'DateTime',
             'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\BooleanField' => 'Boolean',
             'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\LocationField' => 'Location',
-            UserField::class => "User"
+            UserField::class => "User",
+            OrgUnitField::class => "Org unit",
+            OrgUnitsField::class => "Org units"
         );
         $item = new \ilSelectInputGUI('Field Type', 'type');
         $item->setRequired(true);
@@ -123,6 +128,7 @@ class ilFieldFormGUI extends \ilPropertyFormGUI
             'SRAG\\ILIAS\\Plugins\\MetaData\\Formatter\\UnorderedListFormatter',
             'SRAG\\ILIAS\\Plugins\\MetaData\\Formatter\\OrderedListFormatter',
             'SRAG\\ILIAS\\Plugins\\MetaData\\Formatter\\GoogleMapsFormatter',
+            ObjectTitleFormatter::class
         );
         $options = array();
         foreach ($classes as $class) {

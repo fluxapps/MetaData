@@ -4,6 +4,8 @@
 - Only display field
 - Only show in certain places config
 - User field type
+- Org unit field type
+- Org units field type
 - Delete function
 - `AbstractMetadataGUI` and `MetadataService`
 - ILIAS 5.4 support

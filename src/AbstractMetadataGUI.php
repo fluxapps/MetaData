@@ -11,6 +11,8 @@ use ilUtil;
 use InvalidArgumentException;
 use srag\DIC\MetaData\DICTrait;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
+use SRAG\ILIAS\Plugins\MetaData\Field\OrgUnitField;
+use SRAG\ILIAS\Plugins\MetaData\Field\OrgUnitsField;
 use SRAG\ILIAS\Plugins\MetaData\Field\UserField;
 use SRAG\ILIAS\Plugins\MetaData\Form\Error;
 use SRAG\ILIAS\Plugins\MetaData\Form\FormAdapter;
@@ -33,6 +35,8 @@ abstract class AbstractMetadataGUI
     const CMD_SHOW = "show";
     const CMD_SAVE = "save";
     const CMD_USER_AUTOCOMPLETE = "userAutoComplete";
+    const CMD_ORG_UNIT_AUTOCOMPLETE = "orgUnitAutoComplete";
+    const CMD_ORG_UNITS_AUTOCOMPLETE = "orgUnitsAutoComplete";
     const CMD_BACK = "back";
     /**
      * @var ConsumerObject[]
@@ -81,6 +85,8 @@ abstract class AbstractMetadataGUI
                     case self::CMD_SHOW:
                     case self::CMD_SAVE:
                     case self::CMD_USER_AUTOCOMPLETE:
+                    case self::CMD_ORG_UNIT_AUTOCOMPLETE:
+                    case self::CMD_ORG_UNITS_AUTOCOMPLETE:
                     case self::CMD_BACK:
                         $this->{$cmd}();
                         break;
@@ -237,6 +243,66 @@ abstract class AbstractMetadataGUI
         }
 
         echo $auto->getList(filter_input(INPUT_GET, "term"));
+
+        exit;
+    }
+
+
+    /**
+     *
+     */
+    protected function orgUnitAutoComplete()
+    {
+        $field = Field::findOrFail(filter_input(INPUT_GET, "field_id"));
+
+        if (!($field instanceof OrgUnitField) || $field->options()->isOnlyDisplay()) {
+            throw new InvalidArgumentException("Field need to be type " . OrgUnitField::class);
+        }
+
+        $term = strval(filter_input(INPUT_GET, "term"));
+
+        echo json_encode([
+            "items" => array_values(array_map(function (array $item) : array {
+                return [
+                    "value" => $item["child"],
+                    "label" => $item["title"]
+                ];
+            }, array_filter(self::dic()->tree()->getSubTree(self::dic()->tree()->getNodeData($field->options()->getOrgUnitParentRefId())), function (array $item) use ($term): bool {
+                if (is_numeric($term)) {
+                    return ($item["child"] == $term);
+                } else {
+                    return (stripos($item["title"], $term) !== false);
+                }
+            })))
+        ]);
+
+        exit;
+    }
+
+
+    /**
+     *
+     */
+    protected function orgUnitsAutoComplete()
+    {
+        $field = Field::findOrFail(filter_input(INPUT_GET, "field_id"));
+
+        if (!($field instanceof OrgUnitsField) || $field->options()->isOnlyDisplay()) {
+            throw new InvalidArgumentException("Field need to be type " . OrgUnitsField::class);
+        }
+
+        $term = strval(filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"]);
+
+        echo json_encode([
+            "result" => array_values(array_map(function (array $item) : array {
+                return [
+                    "id"   => $item["child"],
+                    "text" => $item["title"]
+                ];
+            }, array_filter(self::dic()->tree()->getSubTree(self::dic()->tree()->getNodeData($field->options()->getOrgUnitParentRefId())), function (array $item) use ($term): bool {
+                return (stripos($item["title"], $term) !== false);
+            })))
+        ]);
 
         exit;
     }
