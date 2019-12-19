@@ -2,35 +2,35 @@
 
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
-use SRAG\ILIAS\Plugins\MetaData\Inputfield\InputfieldUser;
+use SRAG\ILIAS\Plugins\MetaData\Inputfield\InputfieldOrgUnit;
 use SRAG\ILIAS\Plugins\MetaData\Storage\Storage;
-use SRAG\ILIAS\Plugins\MetaData\Storage\UserStorage;
+use SRAG\ILIAS\Plugins\MetaData\Storage\OrgUnitStorage;
 
 /**
- * Class UserField
+ * Class OrgUnitField
  *
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class UserField extends Field
+class OrgUnitField extends Field
 {
 
     /**
      * @inheritDoc
      *
-     * @return UserFieldOptions
+     * @return OrgUnitFieldOptions
      */
     protected function getFieldOptions(array $data) : FieldOptions
     {
-        return new UserFieldOptions($data);
+        return new OrgUnitFieldOptions($data);
     }
 
 
     /**
      * @inheritDoc
      *
-     * @return UserFieldOptions
+     * @return OrgUnitFieldOptions
      */
     public function options() : FieldOptions
     {
@@ -41,11 +41,11 @@ class UserField extends Field
     /**
      * @inheritDoc
      *
-     * @return UserStorage
+     * @return OrgUnitStorage
      */
     public function getStorage() : Storage
     {
-        return new UserStorage();
+        return new OrgUnitStorage();
     }
 
 
@@ -54,6 +54,6 @@ class UserField extends Field
      */
     public function getCompatibleInputfields() : array
     {
-        return [InputfieldUser::class];
+        return [InputfieldOrgUnit::class];
     }
 }

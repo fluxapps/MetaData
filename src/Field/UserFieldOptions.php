@@ -9,7 +9,7 @@ namespace SRAG\ILIAS\Plugins\MetaData\Field;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class UserFieldOptions extends IntegerFieldOptions
+class UserFieldOptions extends FieldOptions
 {
 
     /**
