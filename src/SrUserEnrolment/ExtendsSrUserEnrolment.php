@@ -27,6 +27,15 @@ class ExtendsSrUserEnrolment
 
 
     /**
+     * ExtendsSrUserEnrolment constructor
+     */
+    private function __construct()
+    {
+
+    }
+
+
+    /**
      * @return self
      */
     public static function getInstance() : self
@@ -36,15 +45,6 @@ class ExtendsSrUserEnrolment
         }
 
         return self::$instance;
-    }
-
-
-    /**
-     * ExtendsSrUserEnrolment constructor
-     */
-    private function __construct()
-    {
-
     }
 
 

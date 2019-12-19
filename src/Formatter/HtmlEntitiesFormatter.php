@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SRAG\ILIAS\Plugins\MetaData\Formatter;
 
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
@@ -8,7 +7,7 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class HtmlEntitiesFormatter
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Formatter
  */
 class HtmlEntitiesFormatter implements Formatter
@@ -22,19 +21,23 @@ class HtmlEntitiesFormatter implements Formatter
         return "Apply PHP's htmlentities function";
     }
 
+
     public function getInType()
     {
         return 'string';
     }
+
 
     public function getOutType()
     {
         return 'string';
     }
 
+
     /**
      * @param Record $record
-     * @param $value
+     * @param        $value
+     *
      * @return mixed
      */
     public function format(Record $record, $value)

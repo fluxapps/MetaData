@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Object;
 
 /**
@@ -11,10 +12,12 @@ namespace SRAG\ILIAS\Plugins\MetaData\Object;
  */
 interface ConsumerObject
 {
+
     /**
      * @return int
      */
     public function getId();
+
 
     /**
      * @return string

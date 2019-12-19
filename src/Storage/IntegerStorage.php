@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Storage;
 
 use SRAG\ILIAS\Plugins\MetaData\RecordValue\IntegerRecordValue;
@@ -7,7 +8,7 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class IntegerStorage
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Storage
  */
 class IntegerStorage extends AbstractStorage
@@ -20,6 +21,7 @@ class IntegerStorage extends AbstractStorage
         }
     }
 
+
     /**
      * @inheritdoc
      */
@@ -27,6 +29,7 @@ class IntegerStorage extends AbstractStorage
     {
         return ($value == '') ? null : $value;
     }
+
 
     /**
      * @inheritdoc
@@ -38,6 +41,7 @@ class IntegerStorage extends AbstractStorage
             $record_value = new IntegerRecordValue();
             $record_value->setRecordId($record->getId());
         }
+
         return $record_value;
     }
 }

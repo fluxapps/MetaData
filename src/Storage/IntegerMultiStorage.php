@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Storage;
 
 use SRAG\ILIAS\Plugins\MetaData\RecordValue\IntegerMultiRecordValue;
@@ -7,43 +8,11 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class IntegerMultiStorage
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Storage
  */
 class IntegerMultiStorage extends AbstractStorage
 {
-
-    protected function validateValue($value)
-    {
-        if (!is_array($value)) {
-            throw new \InvalidArgumentException("'$value' must be passed as array");
-        }
-        foreach ($value as $sort => $int) {
-            if (!is_numeric($int)) {
-                throw new \InvalidArgumentException("'$int' is not numeric");
-            }
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function normalizeValue($value)
-    {
-        $normalized = array();
-        foreach ($value as $int) {
-            $normalized[] = (int)$int;
-        }
-        return $normalized;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getRecordValue(Record $record)
-    {
-        return IntegerMultiRecordValue::where(array('record_id' => $record->getId()))->orderBy('sort')->get();
-    }
 
     /**
      * @inheritdoc
@@ -55,8 +24,19 @@ class IntegerMultiStorage extends AbstractStorage
         foreach ($this->getRecordValue($record) as $record_value) {
             $return[] = $record_value->getValue();
         }
+
         return $return;
     }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRecordValue(Record $record)
+    {
+        return IntegerMultiRecordValue::where(array('record_id' => $record->getId()))->orderBy('sort')->get();
+    }
+
 
     /**
      * @inheritdoc
@@ -64,7 +44,7 @@ class IntegerMultiStorage extends AbstractStorage
     public function saveValue(Record $record, $value)
     {
         $this->validateValue($value);
-        $record_values = array_values((array)$this->getRecordValue($record)); // Re-index zero based
+        $record_values = array_values((array) $this->getRecordValue($record)); // Re-index zero based
         // Note: $sort is zero based!
         foreach ($this->normalizeValue($value) as $sort => $int) {
             if (isset($record_values[$sort])) {
@@ -84,5 +64,32 @@ class IntegerMultiStorage extends AbstractStorage
         foreach ($record_values as $record_value) {
             $record_value->delete();
         }
+    }
+
+
+    protected function validateValue($value)
+    {
+        if (!is_array($value)) {
+            throw new \InvalidArgumentException("'$value' must be passed as array");
+        }
+        foreach ($value as $sort => $int) {
+            if (!is_numeric($int)) {
+                throw new \InvalidArgumentException("'$int' is not numeric");
+            }
+        }
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function normalizeValue($value)
+    {
+        $normalized = array();
+        foreach ($value as $int) {
+            $normalized[] = (int) $int;
+        }
+
+        return $normalized;
     }
 }

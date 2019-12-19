@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
 use SRAG\ILIAS\Plugins\MetaData\Storage\IntegerMultiStorage;
@@ -7,20 +8,11 @@ use SRAG\ILIAS\Plugins\MetaData\Storage\StringStorage;
 /**
  * Class MultiDropdownField
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 class MultiDropdownField extends Field
 {
-
-    /**
-     * @inheritdoc
-     */
-    protected function getFieldOptions(array $data)
-    {
-        return new FieldOptions($data);
-    }
-
 
     /**
      * @inheritdoc
@@ -53,5 +45,14 @@ class MultiDropdownField extends Field
     public function supportsData()
     {
         return true;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function getFieldOptions(array $data)
+    {
+        return new FieldOptions($data);
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SRAG\ILIAS\Plugins\MetaData\Formatter;
 
 use SRAG\ILIAS\Plugins\MetaData\Language\ilLanguage;
@@ -9,7 +8,7 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class DropdownValueFormatter
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Formatter
  */
 class DropdownValueFormatter implements Formatter
@@ -19,6 +18,7 @@ class DropdownValueFormatter implements Formatter
      * @var ilLanguage
      */
     protected $language;
+
 
     public function __construct()
     {
@@ -34,19 +34,23 @@ class DropdownValueFormatter implements Formatter
         return "DropdownField: Display value in the users language, fallback to default language";
     }
 
+
     public function getInType()
     {
         return 'int';
     }
+
 
     public function getOutType()
     {
         return 'string';
     }
 
+
     /**
      * @param Record $record
-     * @param $value
+     * @param        $value
+     *
      * @return mixed
      */
     public function format(Record $record, $value)

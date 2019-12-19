@@ -44,7 +44,7 @@ class InputfieldOrgUnits extends BaseInputfield
         } else {
             $input = new MultiSelectSearchInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
             $input->setRequired($this->field->options()->isRequired());
-            $input->setOptions(array_combine($record->getValue(),array_map(function (int $org_unit_ref_id) : string {
+            $input->setOptions(array_combine($record->getValue(), array_map(function (int $org_unit_ref_id) : string {
                 return self::dic()->objDataCache()->lookupTitle(self::dic()->objDataCache()->lookupObjId($org_unit_ref_id));
             }, $record->getValue())));
             $input->setValue($record->getValue());

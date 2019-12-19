@@ -1,5 +1,7 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Storage;
+
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 use SRAG\ILIAS\Plugins\MetaData\RecordValue\DateTimeRecordValue;
 
@@ -21,6 +23,7 @@ class DateTimeStorage extends AbstractStorage
         }
     }
 
+
     /**
      * @inheritdoc
      */
@@ -28,6 +31,7 @@ class DateTimeStorage extends AbstractStorage
     {
         return ($value instanceof \DateTime) ? $value->format('Y-m-d H:i:s') : $value;
     }
+
 
     /**
      * @inheritdoc
@@ -39,7 +43,7 @@ class DateTimeStorage extends AbstractStorage
             $record_value = new DateTimeRecordValue();
             $record_value->setRecordId($record->getId());
         }
+
         return $record_value;
     }
-
 }

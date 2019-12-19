@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
 use ilDate;
@@ -12,7 +13,7 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class InputfieldDateTime
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Inputfield
  */
 class InputfieldDateTime extends BaseInputfield
@@ -20,7 +21,7 @@ class InputfieldDateTime extends BaseInputfield
 
     /**
      * @param DateTimeField $field
-     * @param string $lang
+     * @param string        $lang
      */
     public function __construct(DateTimeField $field, $lang = '')
     {
@@ -35,18 +36,18 @@ class InputfieldDateTime extends BaseInputfield
             $input = new ilNonEditableValueGUI($this->field->getLabel($this->lang));
             $input->setValue(ilDatePresentation::formatDate(new ilDate($record->getValue(), IL_CAL_DATETIME)));
         } else {
-        $input = new ilDateTimeInput2GUI($this->field->getLabel($this->lang), $this->getPostVar($record));
-        $input->setLocale($this->lang);
-        if ($record->getValue()) {
-            $input->setValue(new \DateTime($record->getValue()));
-        }
-        $input->setRequired($options->isRequired());
-        if ($options->isShowTime()) {
-            $input->setOption('enableTime', true);
-        }
-        if ($options->getDateFormat()) {
-            $input->setOption('altFormat', $options->getDateFormat());
-        }
+            $input = new ilDateTimeInput2GUI($this->field->getLabel($this->lang), $this->getPostVar($record));
+            $input->setLocale($this->lang);
+            if ($record->getValue()) {
+                $input->setValue(new \DateTime($record->getValue()));
+            }
+            $input->setRequired($options->isRequired());
+            if ($options->isShowTime()) {
+                $input->setOption('enableTime', true);
+            }
+            if ($options->getDateFormat()) {
+                $input->setOption('altFormat', $options->getDateFormat());
+            }
         }
         if ($this->field->getDescription($this->lang)) {
             $input->setInfo($this->field->getDescription($this->lang));
@@ -55,10 +56,11 @@ class InputfieldDateTime extends BaseInputfield
         return array($input);
     }
 
+
     public function getRecordValue(Record $record, \ilPropertyFormGUI $form)
     {
         $datestring = $form->getInput($this->getPostVar($record));
+
         return new \DateTime($datestring);
     }
-
 }

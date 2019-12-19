@@ -1,29 +1,30 @@
 <?php
-namespace SRAG\ILIAS\Plugins\MetaData\FormProperty;
 
+namespace SRAG\ILIAS\Plugins\MetaData\FormProperty;
 
 class ilDateTimeInput2GUI extends \ilSubEnabledFormPropertyGUI
 {
+
     /**
      * @var \DateTime
      */
     protected $value;
-
     /**
      * @var array
      */
-    protected $options = array(
-        'enableTime' => false,
-        'altInput' => true,
-        'altFormat' => 'd.m.Y',
-        'allowInput' => true,
-        'locale' => 'en',
-    );
-
+    protected $options
+        = array(
+            'enableTime' => false,
+            'altInput'   => true,
+            'altFormat'  => 'd.m.Y',
+            'allowInput' => true,
+            'locale'     => 'en',
+        );
     /**
      * @var string
      */
     protected $locale = 'en';
+
 
     public function __construct($a_title = "", $a_postvar = "")
     {
@@ -41,6 +42,21 @@ class ilDateTimeInput2GUI extends \ilSubEnabledFormPropertyGUI
         $this->setOption('locale', $locale);
     }
 
+
+    /**
+     * Set an option to flatpickr
+     *
+     * @see https://eonasdan.github.io/bootstrap-datetimepicker/ for all options
+     *
+     * @param string $key
+     * @param string $value
+     */
+    public function setOption($key, $value)
+    {
+        $this->options[$key] = $value;
+    }
+
+
     function checkInput()
     {
         if ($this->getRequired()) {
@@ -54,22 +70,9 @@ class ilDateTimeInput2GUI extends \ilSubEnabledFormPropertyGUI
 
 
     /**
-     * Set an option to flatpickr
-     *
-     * @see https://eonasdan.github.io/bootstrap-datetimepicker/ for all options
-     * @param string $key
-     * @param string $value
-     */
-    public function setOption($key, $value)
-    {
-        $this->options[$key] = $value;
-    }
-
-
-    /**
      * Insert property html
      *
-     * @return	int	Size
+     * @return    int    Size
      */
     function insert(&$a_tpl)
     {
@@ -80,32 +83,6 @@ class ilDateTimeInput2GUI extends \ilSubEnabledFormPropertyGUI
         $a_tpl->parseCurrentBlock();
     }
 
-    /**
-     * @param $value
-     */
-    public function setValueByArray($value)
-    {
-        $datetime = $value[$this->getPostVar()];
-        if ($datetime) {
-            $this->setValue(new \DateTime($datetime));
-        }
-    }
-
-    /**
-     * @param \DateTime $date
-     */
-    public function setValue(\DateTime $date)
-    {
-        $this->value = $date;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
 
     public function render()
     {
@@ -124,6 +101,37 @@ class ilDateTimeInput2GUI extends \ilSubEnabledFormPropertyGUI
                 });
             </script>
 EOL;
+
         return $out;
+    }
+
+
+    /**
+     * @return \DateTime
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+
+    /**
+     * @param \DateTime $date
+     */
+    public function setValue(\DateTime $date)
+    {
+        $this->value = $date;
+    }
+
+
+    /**
+     * @param $value
+     */
+    public function setValueByArray($value)
+    {
+        $datetime = $value[$this->getPostVar()];
+        if ($datetime) {
+            $this->setValue(new \DateTime($datetime));
+        }
     }
 }

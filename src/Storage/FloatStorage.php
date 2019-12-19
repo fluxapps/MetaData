@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Storage;
 
 use SRAG\ILIAS\Plugins\MetaData\RecordValue\FloatRecordValue;
@@ -8,11 +9,27 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class FloatStorage
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Storage
  */
 class FloatStorage extends AbstractStorage
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function saveValue(Record $record, $value)
+    {
+        if ($value == '') {
+            $value = null;
+        }
+
+        $this->validateValue($value);
+        $record_value = $this->getRecordValue($record);
+        $record_value->setValue($this->normalizeValue($value));
+        $record_value->save();
+    }
+
 
     protected function validateValue($value)
     {
@@ -21,28 +38,6 @@ class FloatStorage extends AbstractStorage
         }
     }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function saveValue(Record $record, $value)
-	{
-		if($value == '') {
-			$value = null;
-		}
-
-		$this->validateValue($value);
-		$record_value = $this->getRecordValue($record);
-		$record_value->setValue($this->normalizeValue($value));
-		$record_value->save();
-	}
-
-    /**
-     * @inheritdoc
-     */
-    protected function normalizeValue($value)
-    {
-        return (float) $value;
-    }
 
     /**
      * @inheritdoc
@@ -54,6 +49,16 @@ class FloatStorage extends AbstractStorage
             $record_value = new FloatRecordValue();
             $record_value->setRecordId($record->getId());
         }
+
         return $record_value;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function normalizeValue($value)
+    {
+        return (float) $value;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Storage;
 
 use SRAG\ILIAS\Plugins\MetaData\RecordValue\IntegerRecordValue;
@@ -8,34 +9,27 @@ use SRAG\ILIAS\Plugins\MetaData\RecordValue\LocationRecordValue;
 /**
  * Class LocationStorage
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Storage
  */
 class LocationStorage extends AbstractStorage
 {
 
-    protected function validateValue($value)
-    {
-        if (!is_array($value)) {
-            throw new \InvalidArgumentException("'$value' is not an array");
-        }
-        foreach (array('lat', 'long', 'zoom') as $property) {
-            if (!array_key_exists($property, $value)) {
-                throw new \InvalidArgumentException("'$property' is missing in array, array must have lat/long/zoom keys");
-            }
-        }
-    }
-
     /**
      * @inheritdoc
      */
-    protected function normalizeValue($value)
+    public function getValue(Record $record)
     {
-        if (!isset($value['address'])) {
-            $value['address'] = '';
-        }
-        return $value;
+        $record_value = $this->getRecordValue($record);
+
+        return array(
+            'lat'     => $record_value->getLatitude(),
+            'long'    => $record_value->getLongitude(),
+            'zoom'    => $record_value->getZoom(),
+            'address' => $record_value->getAddress(),
+        );
     }
+
 
     /**
      * @inheritdoc
@@ -47,22 +41,10 @@ class LocationStorage extends AbstractStorage
             $record_value = new LocationRecordValue();
             $record_value->setRecordId($record->getId());
         }
+
         return $record_value;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getValue(Record $record)
-    {
-        $record_value = $this->getRecordValue($record);
-        return array(
-            'lat' => $record_value->getLatitude(),
-            'long' => $record_value->getLongitude(),
-            'zoom' => $record_value->getZoom(),
-            'address' => $record_value->getAddress(),
-        );
-    }
 
     /**
      * @inheritdoc
@@ -79,4 +61,29 @@ class LocationStorage extends AbstractStorage
         $record_value->save();
     }
 
+
+    protected function validateValue($value)
+    {
+        if (!is_array($value)) {
+            throw new \InvalidArgumentException("'$value' is not an array");
+        }
+        foreach (array('lat', 'long', 'zoom') as $property) {
+            if (!array_key_exists($property, $value)) {
+                throw new \InvalidArgumentException("'$property' is missing in array, array must have lat/long/zoom keys");
+            }
+        }
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function normalizeValue($value)
+    {
+        if (!isset($value['address'])) {
+            $value['address'] = '';
+        }
+
+        return $value;
+    }
 }

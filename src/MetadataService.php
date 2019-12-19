@@ -22,6 +22,7 @@ use SRAG\ILIAS\Plugins\MetaData\Util\SingletonTrait;
  */
 class MetadataService
 {
+
     use DICTrait;
     use SingletonTrait;
     const PLUGIN_CLASS_NAME = ilMetaDataPlugin::class;
@@ -33,7 +34,8 @@ class MetadataService
     /**
      * MetadataService constructor
      */
-    protected function __construct() {
+    protected function __construct()
+    {
 
     }
 
@@ -49,33 +51,6 @@ class MetadataService
         $record = $this->getRecord($object, $field_group_id, $field_id);
         $record->setValue($value);
         $record->save();
-    }
-
-
-    /**
-     * @param ilObject $object
-     * @param string   $field_group_id
-     * @param string   $field_id
-     *
-     * @return mixed|null
-     */
-    public function getValue(ilObject $object, string $field_group_id, string $field_id)
-    {
-        $record = $this->getRecord($object, $field_group_id, $field_id);
-        return $record ? $record->getValue() : null;
-    }
-
-    /**
-     * @param ilObject $object
-     * @param string   $field_group_id
-     * @param string   $field_id
-     *
-     * @return mixed|null
-     */
-    public function getFormattedValue(ilObject $object, string $field_group_id, string $field_id)
-    {
-        $record = $this->getRecord($object, $field_group_id, $field_id);
-        return $record ? $record->getFormattedValue() : null;
     }
 
 
@@ -100,7 +75,60 @@ class MetadataService
             $record->setObjType($object->getType());
             $record->setObjId($object->getId());
         }
+
         return $record;
+    }
+
+
+    /**
+     * @param string $field_group_identifier
+     *
+     * @return FieldGroup|null
+     */
+    public function getFieldGroupByIdentifier(string $field_group_identifier)/*: ?FieldGroup*/
+    {
+        return FieldGroup::findByIdentifier($field_group_identifier);
+    }
+
+
+    /**
+     * @param string $field_identifier
+     *
+     * @return Field|null
+     */
+    public function getFieldByIdentifier(string $field_identifier)/*: ?Field*/
+    {
+        return Field::findByIdentifier($field_identifier);
+    }
+
+
+    /**
+     * @param ilObject $object
+     * @param string   $field_group_id
+     * @param string   $field_id
+     *
+     * @return mixed|null
+     */
+    public function getValue(ilObject $object, string $field_group_id, string $field_id)
+    {
+        $record = $this->getRecord($object, $field_group_id, $field_id);
+
+        return $record ? $record->getValue() : null;
+    }
+
+
+    /**
+     * @param ilObject $object
+     * @param string   $field_group_id
+     * @param string   $field_id
+     *
+     * @return mixed|null
+     */
+    public function getFormattedValue(ilObject $object, string $field_group_id, string $field_id)
+    {
+        $record = $this->getRecord($object, $field_group_id, $field_id);
+
+        return $record ? $record->getFormattedValue() : null;
     }
 
 
@@ -108,9 +136,10 @@ class MetadataService
      * Return the MetaData FieldGroups mapped to the given object type
      *
      * @param string $obj_type
+     *
      * @return ilObjectMapping[]
      */
-    public function getMappings(string $obj_type):array
+    public function getMappings(string $obj_type) : array
     {
         static $cache = array();
         if (isset($cache[$obj_type])) {
@@ -118,9 +147,10 @@ class MetadataService
         }
         $mappings = ilObjectMapping::where(array(
             'obj_type' => $obj_type,
-            'active' => 1,
+            'active'   => 1,
         ))->get();
         $cache[$obj_type] = $mappings;
+
         return $mappings;
     }
 
@@ -215,27 +245,5 @@ class MetadataService
         }
 
         return $field_groups;
-    }
-
-
-    /**
-     * @param string $field_group_identifier
-     *
-     * @return FieldGroup|null
-     */
-    public function getFieldGroupByIdentifier(string $field_group_identifier)/*: ?FieldGroup*/
-    {
-        return FieldGroup::findByIdentifier($field_group_identifier);
-    }
-
-
-    /**
-     * @param string $field_identifier
-     *
-     * @return Field|null
-     */
-    public function getFieldByIdentifier(string $field_identifier)/*: ?Field*/
-    {
-        return Field::findByIdentifier($field_identifier);
     }
 }

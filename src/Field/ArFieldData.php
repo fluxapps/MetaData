@@ -1,5 +1,7 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
+
 use arConnector;
 use SRAG\ILIAS\Plugins\MetaData\Language\ilLanguage;
 use SRAG\ILIAS\Plugins\MetaData\Language\Language;
@@ -7,13 +9,13 @@ use SRAG\ILIAS\Plugins\MetaData\Language\Language;
 /**
  * Class FieldData
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 class ArFieldData extends \ActiveRecord implements FieldData
 {
-	const TABLE_NAME = 'srmd_field_data';
 
+    const TABLE_NAME = 'srmd_field_data';
     /**
      * @var int
      *
@@ -24,7 +26,6 @@ class ArFieldData extends \ActiveRecord implements FieldData
      * @db_sequence     true
      */
     protected $id = 0;
-
     /**
      * @var int
      *
@@ -34,7 +35,6 @@ class ArFieldData extends \ActiveRecord implements FieldData
      * @db_index        true
      */
     protected $field_id;
-
     /**
      * @var array
      *
@@ -43,7 +43,6 @@ class ArFieldData extends \ActiveRecord implements FieldData
      * @db_length       512
      */
     protected $value = array();
-
     /**
      * @var int
      *
@@ -52,16 +51,26 @@ class ArFieldData extends \ActiveRecord implements FieldData
      * @db_length       8
      */
     protected $sort;
-
     /**
      * @var Language
      */
     protected $language;
 
-    public function __construct($primary_key = 0, arConnector $connector = NULL)
+
+    public function __construct($primary_key = 0, arConnector $connector = null)
     {
         parent::__construct($primary_key, $connector);
         $this->language = new ilLanguage();
+    }
+
+
+    /**
+     * @return string
+     * @description Return the Name of your Database Table
+     */
+    static function returnDbTableName()
+    {
+        return self::TABLE_NAME;
     }
 
 
@@ -82,6 +91,7 @@ class ArFieldData extends \ActiveRecord implements FieldData
         return $this->field_id;
     }
 
+
     /**
      * @param int $field_id
      */
@@ -89,6 +99,7 @@ class ArFieldData extends \ActiveRecord implements FieldData
     {
         $this->field_id = $field_id;
     }
+
 
     /**
      * @param array $values
@@ -98,6 +109,7 @@ class ArFieldData extends \ActiveRecord implements FieldData
         $this->value = $values;
     }
 
+
     /**
      * @return array
      */
@@ -106,8 +118,10 @@ class ArFieldData extends \ActiveRecord implements FieldData
         return $this->value;
     }
 
+
     /**
      * @param string $lang
+     *
      * @return string
      */
     public function getValue($lang = '')
@@ -118,18 +132,20 @@ class ArFieldData extends \ActiveRecord implements FieldData
 
         // Try to return in default language if available, otherwise empty string
         $default = $this->language->getDefaultLanguage();
+
         return (isset($this->value[$default])) ? $this->value[$default] : '';
     }
 
 
     /**
      * @param array $value
-     * @param $lang
+     * @param       $lang
      */
     public function setValue($value, $lang)
     {
         $this->value[$lang] = $value;
     }
+
 
     /**
      * @return int
@@ -139,6 +155,7 @@ class ArFieldData extends \ActiveRecord implements FieldData
         return $this->sort;
     }
 
+
     /**
      * @param int $sort
      */
@@ -147,14 +164,17 @@ class ArFieldData extends \ActiveRecord implements FieldData
         $this->sort = $sort;
     }
 
+
     public function sleep($field_name)
     {
         switch ($field_name) {
             case 'value':
                 return json_encode($this->{$field_name});
         }
+
         return parent::sleep($field_name);
     }
+
 
     public function wakeUp($field_name, $field_value)
     {
@@ -162,16 +182,7 @@ class ArFieldData extends \ActiveRecord implements FieldData
             case 'value':
                 return json_decode($field_value, true);
         }
+
         return parent::wakeUp($field_name, $field_value);
-    }
-
-
-    /**
-     * @return string
-     * @description Return the Name of your Database Table
-     */
-    static function returnDbTableName()
-    {
-        return self::TABLE_NAME;
     }
 }

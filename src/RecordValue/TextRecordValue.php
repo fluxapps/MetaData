@@ -1,16 +1,17 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\RecordValue;
 
 /**
  * Class TextRecordValue
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\RecordValue
  */
 class TextRecordValue extends \ActiveRecord implements RecordValue
 {
-	const TABLE_NAME = 'srmd_text';
 
+    const TABLE_NAME = 'srmd_text';
     /**
      * @var int
      *
@@ -21,7 +22,6 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
      * @db_sequence     true
      */
     protected $id = 0;
-
     /**
      * @var int
      *
@@ -31,7 +31,6 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
      * @db_index        true
      */
     protected $record_id;
-
     /**
      * @var string
      *
@@ -40,7 +39,6 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
      * @db_length       2
      */
     protected $lang;
-
     /**
      * @var string
      *
@@ -49,61 +47,6 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
      */
     protected $value;
 
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRecordId()
-    {
-        return $this->record_id;
-    }
-
-    /**
-     * @param int $record_id
-     */
-    public function setRecordId($record_id)
-    {
-        $this->record_id = $record_id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param int $value
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLang()
-    {
-        return $this->lang;
-    }
-
-    /**
-     * @param string $lang
-     */
-    public function setLang($lang)
-    {
-        $this->lang = $lang;
-    }
 
     /**
      * @return string
@@ -113,5 +56,68 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
     static function returnDbTableName()
     {
         return self::TABLE_NAME;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getRecordId()
+    {
+        return $this->record_id;
+    }
+
+
+    /**
+     * @param int $record_id
+     */
+    public function setRecordId($record_id)
+    {
+        $this->record_id = $record_id;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+
+    /**
+     * @param int $value
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getLang()
+    {
+        return $this->lang;
+    }
+
+
+    /**
+     * @param string $lang
+     */
+    public function setLang($lang)
+    {
+        $this->lang = $lang;
     }
 }

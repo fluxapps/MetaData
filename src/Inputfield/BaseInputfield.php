@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
 use ilMetaDataPlugin;
@@ -9,20 +10,18 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class BaseInputfield
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Inputfield
  */
 abstract class BaseInputfield implements Inputfield
 {
+
     use DICTrait;
     const PLUGIN_CLASS_NAME = ilMetaDataPlugin::class;
-
-
     /**
      * @var Field
      */
     protected $field;
-
     /**
      * @var string
      */
@@ -35,6 +34,7 @@ abstract class BaseInputfield implements Inputfield
         $this->lang = $lang;
     }
 
+
     protected function getPostVar(Record $record)
     {
         return implode('_', array(
@@ -45,5 +45,4 @@ abstract class BaseInputfield implements Inputfield
             $record->getFieldId(),
         ));
     }
-
 }

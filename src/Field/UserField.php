@@ -21,17 +21,6 @@ class UserField extends Field
      *
      * @return UserFieldOptions
      */
-    protected function getFieldOptions(array $data) : FieldOptions
-    {
-        return new UserFieldOptions($data);
-    }
-
-
-    /**
-     * @inheritDoc
-     *
-     * @return UserFieldOptions
-     */
     public function options() : FieldOptions
     {
         return parent::options();
@@ -55,5 +44,16 @@ class UserField extends Field
     public function getCompatibleInputfields() : array
     {
         return [InputfieldUser::class];
+    }
+
+
+    /**
+     * @inheritDoc
+     *
+     * @return UserFieldOptions
+     */
+    protected function getFieldOptions(array $data) : FieldOptions
+    {
+        return new UserFieldOptions($data);
     }
 }

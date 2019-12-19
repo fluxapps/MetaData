@@ -1,6 +1,6 @@
 <?php
-namespace SRAG\ILIAS\Plugins\MetaData\Object;
 
+namespace SRAG\ILIAS\Plugins\MetaData\Object;
 
 class ilConsumerObject implements ConsumerObject
 {
@@ -10,6 +10,7 @@ class ilConsumerObject implements ConsumerObject
      */
     protected $object;
 
+
     /**
      * @param \ilObject $object
      */
@@ -18,6 +19,7 @@ class ilConsumerObject implements ConsumerObject
         $this->object = $object;
     }
 
+
     /**
      * @return int
      */
@@ -25,6 +27,7 @@ class ilConsumerObject implements ConsumerObject
     {
         return $this->object->getId();
     }
+
 
     /**
      * @return string

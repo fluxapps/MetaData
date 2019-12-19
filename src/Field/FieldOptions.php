@@ -1,33 +1,34 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
 /**
  * Class FieldOptions
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 class FieldOptions
 {
+
     /**
-     * @label Required
+     * @label        Required
      * @formProperty ilCheckboxInputGUI
      * @var bool
      */
     protected $required = false;
-
     /**
-     * @label Only display
-     * @description Make field not editable, only display it
+     * @label        Only display
+     * @description  Make field not editable, only display it
      * @formProperty ilCheckboxInputGUI
      * @var bool
      */
     protected $only_display = false;
-
     /**
      * @var array
      */
     protected $data = array();
+
 
     /**
      * @param array $data
@@ -35,10 +36,11 @@ class FieldOptions
     public function __construct($data = array())
     {
         $this->data = array_merge(array(
-            'required' => false,
+            'required'     => false,
             "only_display" => false
         ), (array) $data);
     }
+
 
     /**
      * @return array
@@ -48,6 +50,7 @@ class FieldOptions
         return $this->data;
     }
 
+
     /**
      * @param array $data
      */
@@ -56,6 +59,7 @@ class FieldOptions
         $this->data = array_merge($this->data, (array) $data);
     }
 
+
     /**
      * @return bool
      */
@@ -63,6 +67,7 @@ class FieldOptions
     {
         return $this->data['required'];
     }
+
 
     /**
      * @param bool $required

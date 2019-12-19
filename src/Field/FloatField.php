@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
 use SRAG\ILIAS\Plugins\MetaData\Storage\FloatStorage;
@@ -6,20 +7,11 @@ use SRAG\ILIAS\Plugins\MetaData\Storage\FloatStorage;
 /**
  * Class FloatField
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 class FloatField extends Field
 {
-
-    /**
-     * @inheritdoc
-     */
-    protected function getFieldOptions(array $data)
-    {
-        return new FloatFieldOptions($data);
-    }
-
 
     /**
      * @return FloatFieldOptions
@@ -42,5 +34,14 @@ class FloatField extends Field
     public function getCompatibleInputfields()
     {
         return array('SRAG\\ILIAS\\Plugins\\MetaData\\Inputfield\\InputfieldFloat');
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function getFieldOptions(array $data)
+    {
+        return new FloatFieldOptions($data);
     }
 }

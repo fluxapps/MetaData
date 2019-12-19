@@ -24,6 +24,14 @@ class MetaDataField extends AbstractRule
     use Operator;
     use Value;
     const TABLE_NAME_SUFFIX = "mtdtfld";
+    /**
+     * @var string
+     *
+     * @con_has_field    true
+     * @con_fieldtype    text
+     * @con_is_notnull   true
+     */
+    protected $field_group = "";
 
 
     /**
@@ -39,16 +47,6 @@ class MetaDataField extends AbstractRule
                 return parent::supportsParentContext($parent_context);
         }
     }
-
-
-    /**
-     * @var string
-     *
-     * @con_has_field    true
-     * @con_fieldtype    text
-     * @con_is_notnull   true
-     */
-    protected $field_group = "";
 
 
     /**

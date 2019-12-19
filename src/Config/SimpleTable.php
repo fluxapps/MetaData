@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Config;
 
 /**
@@ -8,6 +9,7 @@ namespace SRAG\ILIAS\Plugins\MetaData\Config;
  */
 class SimpleTable
 {
+
     /**
      * @var array
      */
@@ -17,6 +19,7 @@ class SimpleTable
      */
     protected $rows = array();
 
+
     /**
      * @param array $columns
      */
@@ -25,8 +28,10 @@ class SimpleTable
         $this->columns = $columns;
     }
 
+
     /**
      * @param $column
+     *
      * @return $this
      */
     public function column($column)
@@ -36,8 +41,10 @@ class SimpleTable
         return $this;
     }
 
+
     /**
      * @param array $row
+     *
      * @return $this
      */
     public function row(array $row)
@@ -47,12 +54,13 @@ class SimpleTable
         return $this;
     }
 
+
     /**
      * @return string
      */
     public function render()
     {
-        $out =  "<table class='table table-striped'><thead><tr>";
+        $out = "<table class='table table-striped'><thead><tr>";
         foreach ($this->columns as $col) {
             $out .= "<th>{$col}</th>";
         }
@@ -68,5 +76,4 @@ class SimpleTable
 
         return $out;
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Record;
 
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
@@ -11,8 +12,8 @@ use SRAG\ILIAS\Plugins\MetaData\Formatter\Formatter;
  */
 class Record extends \ActiveRecord
 {
-	const TABLE_NAME = 'srmd_record';
 
+    const TABLE_NAME = 'srmd_record';
     /**
      * @var int
      *
@@ -23,7 +24,6 @@ class Record extends \ActiveRecord
      * @db_sequence     true
      */
     protected $id = 0;
-
     /**
      * @var int
      *
@@ -33,7 +33,6 @@ class Record extends \ActiveRecord
      * @db_index        true
      */
     protected $group_id;
-
     /**
      * @var int
      *
@@ -43,7 +42,6 @@ class Record extends \ActiveRecord
      * @db_index        true
      */
     protected $field_id;
-
     /**
      * @var string
      *
@@ -53,7 +51,6 @@ class Record extends \ActiveRecord
      * @db_index        true
      */
     protected $obj_type;
-
     /**
      * @var int
      *
@@ -63,7 +60,6 @@ class Record extends \ActiveRecord
      * @db_index        true
      */
     protected $obj_id;
-
     /**
      * @var string
      *
@@ -71,7 +67,6 @@ class Record extends \ActiveRecord
      * @db_fieldtype    timestamp
      */
     protected $updated_at;
-
     /**
      * @var string
      *
@@ -79,7 +74,6 @@ class Record extends \ActiveRecord
      * @db_fieldtype    timestamp
      */
     protected $created_at;
-
     /**
      * @var int
      *
@@ -88,7 +82,6 @@ class Record extends \ActiveRecord
      * @db_length       8
      */
     protected $updated_user_id;
-
     /**
      * @var int
      *
@@ -97,41 +90,36 @@ class Record extends \ActiveRecord
      * @db_length       8
      */
     protected $created_user_id;
-
     /**
      * @var mixed
      */
     protected $value;
 
 
-    public function setValue($value)
+    /**
+     * @return string
+     * @description Return the Name of your Database Table
+     */
+    public static function returnDbTableName()
     {
-        $this->value = $value;
-    }
-
-    public function getValue()
-    {
-        if ($this->value === null && $this->getField()) {
-            $this->value = $this->getField()->getStorage()->getValue($this);
-        }
-
-        return $this->value;
+        return self::TABLE_NAME;
     }
 
 
-	public function getFormattedValue()
+    public function getFormattedValue()
     {
-	    if ($this->getField()) {
+        if ($this->getField()) {
             $value = $this->getValue();
-	        foreach ($this->getField()->getFormatters() as $class) {
-	    	    /** @var Formatter $formatter */
-	            $formatter = new $class();
+            foreach ($this->getField()->getFormatters() as $class) {
+                /** @var Formatter $formatter */
+                $formatter = new $class();
                 $value = $formatter->format($this, $value);
             }
-            return $value;
-	    }
 
-	    return $this->getValue();
+            return $value;
+        }
+
+        return $this->getValue();
     }
 
 
@@ -143,18 +131,56 @@ class Record extends \ActiveRecord
         return Field::find($this->getFieldId());
     }
 
+
+    /**
+     * @return int
+     */
+    public function getFieldId()
+    {
+        return $this->field_id;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function setFieldId($field_id)
+    {
+        $this->field_id = $field_id;
+
+        return $this;
+    }
+
+
+    public function getValue()
+    {
+        if ($this->value === null && $this->getField()) {
+            $this->value = $this->getField()->getStorage()->getValue($this);
+        }
+
+        return $this->value;
+    }
+
+
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
+
+
     public function create()
     {
         global $ilUser;
 
-	    if(is_object($ilUser)) {
-	       $this->created_user_id = $ilUser->getId();
-		}
+        if (is_object($ilUser)) {
+            $this->created_user_id = $ilUser->getId();
+        }
 
         $this->created_at = date('Y-m-d H:i:s');
         parent::create();
         $this->getField()->getStorage()->saveValue($this, $this->getValue());
     }
+
 
     public function update()
     {
@@ -166,11 +192,13 @@ class Record extends \ActiveRecord
         $this->getField()->getStorage()->saveValue($this, $this->getValue());
     }
 
+
     public function delete()
     {
         parent::delete();
         $this->getField()->getStorage()->deleteValue($this);
     }
+
 
     /**
      * @return int
@@ -189,31 +217,17 @@ class Record extends \ActiveRecord
         return $this->group_id;
     }
 
+
     /**
      * @inheritdoc
      */
     public function setFieldGroupId($group_id)
     {
         $this->group_id = $group_id;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getFieldId()
-    {
-        return $this->field_id;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setFieldId($field_id)
-    {
-        $this->field_id = $field_id;
-        return $this;
-    }
 
     /**
      * @return string
@@ -223,14 +237,17 @@ class Record extends \ActiveRecord
         return $this->obj_type;
     }
 
+
     /**
      * @inheritdoc
      */
     public function setObjType($obj_type)
     {
         $this->obj_type = $obj_type;
+
         return $this;
     }
+
 
     /**
      * @inheritdoc
@@ -240,14 +257,17 @@ class Record extends \ActiveRecord
         return $this->obj_id;
     }
 
+
     /**
      * @inheritdoc
      */
     public function setObjId($obj_id)
     {
         $this->obj_id = $obj_id;
+
         return $this;
     }
+
 
     /**
      * @return string
@@ -257,6 +277,7 @@ class Record extends \ActiveRecord
         return $this->updated_at;
     }
 
+
     /**
      * @return string
      */
@@ -264,6 +285,7 @@ class Record extends \ActiveRecord
     {
         return $this->created_at;
     }
+
 
     /**
      * @return int
@@ -273,21 +295,12 @@ class Record extends \ActiveRecord
         return $this->updated_user_id;
     }
 
+
     /**
      * @return int
      */
     public function getCreatedUserId()
     {
         return $this->created_user_id;
-    }
-
-
-    /**
-     * @return string
-     * @description Return the Name of your Database Table
-     */
-    public static function returnDbTableName()
-    {
-        return self::TABLE_NAME;
     }
 }

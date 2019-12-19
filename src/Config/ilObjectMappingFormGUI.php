@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Config;
 
 require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
@@ -20,15 +21,16 @@ use SRAG\ILIAS\Plugins\MetaData\MetadataService;
  */
 class ilObjectMappingFormGUI extends \ilPropertyFormGUI
 {
+
     /**
      * @var ilObjectMapping
      */
     protected $mapping;
-
     /**
      * @var Language
      */
     protected $language;
+
 
     public function __construct(ilObjectMapping $mapping, Language $language)
     {
@@ -38,6 +40,7 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
         $this->setTitle(($mapping->getId()) ? "Edit Mapping: " . $mapping->getTabTitle() : "Add new Mapping");
         $this->init();
     }
+
 
     protected function init()
     {
@@ -64,7 +67,7 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
         $options = array();
         /** @var FieldGroup $group */
         foreach (MetadataService::getInstance()->getFieldGroups() as $group) {
-            $options[$group->getId()] = $group->getTitle(). ' [' . $group->getIdentifier() . ']';
+            $options[$group->getId()] = $group->getTitle() . ' [' . $group->getIdentifier() . ']';
         }
         $item = new ilAsmSelectInputGUI('Field Groups', 'field_group_ids');
         $item->setInfo('Select the Field Groups containing the fields you want to map to objects of the type defined above');

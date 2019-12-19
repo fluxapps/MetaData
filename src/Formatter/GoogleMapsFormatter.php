@@ -1,11 +1,13 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Formatter;
 
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 
 /**
  * Class GoogleMapsFormatter
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ *
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Formatter
  */
 class GoogleMapsFormatter implements Formatter
@@ -19,6 +21,7 @@ class GoogleMapsFormatter implements Formatter
         return 'LocationField: Display location in a Google Map';
     }
 
+
     /**
      * Return the expected type of the value at input
      *
@@ -28,6 +31,7 @@ class GoogleMapsFormatter implements Formatter
     {
         return 'array';
     }
+
 
     /**
      * Return the type of the value at output
@@ -39,9 +43,11 @@ class GoogleMapsFormatter implements Formatter
         return 'string';
     }
 
+
     /**
      * @param Record $record
-     * @param $value
+     * @param        $value
+     *
      * @return mixed
      */
     public function format(Record $record, $value)
@@ -49,8 +55,8 @@ class GoogleMapsFormatter implements Formatter
         include_once("./Services/Maps/classes/class.ilMapUtil.php");
         $map_gui = \ilMapUtil::getMapGUI();
 
-        if(!$value['lat'] && !$value['long']) {
-        	return NULL;
+        if (!$value['lat'] && !$value['long']) {
+            return null;
         }
 
         $map_gui->setMapId("map_" . uniqid())//

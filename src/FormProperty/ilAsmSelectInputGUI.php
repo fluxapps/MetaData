@@ -1,26 +1,29 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\FormProperty;
 
 /**
  * Class ilAsmSelectInputGUI
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\FormProperty
  */
 class ilAsmSelectInputGUI extends \ilSelectInputGUI
 {
-    /**
-     * @var array
-     */
-    protected $asmOptions = array(
-        'sortable' => true,
-        'highlight' => false,
-    );
 
     /**
      * @var array
      */
+    protected $asmOptions
+        = array(
+            'sortable'  => true,
+            'highlight' => false,
+        );
+    /**
+     * @var array
+     */
     protected $value = array();
+
 
     public function __construct($a_title = "", $a_postvar = "")
     {
@@ -31,6 +34,16 @@ class ilAsmSelectInputGUI extends \ilSelectInputGUI
         $this->setPostVar($a_postvar);
         $this->addCustomAttribute('multiple="multiple"');
     }
+
+
+    public function setPostVar($a_postvar)
+    {
+        if (substr($a_postvar, -2) != '[]') {
+            $a_postvar .= '[]';
+        }
+        parent::setPostVar($a_postvar);
+    }
+
 
     function checkInput()
     {
@@ -48,13 +61,12 @@ class ilAsmSelectInputGUI extends \ilSelectInputGUI
     }
 
 
-    public function setPostVar($a_postvar)
+    function setValueByArray($a_values)
     {
-        if (substr($a_postvar, -2) != '[]') {
-            $a_postvar .= '[]';
-        }
-        parent::setPostVar($a_postvar);
+        $post_var = str_replace('[]', '', $this->getPostVar());
+        $this->setValue(array_values((array) $a_values[$post_var]));
     }
+
 
     function setValue($a_value)
     {
@@ -62,10 +74,39 @@ class ilAsmSelectInputGUI extends \ilSelectInputGUI
     }
 
 
-    function setValueByArray($a_values)
+    public function render($a_mode = "")
     {
-        $post_var = str_replace('[]', '', $this->getPostVar());
-        $this->setValue(array_values((array)$a_values[$post_var]));
+        $tpl = new \ilTemplate("tpl.prop_select.html", true, true, "Services/Form");
+        $tpl->setCurrentBlock('cust_attr');
+        $tpl->setVariable('CUSTOM_ATTR', 'multiple="multiple"');
+        $tpl->parseCurrentBlock();
+        $tpl->setVariable("ID", $this->getFieldId());
+        $tpl->setVariable("POST_VAR", $this->getPostVar());
+
+        // We must remove the selected values from options and append them to the end, so we don't loose the sorting!
+        $selected_options = $this->getValue();
+        if (!is_null($selected_options) && is_array($selected_options) && count($selected_options) > 0) {
+            foreach ($selected_options as $id) {
+                if (!isset($this->options[$id])) {
+                    continue;
+                }
+                $label = $this->options[$id];
+                unset($this->options[$id]);
+                $this->options[$id] = $label;
+            }
+        }
+
+        foreach ($this->getOptions() as $option_value => $option_text) {
+            $tpl->setCurrentBlock("prop_select_option");
+            $tpl->setVariable("VAL_SELECT_OPTION", \ilUtil::prepareFormOutput($option_value));
+            if (is_array($this->value) && in_array($option_value, $this->value)) {
+                $tpl->setVariable("CHK_SEL_OPTION", 'selected="selected"');
+            }
+            $tpl->setVariable("TXT_SELECT_OPTION", $option_text);
+            $tpl->parseCurrentBlock();
+        }
+
+        return $this->renderJavascript() . $tpl->get();
     }
 
 
@@ -83,55 +124,17 @@ $(function() {
 });
 </script>
 EOL;
+
         return $out;
-    }
-
-
-    public function render($a_mode = "")
-    {
-        $tpl = new \ilTemplate("tpl.prop_select.html", true, true, "Services/Form");
-        $tpl->setCurrentBlock('cust_attr');
-        $tpl->setVariable('CUSTOM_ATTR', 'multiple="multiple"');
-        $tpl->parseCurrentBlock();
-        $tpl->setVariable("ID", $this->getFieldId());
-        $tpl->setVariable("POST_VAR", $this->getPostVar());
-
-        // We must remove the selected values from options and append them to the end, so we don't loose the sorting!
-        $selected_options = $this->getValue();
-        if(!is_null($selected_options)  && is_array($selected_options) && count($selected_options) > 0) {
-		    foreach ($selected_options as $id) {
-			    if (!isset($this->options[$id])) {
-				    continue;
-			    }
-			    $label = $this->options[$id];
-			    unset($this->options[$id]);
-			    $this->options[$id] = $label;
-		    }
-	    }
-
-        foreach($this->getOptions() as $option_value => $option_text) {
-            $tpl->setCurrentBlock("prop_select_option");
-            $tpl->setVariable("VAL_SELECT_OPTION", \ilUtil::prepareFormOutput($option_value));
-            if (is_array($this->value) && in_array($option_value, $this->value)) {
-                $tpl->setVariable("CHK_SEL_OPTION", 'selected="selected"');
-            }
-            $tpl->setVariable("TXT_SELECT_OPTION", $option_text);
-            $tpl->parseCurrentBlock();
-        }
-
-        return $this->renderJavascript() . $tpl->get();
     }
 
 
     /**
      * @param string $key
-     * @param $value
+     * @param        $value
      */
     public function setAsmOption($key, $value)
     {
         $this->asmOptions[$key] = $value;
     }
-
-
-
 }

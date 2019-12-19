@@ -1,16 +1,17 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\RecordValue;
 
 /**
  * Class DateTimeRecordValue
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\RecordValue
  */
 class DateTimeRecordValue extends \ActiveRecord implements RecordValue
 {
-	const TABLE_NAME = 'srmd_datetime';
 
+    const TABLE_NAME = 'srmd_datetime';
     /**
      * @var int
      *
@@ -21,7 +22,6 @@ class DateTimeRecordValue extends \ActiveRecord implements RecordValue
      * @db_sequence     true
      */
     protected $id = 0;
-
     /**
      * @var int
      *
@@ -30,7 +30,6 @@ class DateTimeRecordValue extends \ActiveRecord implements RecordValue
      * @db_length       8
      */
     protected $record_id;
-
     /**
      * @var int
      *
@@ -38,46 +37,6 @@ class DateTimeRecordValue extends \ActiveRecord implements RecordValue
      * @db_fieldtype    timestamp
      */
     protected $value;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRecordId()
-    {
-        return $this->record_id;
-    }
-
-    /**
-     * @param int $record_id
-     */
-    public function setRecordId($record_id)
-    {
-        $this->record_id = $record_id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param int $value
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-    }
 
 
     /**
@@ -88,5 +47,50 @@ class DateTimeRecordValue extends \ActiveRecord implements RecordValue
     static function returnDbTableName()
     {
         return self::TABLE_NAME;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getRecordId()
+    {
+        return $this->record_id;
+    }
+
+
+    /**
+     * @param int $record_id
+     */
+    public function setRecordId($record_id)
+    {
+        $this->record_id = $record_id;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+
+    /**
+     * @param int $value
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
     }
 }

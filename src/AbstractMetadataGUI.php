@@ -100,6 +100,18 @@ abstract class AbstractMetadataGUI
 
 
     /**
+     * @return bool
+     */
+    protected abstract function checkAccess() : bool;
+
+
+    /**
+     *
+     */
+    protected abstract function back();
+
+
+    /**
      *
      */
     protected function setTabs()
@@ -108,6 +120,18 @@ abstract class AbstractMetadataGUI
             ->getLinkTarget($this, self::CMD_BACK));
 
         self::dic()->tabs()->addTab('srmd_' . current($this->objects_mapping)->getId(), current($this->objects_mapping)->getTabTitle(), self::dic()->ctrl()->getLinkTarget($this, self::CMD_SHOW));
+    }
+
+
+    /**
+     *
+     */
+    protected function show()
+    {
+        $form = $this->getForm();
+        $this->getAdapters($form);
+
+        self::output()->output($form, true);
     }
 
 
@@ -171,18 +195,6 @@ abstract class AbstractMetadataGUI
         }
 
         return $adapters;
-    }
-
-
-    /**
-     *
-     */
-    protected function show()
-    {
-        $form = $this->getForm();
-        $this->getAdapters($form);
-
-        self::output()->output($form, true);
     }
 
 
@@ -306,16 +318,4 @@ abstract class AbstractMetadataGUI
 
         exit;
     }
-
-
-    /**
-     * @return bool
-     */
-    protected abstract function checkAccess() : bool;
-
-
-    /**
-     *
-     */
-    protected abstract function back();
 }

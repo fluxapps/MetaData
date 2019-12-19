@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Form;
 
 use SRAG\ILIAS\Plugins\MetaData\Exception\Exception;
@@ -18,7 +19,7 @@ use SRAG\ILIAS\Plugins\MetaData\Record\RecordQuery;
  * Use FormAdapter::addFields() to add the fields of a field group to your form
  * Use FormAdapter::saveRecords() to save metadata records with the values from the form
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Form
  */
 class FormAdapter
@@ -28,43 +29,38 @@ class FormAdapter
      * @var ConsumerObject
      */
     protected $object;
-
     /**
      * @var string
      */
     protected $lang;
-
     /**
      * Stores field IDs of fields not being added, so we can skip them when saving records
      *
      * @var array
      */
     protected $ignored_fields = array();
-
     /**
      * @var \ilPropertyFormGUI
      */
     protected $form;
-
     /**
      * @var FieldGroup[]
      */
     protected $groups = array();
-
     /**
      * @var array
      */
     protected $errors = array();
-
     /**
      * @var Language
      */
     protected $language;
 
+
     /**
      * @param \ilPropertyFormGUI $form
-     * @param ConsumerObject $object
-     * @param string $lang Language code which is used to display data of fields and groups
+     * @param ConsumerObject     $object
+     * @param string             $lang Language code which is used to display data of fields and groups
      */
     public function __construct(\ilPropertyFormGUI $form, ConsumerObject $object, $lang = '')
     {
@@ -74,8 +70,9 @@ class FormAdapter
         $this->language = new ilLanguage();
     }
 
+
     /**
-     * @param FieldGroup $group
+     * @param FieldGroup    $group
      * @param \Closure|null $onFieldAdd
      */
     public function addFields(FieldGroup $group, \Closure $onFieldAdd = null)
@@ -99,8 +96,74 @@ class FormAdapter
         }
     }
 
+
+    /**
+     * @param FieldGroup $group
+     */
+    protected function addSection(FieldGroup $group)
+    {
+        $header = new \ilFormSectionHeaderGUI();
+        $header->setTitle($group->getTitle($this->lang));
+        if ($group->getDescription($this->lang)) {
+            $header->setInfo($group->getDescription($this->lang));
+        }
+        $this->form->addItem($header);
+    }
+
+
+    /**
+     * @param FieldGroup $group
+     * @param Field      $field
+     */
+    protected function addField(FieldGroup $group, Field $field)
+    {
+        $class = $field->getInputfieldClass();
+        /** @var Inputfield $inputfield */
+        $inputfield = new $class($field, $this->lang);
+        $record = $this->getRecord($group, $field);
+        $inputs = $inputfield->getILIASFormInputs($record);
+        foreach ($inputs as $input) {
+            /** @var \ilFormPropertyGUI $input */
+            $this->form->addItem($input);
+        }
+    }
+
+
+    /**
+     * @param FieldGroup $group
+     * @param Field      $field
+     *
+     * @return Record
+     */
+    protected function getRecord(Fieldgroup $group, Field $field)
+    {
+        $query = new RecordQuery($this->object);
+        $record = $query->getRecord($group, $field);
+        if (!$record) {
+            $record = new Record();
+            $record->setFieldGroupId($group->getId());
+            $record->setFieldId($field->getId());
+            $record->setObjType($this->object->getType());
+            $record->setObjId($this->object->getId());
+        }
+
+        return $record;
+    }
+
+
+    /**
+     * @param FieldGroup $group
+     * @param Field      $field
+     */
+    protected function ignore(FieldGroup $group, Field $field)
+    {
+        $this->ignored_fields[] = $group->getId() . '-' . $field->getId();
+    }
+
+
     /**
      * @param \Closure|null $onSaveRecord
+     *
      * @return bool
      */
     public function saveRecords(\Closure $onSaveRecord = null)
@@ -126,47 +189,9 @@ class FormAdapter
 
 
     /**
-     * @return Error[]
-     */
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-
-    /**
      * @param FieldGroup $group
-     */
-    protected function addSection(FieldGroup $group)
-    {
-        $header = new \ilFormSectionHeaderGUI();
-        $header->setTitle($group->getTitle($this->lang));
-        if ($group->getDescription($this->lang)) {
-            $header->setInfo($group->getDescription($this->lang));
-        }
-        $this->form->addItem($header);
-    }
-
-    /**
-     * @param FieldGroup $group
-     * @param Field $field
-     */
-    protected function addField(FieldGroup $group, Field $field)
-    {
-        $class = $field->getInputfieldClass();
-        /** @var Inputfield $inputfield */
-        $inputfield = new $class($field, $this->lang);
-        $record = $this->getRecord($group, $field);
-        $inputs = $inputfield->getILIASFormInputs($record);
-        foreach ($inputs as $input) {
-            /** @var \ilFormPropertyGUI $input */
-            $this->form->addItem($input);
-        }
-    }
-
-    /**
-     * @param FieldGroup $group
-     * @param Field $field
+     * @param Field      $field
+     *
      * @return bool
      */
     protected function isIgnored(FieldGroup $group, Field $field)
@@ -174,22 +199,14 @@ class FormAdapter
         return in_array($group->getId() . '-' . $field->getId(), $this->ignored_fields);
     }
 
-    /**
-     * @param FieldGroup $group
-     * @param Field $field
-     */
-    protected function ignore(FieldGroup $group, Field $field)
-    {
-        $this->ignored_fields[] = $group->getId() . '-' . $field->getId();
-    }
 
     /**
      * @param FieldGroup $group
-     * @param Field $field
+     * @param Field      $field
      */
     protected function saveRecord(FieldGroup $group, Field $field)
     {
-    	global $ilAppEventHandler;
+        global $ilAppEventHandler;
 
         $class = $field->getInputfieldClass();
         /** @var Inputfield $inputfield */
@@ -199,14 +216,15 @@ class FormAdapter
         try {
             $record->save();
 
-	        $ilAppEventHandler->raise('Plugin/Sragmetadata',
-		        'aftersave',
-		        array('group' => $group,
-			          'field' => $field,
-			          'record'  => $record,
-			          'obj_type' => $record->getObjType(),
-			          'obj_id' => $record->getObjId()));
-
+            $ilAppEventHandler->raise('Plugin/Sragmetadata',
+                'aftersave',
+                array(
+                    'group'    => $group,
+                    'field'    => $field,
+                    'record'   => $record,
+                    'obj_type' => $record->getObjType(),
+                    'obj_id'   => $record->getObjId()
+                ));
         } catch (Exception $e) {
             $this->errors[] = new Error($record, $e);
         }
@@ -214,23 +232,11 @@ class FormAdapter
 
 
     /**
-     * @param FieldGroup $group
-     * @param Field $field
-     * @return Record
+     * @return Error[]
      */
-    protected function getRecord(Fieldgroup $group, Field $field)
+    public function getErrors()
     {
-        $query = new RecordQuery($this->object);
-        $record = $query->getRecord($group, $field);
-        if (!$record) {
-            $record = new Record();
-            $record->setFieldGroupId($group->getId());
-            $record->setFieldId($field->getId());
-            $record->setObjType($this->object->getType());
-            $record->setObjId($this->object->getId());
-        }
-
-        return $record;
+        return $this->errors;
     }
 }
 
@@ -238,7 +244,7 @@ class FormAdapter
  * Small container class storing errors when saving records with the FormAdapter.
  * Holds the record where persisting data failed together with the thrown exception message.
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Form
  */
 class Error
@@ -248,14 +254,14 @@ class Error
      * @var Exception
      */
     public $exception;
-
     /**
      * @var Record
      */
     public $record;
 
+
     /**
-     * @param Record $record
+     * @param Record    $record
      * @param Exception $exception
      */
     public function __construct(Record $record, Exception $exception)
@@ -263,5 +269,4 @@ class Error
         $this->exception = $exception;
         $this->record = $record;
     }
-
 }

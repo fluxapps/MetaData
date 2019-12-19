@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
 use ilNonEditableValueGUI;
@@ -14,7 +15,7 @@ require_once('./Services/Form/classes/class.ilMultiSelectInputGUI.php');
 /**
  * Class InputfieldCheckboxes
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Inputfield
  */
 class InputfieldCheckboxes extends BaseInputfield
@@ -39,10 +40,10 @@ class InputfieldCheckboxes extends BaseInputfield
                 return $data[$value];
             }, $record->getValue(), $this->field->getData())), false));
         } else {
-        $input = new \ilMultiSelectInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
-        $input->setRequired($options->isRequired());
-        $input->setOptions($data);
-        $input->setValue($record->getValue());
+            $input = new \ilMultiSelectInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
+            $input->setRequired($options->isRequired());
+            $input->setOptions($data);
+            $input->setValue($record->getValue());
         }
         if ($this->field->getDescription($this->lang)) {
             $input->setInfo($this->field->getDescription($this->lang));
@@ -51,9 +52,9 @@ class InputfieldCheckboxes extends BaseInputfield
         return array($input);
     }
 
+
     public function getRecordValue(Record $record, \ilPropertyFormGUI $form)
     {
         return $form->getInput($this->getPostVar($record));
     }
-
 }

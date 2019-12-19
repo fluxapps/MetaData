@@ -1,42 +1,39 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
 /**
  * Class TextFieldOptions
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 class TextFieldOptions extends FieldOptions
 {
 
     /**
-     * @label Regex Validation
-     * @description Form is only valid if the submitted input matches the regular expression
+     * @label        Regex Validation
+     * @description  Form is only valid if the submitted input matches the regular expression
      * @formProperty ilTextInputGUI
      * @var string
      */
     protected $regex = '';
-
     /**
-     * @label Max length of the text
+     * @label        Max length of the text
      * @formProperty ilNumberInputGUI
      * @var int
      */
     protected $maxLength = '';
-
     /**
-     * @label Language tabs
-     * @description The text fields of different languages are separated via tabs, only available if Multi Language Support is enabled
+     * @label        Language tabs
+     * @description  The text fields of different languages are separated via tabs, only available if Multi Language Support is enabled
      * @formProperty ilCheckboxInputGUI
      * @var bool
      */
     protected $languageTabs = true;
-
-
     /**
-     * @label Multi Language support
-     * @description Offers to add text for all available languages. If not checked, there is only an input for the default language
+     * @label        Multi Language support
+     * @description  Offers to add text for all available languages. If not checked, there is only an input for the default language
      * @formProperty ilCheckboxInputGUI
      * @var bool
      */
@@ -47,9 +44,9 @@ class TextFieldOptions extends FieldOptions
     {
         parent::__construct($data);
         $this->data = array_merge($this->data, array(
-            'regex' => $this->regex,
-            'maxLength' => $this->maxLength,
-            'multiLang' => $this->multiLang,
+            'regex'        => $this->regex,
+            'maxLength'    => $this->maxLength,
+            'multiLang'    => $this->multiLang,
             'languageTabs' => $this->languageTabs,
         ), (array) $data);
     }
@@ -63,6 +60,7 @@ class TextFieldOptions extends FieldOptions
         return $this->data['regex'];
     }
 
+
     /**
      * @param mixed $regex
      */
@@ -70,6 +68,7 @@ class TextFieldOptions extends FieldOptions
     {
         $this->data['regex'] = $regex;
     }
+
 
     /**
      * @return mixed
@@ -79,6 +78,7 @@ class TextFieldOptions extends FieldOptions
         return $this->data['maxLength'];
     }
 
+
     /**
      * @param mixed $maxLength
      */
@@ -87,6 +87,7 @@ class TextFieldOptions extends FieldOptions
         $this->data['maxLength'] = $maxLength;
     }
 
+
     /**
      * @return bool
      */
@@ -94,6 +95,7 @@ class TextFieldOptions extends FieldOptions
     {
         return (bool) $this->data['multiLang'];
     }
+
 
     /**
      * @param bool $multilang
@@ -120,5 +122,4 @@ class TextFieldOptions extends FieldOptions
     {
         $this->data['languageTabs'] = (bool) $languageTabs;
     }
-
 }

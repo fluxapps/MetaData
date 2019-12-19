@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
 use ilNonEditableValueGUI;
@@ -8,7 +9,7 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class InputfieldSelect
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Inputfield
  */
 class InputfieldSelect extends BaseInputfield
@@ -34,10 +35,10 @@ class InputfieldSelect extends BaseInputfield
             $input = new ilNonEditableValueGUI($this->field->getLabel($this->lang));
             $input->setValue($options[$record->getValue()]);
         } else {
-        $input = new \ilSelectInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
-        $input->setRequired($field_options->isRequired());
-        $input->setOptions($options);
-        $input->setValue($record->getValue());
+            $input = new \ilSelectInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
+            $input->setRequired($field_options->isRequired());
+            $input->setOptions($options);
+            $input->setValue($record->getValue());
         }
         if ($this->field->getDescription($this->lang)) {
             $input->setInfo($this->field->getDescription($this->lang));
@@ -46,9 +47,9 @@ class InputfieldSelect extends BaseInputfield
         return array($input);
     }
 
+
     public function getRecordValue(Record $record, \ilPropertyFormGUI $form)
     {
         return $form->getInput($this->getPostVar($record));
     }
-
 }

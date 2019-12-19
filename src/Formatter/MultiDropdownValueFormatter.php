@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Formatter;
 
 use SRAG\ILIAS\Plugins\MetaData\Language\ilLanguage;
@@ -7,7 +8,7 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class MultiDropdownValueFormatter
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Formatter
  */
 class MultiDropdownValueFormatter implements Formatter
@@ -17,6 +18,7 @@ class MultiDropdownValueFormatter implements Formatter
      * @var ilLanguage
      */
     protected $language;
+
 
     public function __construct()
     {
@@ -32,19 +34,23 @@ class MultiDropdownValueFormatter implements Formatter
         return "MultiDropdownField: Display values in the users language, fallback to default language";
     }
 
+
     public function getInType()
     {
         return 'array[int]';
     }
+
 
     public function getOutType()
     {
         return 'array[string]';
     }
 
+
     /**
      * @param Record $record
-     * @param $value
+     * @param        $value
+     *
      * @return mixed
      */
     public function format(Record $record, $value)
@@ -61,6 +67,7 @@ class MultiDropdownValueFormatter implements Formatter
                 }
             }
         }
+
         return $out;
     }
 }

@@ -21,17 +21,6 @@ class OrgUnitsField extends Field
      *
      * @return OrgUnitsFieldOptions
      */
-    protected function getFieldOptions(array $data) : FieldOptions
-    {
-        return new OrgUnitsFieldOptions($data);
-    }
-
-
-    /**
-     * @inheritDoc
-     *
-     * @return OrgUnitsFieldOptions
-     */
     public function options() : FieldOptions
     {
         return parent::options();
@@ -55,5 +44,16 @@ class OrgUnitsField extends Field
     public function getCompatibleInputfields() : array
     {
         return [InputfieldOrgUnits::class];
+    }
+
+
+    /**
+     * @inheritDoc
+     *
+     * @return OrgUnitsFieldOptions
+     */
+    protected function getFieldOptions(array $data) : FieldOptions
+    {
+        return new OrgUnitsFieldOptions($data);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
 use ilCustomInputGUI;
@@ -10,12 +11,11 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class InputfieldRichtext
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Inputfield
  */
 class InputfieldRichtext extends InputfieldTextarea
 {
-
 
     public function getILIASFormInputs(Record $record)
     {
@@ -26,10 +26,10 @@ class InputfieldRichtext extends InputfieldTextarea
                 $input_->setHtml($input->getValue());
                 $input = $input_;
             } else {
-            $input->setUseRte(true);
+                $input->setUseRte(true);
             }
         }
+
         return $inputs;
     }
-
 }

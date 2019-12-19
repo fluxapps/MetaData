@@ -1,16 +1,17 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\RecordValue;
 
 /**
  * Class LocationRecordValue
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\RecordValue
  */
 class LocationRecordValue extends \ActiveRecord implements RecordValue
 {
-	const TABLE_NAME = 'srmd_location';
 
+    const TABLE_NAME = 'srmd_location';
     /**
      * @var int
      *
@@ -21,7 +22,6 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
      * @db_sequence     true
      */
     protected $id = 0;
-
     /**
      * @var int
      *
@@ -30,7 +30,6 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
      * @db_length       8
      */
     protected $record_id;
-
     /**
      * @var float
      *
@@ -38,7 +37,6 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
      * @db_fieldtype    float
      */
     protected $latitude;
-
     /**
      * @var float
      *
@@ -46,7 +44,6 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
      * @db_fieldtype    float
      */
     protected $longitude;
-
     /**
      * @var int
      *
@@ -55,7 +52,6 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
      * @db_length       8
      */
     protected $zoom;
-
     /**
      * @var string
      *
@@ -67,12 +63,24 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
 
 
     /**
+     * @return string
+     * @description Return the Name of your Database Table
+     * @deprecated
+     */
+    static function returnDbTableName()
+    {
+        return self::TABLE_NAME;
+    }
+
+
+    /**
      * @return int
      */
     public function getId()
     {
         return $this->id;
     }
+
 
     /**
      * @return int
@@ -82,6 +90,7 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
         return $this->record_id;
     }
 
+
     /**
      * @param int $record_id
      */
@@ -89,6 +98,7 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
     {
         $this->record_id = $record_id;
     }
+
 
     /**
      * @return float
@@ -98,6 +108,7 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
         return $this->latitude;
     }
 
+
     /**
      * @param float $latitude
      */
@@ -105,6 +116,7 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
     {
         $this->latitude = $latitude;
     }
+
 
     /**
      * @return float
@@ -114,6 +126,7 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
         return $this->longitude;
     }
 
+
     /**
      * @param float $longitude
      */
@@ -121,6 +134,7 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
     {
         $this->longitude = $longitude;
     }
+
 
     /**
      * @return int
@@ -130,6 +144,7 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
         return $this->zoom;
     }
 
+
     /**
      * @param int $zoom
      */
@@ -137,6 +152,7 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
     {
         $this->zoom = $zoom;
     }
+
 
     /**
      * @return string
@@ -146,21 +162,12 @@ class LocationRecordValue extends \ActiveRecord implements RecordValue
         return $this->address;
     }
 
+
     /**
      * @param string $address
      */
     public function setAddress($address)
     {
         $this->address = $address;
-    }
-
-    /**
-     * @return string
-     * @description Return the Name of your Database Table
-     * @deprecated
-     */
-    static function returnDbTableName()
-    {
-        return self::TABLE_NAME;
     }
 }

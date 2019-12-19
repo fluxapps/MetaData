@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
 use ilNonEditableValueGUI;
@@ -8,7 +9,7 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class InputfieldTextarea
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Inputfield
  */
 class InputfieldTextarea extends InputfieldText
@@ -31,11 +32,11 @@ class InputfieldTextarea extends InputfieldText
                 $input = new ilNonEditableValueGUI($this->getLabel($lang));
                 $input->setValue(is_array($record->getValue()) ? implode('<br>', $record->getValue()) : $record->getValue());
             } else {
-            $input = new \ilTextAreaInputGUI($this->getLabel($lang), $this->getPostVar($record) . "_$lang");
-            $rows = $options->getNRows() ? $options->getNRows() : 8;
-            $input->setRows($rows);
-            // Field is required only in the default language, even if rendered for multiple languages
-            $input->setRequired($options->isRequired() && $lang == $this->language->getDefaultLanguage());
+                $input = new \ilTextAreaInputGUI($this->getLabel($lang), $this->getPostVar($record) . "_$lang");
+                $rows = $options->getNRows() ? $options->getNRows() : 8;
+                $input->setRows($rows);
+                // Field is required only in the default language, even if rendered for multiple languages
+                $input->setRequired($options->isRequired() && $lang == $this->language->getDefaultLanguage());
             }
             if ($this->field->getDescription($this->lang)) {
                 $input->setInfo($this->field->getDescription($this->lang));
@@ -46,7 +47,7 @@ class InputfieldTextarea extends InputfieldText
             $inputs[] = $input;
         }
         $this->initLanguageTabs($this->getPostVar($record));
+
         return $inputs;
     }
-
 }
