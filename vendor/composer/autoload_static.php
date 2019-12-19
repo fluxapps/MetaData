@@ -9,10 +9,10 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
     public static $prefixLengthsPsr4 = array (
         's' => 
         array (
-            'srag\\RemovePluginDataConfirm\\MetaData\\' => 38,
+            'srag\\RemovePluginDataConfirm\\' => 29,
             'srag\\LibrariesNamespaceChanger\\' => 31,
-            'srag\\DIC\\MetaData\\' => 18,
-            'srag\\CustomInputGUIs\\MetaData\\' => 30,
+            'srag\\DIC\\' => 9,
+            'srag\\CustomInputGUIs\\' => 21,
         ),
         'S' => 
         array (
@@ -21,7 +21,7 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
     );
 
     public static $prefixDirsPsr4 = array (
-        'srag\\RemovePluginDataConfirm\\MetaData\\' => 
+        'srag\\RemovePluginDataConfirm\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
         ),
@@ -29,11 +29,11 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
         ),
-        'srag\\DIC\\MetaData\\' => 
+        'srag\\DIC\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
-        'srag\\CustomInputGUIs\\MetaData\\' => 
+        'srag\\CustomInputGUIs\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),
@@ -68,6 +68,10 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\LocationField' => __DIR__ . '/../..' . '/src/Field/LocationField.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\MultiDropdownField' => __DIR__ . '/../..' . '/src/Field/MultiDropdownField.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\NullField' => __DIR__ . '/../..' . '/src/Field/NullField.php',
+        'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\OrgUnitField' => __DIR__ . '/../..' . '/src/Field/OrgUnitField.php',
+        'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\OrgUnitFieldOptions' => __DIR__ . '/../..' . '/src/Field/OrgUnitFieldOptions.php',
+        'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\OrgUnitsField' => __DIR__ . '/../..' . '/src/Field/OrgUnitsField.php',
+        'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\OrgUnitsFieldOptions' => __DIR__ . '/../..' . '/src/Field/OrgUnitsFieldOptions.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\TextField' => __DIR__ . '/../..' . '/src/Field/TextField.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\TextFieldOptions' => __DIR__ . '/../..' . '/src/Field/TextFieldOptions.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Field\\TextareaField' => __DIR__ . '/../..' . '/src/Field/TextareaField.php',
@@ -85,6 +89,7 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         'SRAG\\ILIAS\\Plugins\\MetaData\\Formatter\\HtmlEntitiesFormatter' => __DIR__ . '/../..' . '/src/Formatter/HtmlEntitiesFormatter.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Formatter\\MultiDropdownValueFormatter' => __DIR__ . '/../..' . '/src/Formatter/MultiDropdownValueFormatter.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Formatter\\Nl2brFormatter' => __DIR__ . '/../..' . '/src/Formatter/Nl2brFormatter.php',
+        'SRAG\\ILIAS\\Plugins\\MetaData\\Formatter\\ObjectTitleFormatter' => __DIR__ . '/../..' . '/src/Formatter/ObjectTitleFormatter.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Formatter\\OrderedListFormatter' => __DIR__ . '/../..' . '/src/Formatter/OrderedListFormatter.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Formatter\\StringStorageValueFormatter' => __DIR__ . '/../..' . '/src/Formatter/StringStorageValueFormatter.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Formatter\\UnorderedListFormatter' => __DIR__ . '/../..' . '/src/Formatter/UnorderedListFormatter.php',
@@ -97,6 +102,8 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         'SRAG\\ILIAS\\Plugins\\MetaData\\Inputfield\\InputfieldFloat' => __DIR__ . '/../..' . '/src/Inputfield/InputfieldFloat.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Inputfield\\InputfieldGoogleMaps' => __DIR__ . '/../..' . '/src/Inputfield/InputfieldGoogleMaps.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Inputfield\\InputfieldInteger' => __DIR__ . '/../..' . '/src/Inputfield/InputfieldInteger.php',
+        'SRAG\\ILIAS\\Plugins\\MetaData\\Inputfield\\InputfieldOrgUnit' => __DIR__ . '/../..' . '/src/Inputfield/InputfieldOrgUnit.php',
+        'SRAG\\ILIAS\\Plugins\\MetaData\\Inputfield\\InputfieldOrgUnits' => __DIR__ . '/../..' . '/src/Inputfield/InputfieldOrgUnits.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Inputfield\\InputfieldRichtext' => __DIR__ . '/../..' . '/src/Inputfield/InputfieldRichtext.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Inputfield\\InputfieldSelect' => __DIR__ . '/../..' . '/src/Inputfield/InputfieldSelect.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Inputfield\\InputfieldText' => __DIR__ . '/../..' . '/src/Inputfield/InputfieldText.php',
@@ -128,6 +135,8 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         'SRAG\\ILIAS\\Plugins\\MetaData\\Storage\\IntegerMultiStorage' => __DIR__ . '/../..' . '/src/Storage/IntegerMultiStorage.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Storage\\IntegerStorage' => __DIR__ . '/../..' . '/src/Storage/IntegerStorage.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Storage\\LocationStorage' => __DIR__ . '/../..' . '/src/Storage/LocationStorage.php',
+        'SRAG\\ILIAS\\Plugins\\MetaData\\Storage\\OrgUnitStorage' => __DIR__ . '/../..' . '/src/Storage/OrgUnitStorage.php',
+        'SRAG\\ILIAS\\Plugins\\MetaData\\Storage\\OrgUnitsStorage' => __DIR__ . '/../..' . '/src/Storage/OrgUnitsStorage.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Storage\\Storage' => __DIR__ . '/../..' . '/src/Storage/Storage.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Storage\\StringStorage' => __DIR__ . '/../..' . '/src/Storage/StringStorage.php',
         'SRAG\\ILIAS\\Plugins\\MetaData\\Storage\\TextStorage' => __DIR__ . '/../..' . '/src/Storage/TextStorage.php',
@@ -142,12 +151,18 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         'srag\\CustomInputGUIs\\MetaData\\DateDurationInputGUI\\DateDurationInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/DateDurationInputGUI/DateDurationInputGUI.php',
         'srag\\CustomInputGUIs\\MetaData\\GlyphGUI\\GlyphGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/GlyphGUI/GlyphGUI.php',
         'srag\\CustomInputGUIs\\MetaData\\HiddenInputGUI\\HiddenInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/HiddenInputGUI/HiddenInputGUI.php',
+        'srag\\CustomInputGUIs\\MetaData\\InputGUIWrapperUIInputComponent\\InputGUIWrapperConstraint' => __DIR__ . '/..' . '/srag/custominputguis/src/InputGUIWrapperUIInputComponent/InputGUIWrapperConstraint.php',
+        'srag\\CustomInputGUIs\\MetaData\\InputGUIWrapperUIInputComponent\\InputGUIWrapperConstraint54' => __DIR__ . '/..' . '/srag/custominputguis/src/InputGUIWrapperUIInputComponent/InputGUIWrapperConstraint54.php',
+        'srag\\CustomInputGUIs\\MetaData\\InputGUIWrapperUIInputComponent\\InputGUIWrapperConstraintTrait' => __DIR__ . '/..' . '/srag/custominputguis/src/InputGUIWrapperUIInputComponent/InputGUIWrapperConstraintTrait.php',
+        'srag\\CustomInputGUIs\\MetaData\\InputGUIWrapperUIInputComponent\\InputGUIWrapperUIInputComponent' => __DIR__ . '/..' . '/srag/custominputguis/src/InputGUIWrapperUIInputComponent/InputGUIWrapperUIInputComponent.php',
+        'srag\\CustomInputGUIs\\MetaData\\InputGUIWrapperUIInputComponent\\Renderer' => __DIR__ . '/..' . '/srag/custominputguis/src/InputGUIWrapperUIInputComponent/Renderer.php',
         'srag\\CustomInputGUIs\\MetaData\\LearningProgressPieUI\\AbstractLearningProgressPieUI' => __DIR__ . '/..' . '/srag/custominputguis/src/LearningProgressPieUI/AbstractLearningProgressPieUI.php',
         'srag\\CustomInputGUIs\\MetaData\\LearningProgressPieUI\\CountLearningProgressPieUI' => __DIR__ . '/..' . '/srag/custominputguis/src/LearningProgressPieUI/CountLearningProgressPieUI.php',
         'srag\\CustomInputGUIs\\MetaData\\LearningProgressPieUI\\LearningProgressPieUI' => __DIR__ . '/..' . '/srag/custominputguis/src/LearningProgressPieUI/LearningProgressPieUI.php',
         'srag\\CustomInputGUIs\\MetaData\\LearningProgressPieUI\\ObjIdsLearningProgressPieUI' => __DIR__ . '/..' . '/srag/custominputguis/src/LearningProgressPieUI/ObjIdsLearningProgressPieUI.php',
         'srag\\CustomInputGUIs\\MetaData\\LearningProgressPieUI\\UsrIdsLearningProgressPieUI' => __DIR__ . '/..' . '/srag/custominputguis/src/LearningProgressPieUI/UsrIdsLearningProgressPieUI.php',
         'srag\\CustomInputGUIs\\MetaData\\MultiLineInputGUI\\MultiLineInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiLineInputGUI/MultiLineInputGUI.php',
+        'srag\\CustomInputGUIs\\MetaData\\MultiLineNewInputGUI\\MultiLineNewInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiLineNewInputGUI/MultiLineNewInputGUI.php',
         'srag\\CustomInputGUIs\\MetaData\\MultiSelectSearchInputGUI\\MultiSelectSearchInput2GUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchInputGUI/MultiSelectSearchInput2GUI.php',
         'srag\\CustomInputGUIs\\MetaData\\MultiSelectSearchInputGUI\\MultiSelectSearchInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchInputGUI/MultiSelectSearchInputGUI.php',
         'srag\\CustomInputGUIs\\MetaData\\NumberInputGUI\\NumberInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/NumberInputGUI/NumberInputGUI.php',
@@ -182,10 +197,15 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         'srag\\CustomInputGUIs\\MetaData\\StaticHTMLPresentationInputGUI\\StaticHTMLPresentationInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/StaticHTMLPresentationInputGUI/StaticHTMLPresentationInputGUI.php',
         'srag\\CustomInputGUIs\\MetaData\\TableGUI\\Exception\\TableGUIException' => __DIR__ . '/..' . '/srag/custominputguis/src/TableGUI/Exception/TableGUIException.php',
         'srag\\CustomInputGUIs\\MetaData\\TableGUI\\TableGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/TableGUI/TableGUI.php',
+        'srag\\CustomInputGUIs\\MetaData\\TabsInputGUI\\MultilangualTabsInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/TabsInputGUI/MultilangualTabsInputGUI.php',
+        'srag\\CustomInputGUIs\\MetaData\\TabsInputGUI\\TabsInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/TabsInputGUI/TabsInputGUI.php',
+        'srag\\CustomInputGUIs\\MetaData\\TabsInputGUI\\TabsInputGUITab' => __DIR__ . '/..' . '/srag/custominputguis/src/TabsInputGUI/TabsInputGUITab.php',
         'srag\\CustomInputGUIs\\MetaData\\Template\\Template' => __DIR__ . '/..' . '/srag/custominputguis/src/Template/Template.php',
         'srag\\CustomInputGUIs\\MetaData\\TextAreaInputGUI\\TextAreaInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/TextAreaInputGUI/TextAreaInputGUI.php',
         'srag\\CustomInputGUIs\\MetaData\\TextInputGUI\\TextInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/TextInputGUI/TextInputGUI.php',
         'srag\\CustomInputGUIs\\MetaData\\TextInputGUI\\TextInputGUIWithModernAutoComplete' => __DIR__ . '/..' . '/srag/custominputguis/src/TextInputGUI/TextInputGUIWithModernAutoComplete.php',
+        'srag\\CustomInputGUIs\\MetaData\\UIInputComponentWrapperInputGUI\\UIInputComponentWrapperInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/UIInputComponentWrapperInputGUI/UIInputComponentWrapperInputGUI.php',
+        'srag\\CustomInputGUIs\\MetaData\\UIInputComponentWrapperInputGUI\\UIInputComponentWrapperNameSource' => __DIR__ . '/..' . '/srag/custominputguis/src/UIInputComponentWrapperInputGUI/UIInputComponentWrapperNameSource.php',
         'srag\\CustomInputGUIs\\MetaData\\ViewControlModeUI\\ViewControlModeUI' => __DIR__ . '/..' . '/srag/custominputguis/src/ViewControlModeGUI/ViewControlModeUI.php',
         'srag\\CustomInputGUIs\\MetaData\\Waiter\\Waiter' => __DIR__ . '/..' . '/srag/custominputguis/src/Waiter/Waiter.php',
         'srag\\CustomInputGUIs\\MetaData\\WeekdayInputGUI\\WeekdayInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/WeekdayInputGUI/WeekdayInputGUI.php',
@@ -212,7 +232,6 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         'srag\\DIC\\MetaData\\Util\\LibraryLanguageInstaller' => __DIR__ . '/..' . '/srag/dic/src/Util/LibraryLanguageInstaller.php',
         'srag\\DIC\\MetaData\\Version\\Version' => __DIR__ . '/..' . '/srag/dic/src/Version/Version.php',
         'srag\\DIC\\MetaData\\Version\\VersionInterface' => __DIR__ . '/..' . '/srag/dic/src/Version/VersionInterface.php',
-        'srag\\LibrariesNamespaceChanger\\Libraries' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/Libraries.php',
         'srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/LibrariesNamespaceChanger.php',
         'srag\\LibrariesNamespaceChanger\\PHP7Backport' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/PHP7Backport.php',
         'srag\\RemovePluginDataConfirm\\MetaData\\AbstractPluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/AbstractPluginUninstallTrait.php',
