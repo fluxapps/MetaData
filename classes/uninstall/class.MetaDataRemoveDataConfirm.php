@@ -11,7 +11,8 @@ use srag\RemovePluginDataConfirm\MetaData\AbstractRemovePluginDataConfirm;
  *
  * @ilCtrl_isCalledBy MetaDataRemoveDataConfirm: ilUIPluginRouterGUI
  */
-class MetaDataRemoveDataConfirm extends AbstractRemovePluginDataConfirm {
+class MetaDataRemoveDataConfirm extends AbstractRemovePluginDataConfirm
+{
 
-	const PLUGIN_CLASS_NAME = ilMetaDataPlugin::class;
+    const PLUGIN_CLASS_NAME = ilMetaDataPlugin::class;
 }

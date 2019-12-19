@@ -24,42 +24,46 @@ if (file_exists(__DIR__ . "/../../SrUserEnrolment/vendor/autoload.php")) {
 /**
  * Class ilMetaDataPlugin
  */
-class ilMetaDataPlugin extends ilUserInterfaceHookPlugin {
+class ilMetaDataPlugin extends ilUserInterfaceHookPlugin
+{
 
-	use PluginUninstallTrait;
-	const PLUGIN_NAME = 'MetaData';
-	const PLUGIN_CLASS_NAME = self::class;
-	const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = MetaDataRemoveDataConfirm::class;
-	/**
-	 * @var ilMetaDataPlugin
-	 */
-	protected static $instance;
-
-
-	/**
-	 * @return ilMetaDataPlugin
-	 */
-	public static function getInstance() {
-		if (self::$instance === null) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
+    use PluginUninstallTrait;
+    const PLUGIN_NAME = 'MetaData';
+    const PLUGIN_CLASS_NAME = self::class;
+    const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = MetaDataRemoveDataConfirm::class;
+    /**
+     * @var ilMetaDataPlugin
+     */
+    protected static $instance;
 
 
-	/**
-	 * @return string
-	 */
-	public function getPluginName() {
-		return self::PLUGIN_NAME;
-	}
+    /**
+     * @return ilMetaDataPlugin
+     */
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getPluginName()
+    {
+        return self::PLUGIN_NAME;
+    }
 
 
     /**
      * @inheritDoc
      */
-    public function handleEvent($a_component, $a_event, $a_parameter) {
+    public function handleEvent($a_component, $a_event, $a_parameter)
+    {
         if (file_exists(__DIR__ . "/../../SrUserEnrolment/vendor/autoload.php")) {
             switch ($a_component) {
                 case IL_COMP_PLUGIN . "/" . ilSrUserEnrolmentPlugin::PLUGIN_NAME:
@@ -80,34 +84,36 @@ class ilMetaDataPlugin extends ilUserInterfaceHookPlugin {
     }
 
 
-	/**
-	 * @inheritdoc
-	 */
-	public function updateLanguages($a_lang_keys = null) {
-		parent::updateLanguages($a_lang_keys);
+    /**
+     * @inheritdoc
+     */
+    public function updateLanguages($a_lang_keys = null)
+    {
+        parent::updateLanguages($a_lang_keys);
 
-		LibraryLanguageInstaller::getInstance()->withPlugin(self::plugin())->withLibraryLanguageDirectory(__DIR__
-			. "/../vendor/srag/removeplugindataconfirm/lang")->updateLanguages();
-	}
+        LibraryLanguageInstaller::getInstance()->withPlugin(self::plugin())->withLibraryLanguageDirectory(__DIR__
+            . "/../vendor/srag/removeplugindataconfirm/lang")->updateLanguages();
+    }
 
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function deleteData()/*: void*/ {
-		self::dic()->database()->dropTable(NullField::TABLE_NAME, false);
-		self::dic()->database()->dropTable(FieldGroup::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ArFieldData::TABLE_NAME, false);
-		self::dic()->database()->dropTable(Record::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilObjectMapping::TABLE_NAME, false);
-		self::dic()->database()->dropTable(DateTimeRecordValue::TABLE_NAME, false);
-		self::dic()->database()->dropTable(IntegerMultiRecordValue::TABLE_NAME, false);
-		self::dic()->database()->dropTable(StringRecordValue::TABLE_NAME, false);
-		self::dic()->database()->dropTable(TextRecordValue::TABLE_NAME, false);
-		self::dic()->database()->dropTable(LocationRecordValue::TABLE_NAME, false);
-		self::dic()->database()->dropTable(FloatRecordValue::TABLE_NAME, false);
+    /**
+     * @inheritdoc
+     */
+    protected function deleteData()/*: void*/
+    {
+        self::dic()->database()->dropTable(NullField::TABLE_NAME, false);
+        self::dic()->database()->dropTable(FieldGroup::TABLE_NAME, false);
+        self::dic()->database()->dropTable(ArFieldData::TABLE_NAME, false);
+        self::dic()->database()->dropTable(Record::TABLE_NAME, false);
+        self::dic()->database()->dropTable(ilObjectMapping::TABLE_NAME, false);
+        self::dic()->database()->dropTable(DateTimeRecordValue::TABLE_NAME, false);
+        self::dic()->database()->dropTable(IntegerMultiRecordValue::TABLE_NAME, false);
+        self::dic()->database()->dropTable(StringRecordValue::TABLE_NAME, false);
+        self::dic()->database()->dropTable(TextRecordValue::TABLE_NAME, false);
+        self::dic()->database()->dropTable(LocationRecordValue::TABLE_NAME, false);
+        self::dic()->database()->dropTable(FloatRecordValue::TABLE_NAME, false);
         if (file_exists(__DIR__ . "/../../SrUserEnrolment/vendor/autoload.php")) {
             self::dic()->database()->dropTable(MetaDataField::getTableName(), false);
         }
-	}
+    }
 }
