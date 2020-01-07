@@ -1,5 +1,7 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Storage;
+
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 use SRAG\ILIAS\Plugins\MetaData\RecordValue\StringRecordValue;
 use SRAG\ILIAS\Plugins\MetaData\RecordValue\TextRecordValue;
@@ -13,16 +15,6 @@ class TextStorage extends StringStorage
 {
 
     /**
-     * @param Record $record
-     * @return StringRecordValue[]
-     */
-    protected function getRecordValue(Record $record)
-    {
-        return TextRecordValue::where(array('record_id' => $record->getId()))->get();
-    }
-
-
-    /**
      * @inheritdoc
      */
     public function saveValue(Record $record, $value)
@@ -31,7 +23,7 @@ class TextStorage extends StringStorage
         foreach ($this->normalizeValue($value) as $lang => $string) {
             $record_value = TextRecordValue::where(array(
                 'record_id' => $record->getId(),
-                'lang' => $lang,
+                'lang'      => $lang,
             ))->first();
             if (!$record_value) {
                 $record_value = new TextRecordValue();
@@ -41,5 +33,16 @@ class TextStorage extends StringStorage
             $record_value->setValue($string);
             $record_value->save();
         }
+    }
+
+
+    /**
+     * @param Record $record
+     *
+     * @return StringRecordValue[]
+     */
+    protected function getRecordValue(Record $record)
+    {
+        return TextRecordValue::where(array('record_id' => $record->getId()))->get();
     }
 }

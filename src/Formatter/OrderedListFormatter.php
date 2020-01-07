@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SRAG\ILIAS\Plugins\MetaData\Formatter;
 
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
@@ -8,7 +7,7 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class OrderedListFormatter
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Formatter
  */
 class OrderedListFormatter implements Formatter
@@ -22,10 +21,12 @@ class OrderedListFormatter implements Formatter
         return "Display an array of values as ordered list";
     }
 
+
     public function getInType()
     {
         return 'array';
     }
+
 
     public function getOutType()
     {
@@ -35,7 +36,8 @@ class OrderedListFormatter implements Formatter
 
     /**
      * @param Record $record
-     * @param $value
+     * @param        $value
+     *
      * @return mixed
      */
     public function format(Record $record, $value)

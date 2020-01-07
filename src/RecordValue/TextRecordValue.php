@@ -1,14 +1,17 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\RecordValue;
 
 /**
  * Class TextRecordValue
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\RecordValue
  */
 class TextRecordValue extends \ActiveRecord implements RecordValue
 {
+
+    const TABLE_NAME = 'srmd_text';
     /**
      * @var int
      *
@@ -19,7 +22,6 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
      * @db_sequence     true
      */
     protected $id = 0;
-
     /**
      * @var int
      *
@@ -29,7 +31,6 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
      * @db_index        true
      */
     protected $record_id;
-
     /**
      * @var string
      *
@@ -38,7 +39,6 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
      * @db_length       2
      */
     protected $lang;
-
     /**
      * @var string
      *
@@ -46,6 +46,18 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
      * @db_fieldtype    clob
      */
     protected $value;
+
+
+    /**
+     * @return string
+     * @description Return the Name of your Database Table
+     * @deprecated
+     */
+    static function returnDbTableName()
+    {
+        return self::TABLE_NAME;
+    }
+
 
     /**
      * @return int
@@ -55,6 +67,7 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
         return $this->id;
     }
 
+
     /**
      * @return int
      */
@@ -62,6 +75,7 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
     {
         return $this->record_id;
     }
+
 
     /**
      * @param int $record_id
@@ -71,6 +85,7 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
         $this->record_id = $record_id;
     }
 
+
     /**
      * @return int
      */
@@ -78,6 +93,7 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
     {
         return $this->value;
     }
+
 
     /**
      * @param int $value
@@ -87,6 +103,7 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
         $this->value = $value;
     }
 
+
     /**
      * @return string
      */
@@ -95,21 +112,12 @@ class TextRecordValue extends \ActiveRecord implements RecordValue
         return $this->lang;
     }
 
+
     /**
      * @param string $lang
      */
     public function setLang($lang)
     {
         $this->lang = $lang;
-    }
-
-    /**
-     * @return string
-     * @description Return the Name of your Database Table
-     * @deprecated
-     */
-    static function returnDbTableName()
-    {
-        return 'srmd_text';
     }
 }

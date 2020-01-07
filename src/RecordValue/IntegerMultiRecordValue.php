@@ -1,14 +1,17 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\RecordValue;
 
 /**
  * Class IntegerMultiRecordValue
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\RecordValue
  */
 class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
 {
+
+    const TABLE_NAME = 'srmd_integer_multi';
     /**
      * @var int
      *
@@ -19,7 +22,6 @@ class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
      * @db_sequence     true
      */
     protected $id = 0;
-
     /**
      * @var int
      *
@@ -29,7 +31,6 @@ class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
      * @db_index        true
      */
     protected $record_id;
-
     /**
      * @var int
      *
@@ -38,7 +39,6 @@ class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
      * @db_length       8
      */
     protected $value;
-
     /**
      * @var int
      *
@@ -48,6 +48,18 @@ class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
      */
     protected $sort;
 
+
+    /**
+     * @return string
+     * @description Return the Name of your Database Table
+     * @deprecated
+     */
+    static function returnDbTableName()
+    {
+        return self::TABLE_NAME;
+    }
+
+
     /**
      * @return int
      */
@@ -55,6 +67,7 @@ class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
     {
         return $this->id;
     }
+
 
     /**
      * @return int
@@ -64,6 +77,7 @@ class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
         return $this->record_id;
     }
 
+
     /**
      * @param int $record_id
      */
@@ -71,6 +85,7 @@ class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
     {
         $this->record_id = $record_id;
     }
+
 
     /**
      * @return int
@@ -80,6 +95,7 @@ class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
         return $this->value;
     }
 
+
     /**
      * @param int $value
      */
@@ -87,6 +103,7 @@ class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
     {
         $this->value = $value;
     }
+
 
     /**
      * @return int
@@ -96,21 +113,12 @@ class IntegerMultiRecordValue extends \ActiveRecord implements RecordValue
         return $this->sort;
     }
 
+
     /**
      * @param int $sort
      */
     public function setSort($sort)
     {
         $this->sort = $sort;
-    }
-
-    /**
-     * @return string
-     * @description Return the Name of your Database Table
-     * @deprecated
-     */
-    static function returnDbTableName()
-    {
-        return 'srmd_integer_multi';
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
 use SRAG\ILIAS\Plugins\MetaData\Exception\Exception;
@@ -12,20 +13,11 @@ use SRAG\ILIAS\Plugins\MetaData\Storage\Storage;
  * A dummy field to create an empty instance of a field (as the base field is marked abstract).
  * Note that this field can't be persisted in the database!
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 class NullField extends Field
 {
-
-    /**
-     * @inheritdoc
-     */
-    protected function getFieldOptions(array $data)
-    {
-        return new FieldOptions($data);
-    }
-
 
     /**
      * @inheritdoc
@@ -57,5 +49,14 @@ class NullField extends Field
     public function delete()
     {
         throw new Exception("NullField can't be stored in DB");
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function getFieldOptions(array $data)
+    {
+        return new FieldOptions($data);
     }
 }

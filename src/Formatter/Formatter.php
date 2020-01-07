@@ -1,5 +1,7 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Formatter;
+
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 
@@ -19,12 +21,14 @@ interface Formatter
      */
     public function getTitle();
 
+
     /**
      * Return the expected type of the value at input
      *
      * @return string
      */
     public function getInType();
+
 
     /**
      * Return the type of the value at output
@@ -33,11 +37,12 @@ interface Formatter
      */
     public function getOutType();
 
+
     /**
      * @param Record $record
-     * @param $value
+     * @param        $value
+     *
      * @return mixed
      */
     public function format(Record $record, $value);
-
 }

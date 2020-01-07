@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Form;
 
 use arConnector;
@@ -14,6 +15,7 @@ use SRAG\ILIAS\Plugins\MetaData\Language\Language;
 class ilObjectMapping extends \ActiveRecord
 {
 
+    const TABLE_NAME = 'srmd_object_mapping';
     /**
      * @var int
      *
@@ -24,8 +26,6 @@ class ilObjectMapping extends \ActiveRecord
      * @db_sequence     true
      */
     protected $id = 0;
-
-
     /**
      * @var string
      * @db_has_field    true
@@ -33,7 +33,6 @@ class ilObjectMapping extends \ActiveRecord
      * @db_length       8
      */
     protected $obj_type;
-
     /**
      * @var bool
      * @db_has_field    true
@@ -41,7 +40,6 @@ class ilObjectMapping extends \ActiveRecord
      * @db_length       8
      */
     protected $editable = true;
-
     /**
      * @var bool
      * @db_has_field    true
@@ -49,7 +47,6 @@ class ilObjectMapping extends \ActiveRecord
      * @db_length       8
      */
     protected $show_block = false;
-
     /**
      * @var bool
      * @db_has_field    true
@@ -57,7 +54,6 @@ class ilObjectMapping extends \ActiveRecord
      * @db_length       8
      */
     protected $show_info_screen = false;
-
     /**
      * @var array
      * @db_has_field    true
@@ -65,7 +61,6 @@ class ilObjectMapping extends \ActiveRecord
      * @db_length       1024
      */
     protected $show_block_field_ids = array();
-
     /**
      * @var array
      * @db_has_field    true
@@ -73,7 +68,6 @@ class ilObjectMapping extends \ActiveRecord
      * @db_length       1024
      */
     protected $show_info_field_ids = array();
-
     /**
      * @var string
      * @db_has_field    true
@@ -81,7 +75,6 @@ class ilObjectMapping extends \ActiveRecord
      * @db_length       1204
      */
     protected $tab_title = array();
-
     /**
      * @var array
      * @db_has_field    true
@@ -89,7 +82,6 @@ class ilObjectMapping extends \ActiveRecord
      * @db_length       1024
      */
     protected $field_group_ids = array();
-
     /**
      * @var bool
      * @db_has_field    true
@@ -97,17 +89,46 @@ class ilObjectMapping extends \ActiveRecord
      * @db_length       8
      */
     protected $active = 1;
-
+    /**
+     * @var bool
+     * @db_has_field    true
+     * @db_fieldtype    integer
+     * @db_length       8
+     */
+    protected $only_certain_places = false;
+    /**
+     * @var int
+     * @db_has_field    true
+     * @db_fieldtype    integer
+     * @db_length       8
+     */
+    protected $only_certain_places_ref_id = 0;
+    /**
+     * @var bool
+     * @db_has_field    true
+     * @db_fieldtype    integer
+     * @db_length       8
+     */
+    protected $only_certain_places_whole_tree = false;
     /**
      * @var Language
      */
     protected $language;
 
 
-    public function __construct($primary_key = 0, arConnector $connector = NULL)
+    public function __construct($primary_key = 0, arConnector $connector = null)
     {
         parent::__construct($primary_key, $connector);
         $this->language = new ilLanguage();
+    }
+
+
+    /**
+     * @return string
+     */
+    static function returnDbTableName()
+    {
+        return self::TABLE_NAME;
     }
 
 
@@ -156,7 +177,8 @@ class ilObjectMapping extends \ActiveRecord
 
     /**
      * @param string $lang
-     * @param bool $substitute_default
+     * @param bool   $substitute_default
+     *
      * @return string
      */
     public function getTabTitle($lang = '', $substitute_default = true)
@@ -169,8 +191,20 @@ class ilObjectMapping extends \ActiveRecord
         }
         // Try to return in default language if available, otherwise empty string
         $default = $this->language->getDefaultLanguage();
+
         return (isset($this->tab_title[$default])) ? $this->tab_title[$default] : '';
     }
+
+
+    /**
+     * @param string $tab_title
+     * @param        $lang
+     */
+    public function setTabTitle($tab_title, $lang = '')
+    {
+        $this->tab_title[$lang] = $tab_title;
+    }
+
 
     /**
      * @param array $titles
@@ -178,16 +212,6 @@ class ilObjectMapping extends \ActiveRecord
     public function setTabTitleArray(array $titles)
     {
         $this->tab_title = $titles;
-    }
-
-
-    /**
-     * @param string $tab_title
-     * @param $lang
-     */
-    public function setTabTitle($tab_title, $lang = '')
-    {
-        $this->tab_title[$lang] = $tab_title;
     }
 
 
@@ -214,7 +238,7 @@ class ilObjectMapping extends \ActiveRecord
      */
     public function isActive()
     {
-        return (bool)$this->active;
+        return (bool) $this->active;
     }
 
 
@@ -244,13 +268,15 @@ class ilObjectMapping extends \ActiveRecord
         $this->obj_type = $obj_type;
     }
 
+
     /**
      * @return bool
      */
     public function isEditable()
     {
-        return (bool)$this->editable;
+        return (bool) $this->editable;
     }
+
 
     /**
      * @param bool $editable
@@ -260,13 +286,15 @@ class ilObjectMapping extends \ActiveRecord
         $this->editable = $editable ? 1 : 0;
     }
 
+
     /**
      * @return bool
      */
     public function isShowBlock()
     {
-        return (bool)$this->show_block;
+        return (bool) $this->show_block;
     }
+
 
     /**
      * @param bool $show_block
@@ -276,8 +304,10 @@ class ilObjectMapping extends \ActiveRecord
         $this->show_block = $show_block ? 1 : 0;
     }
 
+
     /**
      * @param int $group_id
+     *
      * @return array
      */
     public function getShowBlockFieldIds($group_id)
@@ -285,14 +315,16 @@ class ilObjectMapping extends \ActiveRecord
         return isset($this->show_block_field_ids[$group_id]) ? $this->show_block_field_ids[$group_id] : array();
     }
 
+
     /**
-     * @param int $group_id
+     * @param int   $group_id
      * @param array $field_ids
      */
     public function setShowBlockFieldIds($group_id, array $field_ids)
     {
         $this->show_block_field_ids[$group_id] = $field_ids;
     }
+
 
     /**
      * @return bool
@@ -302,6 +334,7 @@ class ilObjectMapping extends \ActiveRecord
         return $this->show_info_screen;
     }
 
+
     /**
      * @param bool $show_info_screen
      */
@@ -310,8 +343,10 @@ class ilObjectMapping extends \ActiveRecord
         $this->show_info_screen = $show_info_screen;
     }
 
+
     /**
      * @param $group_id
+     *
      * @return array|mixed
      */
     public function getShowInfoFieldIds($group_id)
@@ -319,8 +354,9 @@ class ilObjectMapping extends \ActiveRecord
         return isset($this->show_info_field_ids[$group_id]) ? $this->show_info_field_ids[$group_id] : array();
     }
 
+
     /**
-     * @param $group_id
+     * @param       $group_id
      * @param array $field_ids
      */
     public function setShowInfoFieldIds($group_id, array $field_ids)
@@ -336,17 +372,66 @@ class ilObjectMapping extends \ActiveRecord
     {
         $groups = array();
         foreach ($this->field_group_ids as $id) {
-            $groups[] = FieldGroup::find($id);
+            $group = FieldGroup::find($id);
+            if ($group) {
+                $groups[] = $group;
+            }
         }
 
         return $groups;
     }
 
+
     /**
-     * @return string
+     * @return bool
      */
-    static function returnDbTableName()
+    public function isOnlyCertainPlaces() : bool
     {
-        return 'srmd_object_mapping';
+        return boolval($this->only_certain_places);
+    }
+
+
+    /**
+     * @param bool $only_certain_places
+     */
+    public function setOnlyCertainPlaces(bool $only_certain_places)
+    {
+        $this->only_certain_places = $only_certain_places;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getOnlyCertainPlacesRefId() : int
+    {
+        return intval($this->only_certain_places_ref_id);
+    }
+
+
+    /**
+     * @param int $only_certain_places_ref_id
+     */
+    public function setOnlyCertainPlacesRefId(int $only_certain_places_ref_id)
+    {
+        $this->only_certain_places_ref_id = $only_certain_places_ref_id;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isOnlyCertainPlacesWholeTree() : bool
+    {
+        return boolval($this->only_certain_places_whole_tree);
+    }
+
+
+    /**
+     * @param bool $only_certain_places_whole_tree
+     */
+    public function setOnlyCertainPlacesWholeTree(bool $only_certain_places_whole_tree)
+    {
+        $this->only_certain_places_whole_tree = $only_certain_places_whole_tree;
     }
 }

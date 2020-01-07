@@ -1,183 +1,83 @@
 <?php
-use SRAG\ILIAS\Plugins\MetaData\Form\FormAdapter;
-use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
 
-require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
-require_once('./Services/Object/classes/class.ilObjectListGUIFactory.php');
+use SRAG\ILIAS\Plugins\MetaData\AbstractMetadataGUI;
+use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
+use SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject;
 
 /**
  * Class srmdGUI
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author            studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author            Stefan Wanzenried <sw@studer-raimann.ch>
  *
  * @ilCtrl_IsCalledBy srmdGUI: ilUIPluginRouterGUI
  */
-class srmdGUI
+class srmdGUI extends AbstractMetadataGUI
 {
-
-    /**
-     * @var ilObjectMapping
-     */
-    protected $mapping;
-
-    /**
-     * @var int
-     */
-    protected $obj_id;
-
-    /**
-     * @var ilTabsGUI
-     */
-    protected $tabs;
-
-    /**
-     * @var ilCtrl
-     */
-    protected $ctrl;
-
-    /**
-     * @var ilAccessHandler
-     */
-    protected $access;
-
-    /**
-     * @var ilLanguage
-     */
-    protected $lng;
-
-	/**
-	 * @var ilTemplate
-	 */
-    protected $tpl;
-
-	/**
-	 * @var ilObjUser
-	 */
-    protected $user;
 
     /**
      * @var ilObject
      */
     protected $object;
+    /**
+     * @var ilObjectMapping
+     */
+    protected $mapping;
 
+
+    /**
+     * srmdGUI constructor
+     */
     public function __construct()
     {
-        global $ilCtrl, $ilTabs, $ilAccess, $lng, $tpl, $ilUser;
+        self::dic()->ctrl()->saveParameter($this, 'mapping_id');
+        self::dic()->ctrl()->saveParameter($this, 'ref_id');
+        self::dic()->ctrl()->saveParameterByClass(ilRepositoryGUI::class, 'ref_id');
 
-        $this->ctrl = $ilCtrl;
-        $this->tabs = $ilTabs;
-        $this->access = $ilAccess;
-        $this->lng = $lng;
-        $this->tpl = $tpl;
-        $this->user = $ilUser;
-        $this->tpl->getStandardTemplate();
-    }
+        $this->object = ilObjectFactory::getInstanceByRefId(filter_input(INPUT_GET, 'ref_id'));
+        $this->mapping = ilObjectMapping::findOrFail(filter_input(INPUT_GET, 'mapping_id'));
 
-
-    public function executeCommand()
-    {
-        $this->checkAccess();
-        $this->ctrl->saveParameter($this, 'mapping_obj_id');
-        $this->ctrl->saveParameter($this, 'mapping_id');
-        $this->ctrl->saveParameter($this, 'ref_id');
-        $this->ctrl->saveParameter($this, 'back_target');
-        $this->mapping = ilObjectMapping::findOrFail((int) $_GET['mapping_id']);
-        $this->obj_id = (int) $_GET['mapping_obj_id'];
-        $this->object = ilObjectFactory::getInstanceByObjId($this->obj_id);
-        $this->fakeObjectHeader();
-        $this->tabs->addTab('srmd_' . $this->mapping->getId(), $this->mapping->getTabTitle(), $this->ctrl->getLinkTarget($this));
-        $cmd = $this->ctrl->getCmd('show');
-        $this->$cmd();
-        $this->tpl->show();
-    }
-
-
-    protected function show()
-    {
-        $form = $this->initForm();
-        $adapter = new FormAdapter($form, new \SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject($this->object), $this->user->getLanguage());
-        foreach ($this->mapping->getFieldGroups() as $group) {
-            $adapter->addFields($group);
-        }
-        $this->tpl->setContent($form->getHTML());
-    }
-
-
-    protected function save()
-    {
-        $form = $this->initForm();
-        $adapter = new FormAdapter($form, new \SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject($this->object), $this->user->getLanguage());
-        foreach ($this->mapping->getFieldGroups() as $group) {
-            $adapter->addFields($group);
-        }
-        if ($form->checkInput()) {
-            if ($adapter->saveRecords()) {
-                ilUtil::sendSuccess($this->lng->txt('saved_successfully'), true);
-                $this->ctrl->redirect($this);
-            } else {
-                $errors = array_map(function($error) {
-                    return $error->record->getField()->getLabel() . ': ' . $error->exception->getMessage();
-                }, $adapter->getErrors());
-                ilUtil::sendFailure('Error(s) during saving metadata:<br> ' . implode('<br>', $errors));
-            }
-        }
-        $form->setValuesByPost();
-        $this->tpl->setContent($form->getHTML());
-    }
-
-    protected function cancel()
-    {
-        $this->redirectBack();
+        parent::__construct(
+            [new ilConsumerObject($this->object)],
+            [$this->mapping]);
     }
 
 
     /**
-     * @return ilPropertyFormGUI
+     * @inheritDoc
      */
-    protected function initForm()
+    protected function setTabs()
     {
-        $form = new ilPropertyFormGUI();
-        $form->addCommandButton('save', $this->lng->txt('save'));
-        $form->addCommandButton('cancel', $this->lng->txt('cancel'));
-        $form->setFormAction($this->ctrl->getFormAction($this));
-        return $form;
-    }
+        self::dic()->mainTemplate()->setTitle($this->object->getPresentationTitle());
 
+        self::dic()->mainTemplate()->setDescription($this->object->getLongDescription());
 
-    /**
-     * Add object header and breadcrumbs
-     */
-    protected function fakeObjectHeader() {
-        global $ilLocator;
-        $this->tpl->setTitle($this->object->getPresentationTitle());
-        $this->tpl->setDescription($this->object->getLongDescription());
-        $this->tpl->setTitleIcon(ilObject::_getIcon("", "big", $this->object->getType()), $this->lng->txt("obj_" . $this->object->getType()));
-        $this->ctrl->setParameterByClass('ilrepositorygui', 'ref_id', (int) $_GET['ref_id']);
-        $this->tabs->setBackTarget($this->lng->txt('back'), $this->ctrl->getLinkTarget($this, 'redirectBack'));
-        include_once './Services/Object/classes/class.ilObjectListGUIFactory.php';
+        self::dic()->mainTemplate()->setTitleIcon(ilObject::_getIcon("", "big", $this->object->getType()), self::dic()->language()->txt("obj_" . $this->object->getType()));
+
         $lgui = ilObjectListGUIFactory::_getListGUIByType($this->object->getType());
-        $lgui->initItem((int) $_GET['ref_id'], $this->object->getId());
-        $this->tpl->setAlertProperties($lgui->getAlertProperties());
-        $ilLocator->addRepositoryItems();
-        $this->tpl->setLocator();
+        $lgui->initItem($this->object->getRefId(), $this->object->getId());
+        self::dic()->mainTemplate()->setAlertProperties($lgui->getAlertProperties());
+        self::dic()->locator()->addRepositoryItems();
+        self::dic()->mainTemplate()->setLocator();
+
+        parent::setTabs();
     }
 
-    protected function redirectBack()
+
+    /**
+     * @inheritDoc
+     */
+    protected function checkAccess() : bool
     {
-        if (!isset($_GET['back_target'])) {
-            return;
-        }
-        $target = urldecode(base64_decode($_GET['back_target']));
-        ilUtil::redirect($target);
+        return self::dic()->access()->checkAccess('write', '', $this->object->getRefId());
     }
 
 
-    protected function checkAccess()
+    /**
+     * @inheritDoc
+     */
+    protected function back()
     {
-        if (isset($_GET['ref_id']) && !$this->access->checkAccess('write', '', (int) $_GET['ref_id'])) {
-            ilUtil::sendInfo($this->lng->txt('permission_denied'), true);
-            $this->ctrl->redirectByClass('ilpersonaldesktopgui');
-        }
+        self::dic()->ctrl()->redirectByClass([ilRepositoryGUI::class, get_class(((new ilObjectGUIFactory())->getInstanceByRefId($this->object->getRefId())))]);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
 use SRAG\ILIAS\Plugins\MetaData\Storage\StringStorage;
@@ -6,7 +7,7 @@ use SRAG\ILIAS\Plugins\MetaData\Storage\StringStorage;
 /**
  * Class TextField
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 class TextField extends Field

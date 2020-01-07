@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
 use SRAG\ILIAS\Plugins\MetaData\Inputfield\Inputfield;
@@ -10,12 +11,13 @@ use SRAG\ILIAS\Plugins\MetaData\Storage\Storage;
 /**
  * Class Field
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 abstract class Field extends \ActiveRecord
 {
 
+    const TABLE_NAME = 'srmd_field';
     /**
      * @var int
      *
@@ -26,7 +28,6 @@ abstract class Field extends \ActiveRecord
      * @db_sequence     true
      */
     protected $id = 0;
-
     /**
      * @var string
      *
@@ -37,7 +38,6 @@ abstract class Field extends \ActiveRecord
      * @db_is_notnull   true
      */
     protected $identifier;
-
     /**
      * Fully qualified classname of the concrete field class
      *
@@ -49,8 +49,6 @@ abstract class Field extends \ActiveRecord
      * @db_is_notnull   true
      */
     protected $class;
-
-
     /**
      * @var FieldOptions
      *
@@ -59,7 +57,6 @@ abstract class Field extends \ActiveRecord
      * @db_length       4000
      */
     protected $options;
-
     /**
      * @var array
      *
@@ -68,7 +65,6 @@ abstract class Field extends \ActiveRecord
      * @db_length       1204
      */
     protected $label = array();
-
     /**
      * @var array
      *
@@ -77,7 +73,6 @@ abstract class Field extends \ActiveRecord
      * @db_length       2048
      */
     protected $description = array();
-
     /**
      * @var string
      *
@@ -86,7 +81,6 @@ abstract class Field extends \ActiveRecord
      * @db_length       255
      */
     protected $inputfield_class;
-
     /**
      * @var array
      *
@@ -95,34 +89,131 @@ abstract class Field extends \ActiveRecord
      * @db_length       1204
      */
     protected $formatters = array();
-
     /**
      * @var Language
      */
     protected $language;
-
     /**
      * @var Storage
      */
     protected $storage;
-
     /**
      * @var FieldOptions
      */
     protected $field_options;
 
 
-
-
     /**
-     * @param int $primary_key
+     * @param int               $primary_key
      * @param \arConnector|NULL $connector
      */
-    public function __construct($primary_key = 0, \arConnector $connector = NULL)
+    public function __construct($primary_key = 0, \arConnector $connector = null)
     {
         parent::__construct($primary_key, $connector);
         $this->language = new ilLanguage();
-        $this->field_options = $this->getFieldOptions((array)$this->options);
+        $this->field_options = $this->getFieldOptions((array) $this->options);
+    }
+
+
+    /**
+     * Return the FieldOptions class
+     *
+     * @param array $data Data for the field from database
+     *
+     * @return FieldOptions
+     */
+    abstract protected function getFieldOptions(array $data);
+
+
+    /**
+     * Find a field by identifier
+     *
+     * @param string $identifier
+     *
+     * @return null|Field
+     */
+    public static function findByIdentifier($identifier)
+    {
+        $field = NullField::where(array('identifier' => $identifier))->first();
+        if (!$field) {
+            return null;
+        }
+
+        return self::find($field->getId());
+    }
+
+
+    /**
+     * Wraps a factory to create instances of concrete fields (subclasses of this class)
+     *
+     * @param       $primary_key
+     * @param array $add_constructor_args
+     *
+     * @return Field
+     */
+    public static function find($primary_key, array $add_constructor_args = array())
+    {
+        if (get_called_class() == 'SRAG\ILIAS\Plugins\MetaData\Field\Field') {
+            // We must return an object of the subclass
+            $field = NullField::find($primary_key, $add_constructor_args);
+            if ($field) {
+                $class = $field->getClass();
+
+                return $class::find($primary_key, $add_constructor_args);
+            }
+        } else {
+            // A subclass is calling -> go directly to parent because of recursion
+            return parent::find($primary_key, $add_constructor_args);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+
+    /**
+     * @param string $class
+     */
+    public function setClass($class)
+    {
+        $this->class = $class;
+    }
+
+
+    /**
+     * Tries to find the object and throws an Exception if object is not found, instead of returning null
+     *
+     * @param       $primary_key
+     * @param array $add_constructor_args
+     *
+     * @return Field
+     * @throws \arException
+     */
+    public static function findOrFail($primary_key, array $add_constructor_args = array())
+    {
+        $obj = static::find($primary_key, $add_constructor_args);
+        if (is_null($obj)) {
+            throw new \arException(\arException::RECORD_NOT_FOUND);
+        }
+
+        return $obj;
+    }
+
+
+    /**
+     * @return string
+     */
+    static function returnDbTableName()
+    {
+        return self::TABLE_NAME;
     }
 
 
@@ -173,90 +264,11 @@ abstract class Field extends \ActiveRecord
 
 
     /**
-     * Return an array of class names of available inputfields for this field
-     *
-     * @return array
-     */
-    abstract public function getCompatibleInputfields();
-
-
-    /**
-     * Return the FieldOptions class
-     *
-     * @param array $data Data for the field from database
-     * @return FieldOptions
-     */
-    abstract protected function getFieldOptions(array $data);
-
-
-    /**
      * @return FieldOptions
      */
     public function options()
     {
         return $this->field_options;
-    }
-
-
-    /**
-     * Find a field by identifier
-     *
-     * @param string $identifier
-     * @return null|Field
-     */
-    public static function findByIdentifier($identifier)
-    {
-        $field = NullField::where(array('identifier' => $identifier))->first();
-        if (!$field) {
-            return null;
-        }
-
-        return self::find($field->getId());
-    }
-
-
-    /**
-     * Wraps a factory to create instances of concrete fields (subclasses of this class)
-     *
-     * @param $primary_key
-     * @param array $add_constructor_args
-     * @return Field
-     */
-    public static function find($primary_key, array $add_constructor_args = array())
-    {
-        if (get_called_class() == 'SRAG\ILIAS\Plugins\MetaData\Field\Field') {
-            // We must return an object of the subclass
-            $field = NullField::find($primary_key, $add_constructor_args);
-            if ($field) {
-                $class = $field->getClass();
-
-                return $class::find($primary_key, $add_constructor_args);
-            }
-        } else {
-            // A subclass is calling -> go directly to parent because of recursion
-            return parent::find($primary_key, $add_constructor_args);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Tries to find the object and throws an Exception if object is not found, instead of returning null
-     *
-     * @param $primary_key
-     * @param array $add_constructor_args
-     * @throws \arException
-     * @return Field
-     */
-    public static function findOrFail($primary_key, array $add_constructor_args = array())
-    {
-        $obj = static::find($primary_key, $add_constructor_args);
-        if (is_null($obj)) {
-            throw new \arException(\arException::RECORD_NOT_FOUND);
-        }
-
-        return $obj;
     }
 
 
@@ -274,12 +286,11 @@ abstract class Field extends \ActiveRecord
 
 
     /**
-     * @return int
+     * Return an array of class names of available inputfields for this field
+     *
+     * @return array
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    abstract public function getCompatibleInputfields();
 
 
     /**
@@ -302,7 +313,8 @@ abstract class Field extends \ActiveRecord
 
     /**
      * @param string $lang
-     * @param bool $substitute_default
+     * @param bool   $substitute_default
+     *
      * @return string
      */
     public function getLabel($lang = '', $substitute_default = true)
@@ -315,6 +327,7 @@ abstract class Field extends \ActiveRecord
         }
         // Try to return in default language if available, otherwise empty string
         $default = $this->language->getDefaultLanguage();
+
         return (isset($this->label[$default])) ? $this->label[$default] : '';
     }
 
@@ -331,7 +344,8 @@ abstract class Field extends \ActiveRecord
 
     /**
      * @param string $lang
-     * @param bool $substitute_default
+     * @param bool   $substitute_default
+     *
      * @return string
      */
     public function getDescription($lang = '', $substitute_default = true)
@@ -344,6 +358,7 @@ abstract class Field extends \ActiveRecord
         }
         // Try to return in default language if available, otherwise empty string
         $default = $this->language->getDefaultLanguage();
+
         return (isset($this->description[$default])) ? $this->description[$default] : '';
     }
 
@@ -377,20 +392,11 @@ abstract class Field extends \ActiveRecord
 
 
     /**
-     * @return string
+     * @return int
      */
-    public function getClass()
+    public function getId()
     {
-        return $this->class;
-    }
-
-
-    /**
-     * @param string $class
-     */
-    public function setClass($class)
-    {
-        $this->class = $class;
+        return $this->id;
     }
 
 
@@ -438,14 +444,5 @@ abstract class Field extends \ActiveRecord
     public function appendFormatter($formatter)
     {
         $this->formatters[] = $formatter;
-    }
-
-
-    /**
-     * @return string
-     */
-    static function returnDbTableName()
-    {
-        return 'srmd_field';
     }
 }

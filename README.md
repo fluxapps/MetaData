@@ -14,6 +14,7 @@ In contrast to the advanced metadata in the core, multi language support is buil
 * DateTime
 * Boolean
 * Location
+* User
 
 #### Field Type Options
 Each field type offers different options like "required", "multi language support" etc.
@@ -64,18 +65,41 @@ The `SRAG\ILIAS\Plugins\Metadata\Record\Record` object represents a metadata rec
 
 Note that you can use the MetaData service for your own objects, you just need to make sure to represent them with a unique object type.
 
-#### Querying Records
+### Service
 
-Use `SRAG\ILIAS\Plugins\MetaData\RecordQuery` to query records for a given object:
+To fetch and/or set Metadata, use the Service at `SRAG\ILIAS\Plugins\MetaData\MetadataService`. The Service uses the Singleton pattern and can be fetched by calling the static method MetadataService::getInstance(). It provides methods for getting and settings metadata using an ilObject, a Field Group ID and a Field ID.
+
+**Example**
+
 ```php
-$myConsumer = new ilConsumerObject(new ilObjCourse(123));
-$query = new RecordQuery($myConsumer);
-$fieldGroup = FieldGroup::findByIdentifier('course_metadata');
-$records = $query->getRecords($fieldGroup); // Returns an array of Record objects for the given field group
-// or to get a Record of a given field
-$field = Field::findByIdentifier('introduction');
-$record = $query->getRecord($fieldGroup, $field);
+use SRAG\ILIAS\Plugins\MetaData\MetadataService;
+
+// set value
+$course = new ilObjCourse($crs_ref_id);
+MetadataService::getInstance()->setValue(
+    $course, 
+    'course_templates', 
+    'course_uuid', 
+    $uuid
+);
+
+// get value
+$value = MetadataService::getInstance()->getValue(
+    $course, 
+    'course_templates',
+    'course_uuid'
+);
+
+// get formatted value
+$value = MetadataService::getInstance()->getFormattedValue(
+    $course, 
+    'course_templates',
+    'course_uuid'
+);
 ```
+
+Alternatively you can fetch a record object:
+`$record = MetadataService::getInstance()->getRecord($object, 'field_group_id', 'field_id');`
 
 #### Setting/Getting Values
 The field of a record uses a `StorageLocation` which controls how the values are stored in the databases. For example, the
@@ -111,6 +135,13 @@ $record->getFormattedValue() // --> 'Guten Tag'
 $record->getFormattedValue() // --> 'Bonjour'
 ```
 
+### AbstractMetadataGUI
+Extends `AbstractMetadataGUI` and pass objects and object mappings
+
+From your plugin you can redirect to this class to edit metadata
+
+See the default used implementation [./classes/class.srmdGUI.php](./classes/class.srmdGUI.php)
+
 ### FormAdapter
 
 Use `SRAG\ILIAS\Plugins\Form\FormAdapter` to add metadata fields to a given form. The adapter is also used to save Record data after the form has been validated:
@@ -122,7 +153,7 @@ $form->addItem($item);
 // Now we want to add some metadata fields to the existing form
 $myConsumer = new ilConsumerObject(new ilObjCourse(123));
 $adapter = new FormAdapter($form, $myConsumer);
-$fieldGroup = FieldGroup::findByIdentifier('course_metadata');
+$fieldGroup = MetadataService::getInstance()->getFieldGroupByIdentifier('course_metadata');
 $adapter->addFields($fieldGroup); // Adds all fields of the group 'course_metadata' to the form
 
 // When the form is submitted, we use the adapter to save the records
@@ -133,6 +164,13 @@ if ($form->checkInput()) {
     }
 }
 ```
+
+## SrUserEnrolment plugin
+The MetaData plugin delivers a metadata field operator rule for the [SrUserEnrolment plugin](https://github.com/studer-raimann/SrUserEnrolment), if you have installed this plugin
+
+### Requirements
+* ILIAS 5.3 or ILIAS 5.4
+* PHP >=7.0
 
 ### ILIAS Plugin SLA
 

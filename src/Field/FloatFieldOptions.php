@@ -1,31 +1,30 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
 /**
  * Class FloatFieldOptions
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 class FloatFieldOptions extends FieldOptions
 {
 
     /**
-     * @label Min value
+     * @label        Min value
      * @formProperty ilNumberInputGUI
      * @var string
      */
     protected $minValue = '';
-
     /**
-     * @label Max value
+     * @label        Max value
      * @formProperty ilNumberInputGUI
      * @var string
      */
     protected $maxValue = '';
-
     /**
-     * @label Number of decimals
+     * @label        Number of decimals
      * @formProperty ilNumberInputGUI
      * @var int
      */
@@ -36,11 +35,12 @@ class FloatFieldOptions extends FieldOptions
     {
         parent::__construct($data);
         $this->data = array_merge($this->data, array(
-            'minValue' => $this->minValue,
-            'maxValue' => $this->maxValue,
+            'minValue'  => $this->minValue,
+            'maxValue'  => $this->maxValue,
             'nDecimals' => $this->nDecimals,
         ), (array) $data);
     }
+
 
     /**
      * @return int
@@ -50,6 +50,7 @@ class FloatFieldOptions extends FieldOptions
         return $this->data['minValue'];
     }
 
+
     /**
      * @param int $minValue
      */
@@ -57,6 +58,7 @@ class FloatFieldOptions extends FieldOptions
     {
         $this->data['minValue'] = $minValue;
     }
+
 
     /**
      * @return int
@@ -66,6 +68,7 @@ class FloatFieldOptions extends FieldOptions
         return $this->data['maxValue'];
     }
 
+
     /**
      * @param int $maxValue
      */
@@ -74,6 +77,7 @@ class FloatFieldOptions extends FieldOptions
         $this->data['maxValue'] = $maxValue;
     }
 
+
     /**
      * @return int
      */
@@ -81,6 +85,7 @@ class FloatFieldOptions extends FieldOptions
     {
         return $this->data['nDecimals'];
     }
+
 
     /**
      * @param int $nDecimals

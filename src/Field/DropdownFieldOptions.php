@@ -1,18 +1,19 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
 /**
  * Class DropdownFieldOptions
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 class DropdownFieldOptions extends FieldOptions
 {
 
     /**
-     * @label Prepend empty option
-     * @description Adds an empty entry as first option, otherwise the first option is selected
+     * @label        Prepend empty option
+     * @description  Adds an empty entry as first option, otherwise the first option is selected
      * @formProperty ilCheckboxInputGUI
      * @var bool
      */
@@ -27,6 +28,7 @@ class DropdownFieldOptions extends FieldOptions
         ), (array) $data);
     }
 
+
     /**
      * @return bool
      */
@@ -35,6 +37,7 @@ class DropdownFieldOptions extends FieldOptions
         return (bool) $this->data['prependEmptyOption'];
     }
 
+
     /**
      * @param bool $prependEmptyOption
      */
@@ -42,5 +45,4 @@ class DropdownFieldOptions extends FieldOptions
     {
         $this->data['prependEmptyOption'] = (bool) $prependEmptyOption;
     }
-
 }

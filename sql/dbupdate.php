@@ -21,3 +21,13 @@ SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping::installDB();
 require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/MetaData/vendor/autoload.php');
 SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping::updateDB();
 ?>
+<#3>
+<?php
+\SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping::updateDB();
+?>
+<#4>
+<?php
+if (file_exists("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/SrUserEnrolment/vendor/autoload.php")) {
+    \SRAG\ILIAS\Plugins\MetaData\SrUserEnrolment\EnrolmentWorkflow\Rule\MetaDataField\MetaDataField::updateDB();
+}
+?>

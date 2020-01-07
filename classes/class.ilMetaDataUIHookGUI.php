@@ -1,47 +1,60 @@
 <?php
+
+use ILIAS\DI\Container;
+use srag\DIC\MetaData\DICTrait;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
+use SRAG\ILIAS\Plugins\MetaData\MetadataService;
+use SRAG\ILIAS\Plugins\MetaData\Object\ConsumerObject;
 use SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject;
 use SRAG\ILIAS\Plugins\MetaData\Record\RecordQuery;
-
-require_once('./Services/UIComponent/classes/class.ilUIHookPluginGUI.php');
-require_once(__DIR__ . '/class.srmdBlockGUI.php');
 
 /**
  * Class ilMetaDataUIHookGUI
  */
 class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
 {
+
+    use DICTrait;
+    const PLUGIN_CLASS_NAME = ilMetaDataPlugin::class;
     /**
      * @var ilCtrl
      */
     protected $ctrl;
-
     /**
      * @var ilAccessHandler
      */
     protected $access;
-
     /**
      * @var ilObjUser
      */
     protected $user;
+    /**
+     * @var Container
+     */
+    protected $dic;
+
 
     public function __construct()
     {
-        global $ilCtrl, $ilAccess, $ilUser;
+        global $ilCtrl, $ilAccess, $ilUser, $DIC;
         $this->ctrl = $ilCtrl;
         $this->access = $ilAccess;
         $this->user = $ilUser;
+        $this->dic = $DIC;
     }
+
 
     function modifyGUI($a_comp, $a_part, $a_par = array())
     {
         parent::modifyGUI($a_comp, $a_part, $a_par);
+        if (!$this->getObject()) {
+            return;
+        }
         if (!$this->ctrl->getContextObjType() || !$this->ctrl->getContextObjId()) {
             return;
         }
-        if (!count($this->getMappings($this->ctrl->getContextObjType()))) {
+        if (!count(MetadataService::getInstance()->getMappings($this->ctrl->getContextObjType()))) {
             return;
         }
         if ($a_part == 'tabs') {
@@ -49,118 +62,25 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
         }
     }
 
-    public function getHTML($a_comp, $a_part, $a_par = array())
-    {
-        global $tpl;
-
-        if (is_object($tpl)) {
-            $tpl->addCss('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/MetaData/templates/css/srmd.css');
-        }
-        if (!$this->ctrl->getContextObjType() || !$this->ctrl->getContextObjId()) {
-            return parent::getHTML($a_comp, $a_part, $a_par);
-        }
-        if (!count($this->getMappings($this->ctrl->getContextObjType()))) {
-            return parent::getHTML($a_comp, $a_part, $a_par);
-        }
-        // Check if metadata should be displayed in blocks on the right side
-        if ($a_comp == 'Services/Container' && $a_part == 'right_column') {
-            $html = $this->getRightColumnBoxes();
-            return array(
-                'mode' => ilUIHookPluginGUI::PREPEND,
-                'html' => $html,
-            );
-        }
-//        // Check if metadata should be displayed in the object list GUI
-//        static $rendered = false;
-//        if ($a_part == 'template_get' && $a_par['tpl_id'] == 'Services/Container/tpl.container_list_item.html' && !$rendered) {
-//            /** @var ilTemplate $tpl */
-//            $rendered = true;
-//            $tpl = $a_par['tpl_obj'];
-//            return array(
-//                "mode" => ilUIHookPluginGUI::REPLACE,
-//                "html" => $tpl->get() . 'blub',
-//            );
-//        }
-        static $rendered = false;
-        if ($a_part == 'template_get' && $a_par['tpl_id'] == 'Services/InfoScreen/tpl.infoscreen.html' && !$rendered) {
-            $rendered = true;
-            return array(
-                "mode" => ilUIHookPluginGUI::PREPEND,
-                "html" => $this->getInfoScreenHTML(),
-            );
-        }
-        return parent::getHTML($a_comp, $a_part, $a_par);
-    }
 
     /**
-     * Prepend metadata fields on info screen
-     *
-     * @return string
+     * @return ConsumerObject|null
      */
-    protected function getInfoScreenHTML()
+    protected function getObject()
     {
-        require_once('./Services/InfoScreen/classes/class.ilInfoScreenGUI.php');
-        $info = new ilInfoScreenGUI(null);
-        $mappings = array_filter($this->getMappings($this->ctrl->getContextObjType()), function($mapping) {
-            /** @var $mapping ilObjectMapping */
-            return ($mapping->isShowInfoScreen());
-        });
-        $object = ilObjectFactory::getInstanceByObjId($this->ctrl->getContextObjId());
-        $query = new RecordQuery(new ilConsumerObject($object));
-        foreach ($mappings as $mapping) {
-            foreach ($mapping->getFieldGroups() as $group) {
-                $records = array_map(function($field_id) use ($query, $group) {
-                    $field = Field::find($field_id);
-                    return $query->getRecord($group, $field);
-                }, $mapping->getShowInfoFieldIds($group->getId()));
-                $records = array_filter($records, function($record) { return $record !== null; });
-                if (!count($records)) {
-                    continue;
-                }
-                $info->addSection($group->getTitle($this->user->getLanguage()));
-                foreach ($records as $record) {
-		                $info->addProperty($record->getField()->getLabel($this->user->getLanguage()), $record->getFormattedValue());
-                }
+        static $object = false;
+        if ($object === false) {
+            $object = ilObjectFactory::getInstanceByRefId(filter_input(INPUT_GET, 'ref_id'), false);
+            if ($object) {
+                $object = new ilConsumerObject($object);
+            } else {
+                $object = null;
             }
         }
-        return $info->getHtml();
+
+        return $object;
     }
 
-
-    /**
-     * @return string
-     */
-    protected function getRightColumnBoxes()
-    {
-        $mappings = array_filter($this->getMappings($this->ctrl->getContextObjType()), function($mapping) {
-            /** @var $mapping ilObjectMapping */
-            return ($mapping->isShowBlock());
-        });
-        if (!count($mappings)) {
-            return '';
-        }
-        $out = '';
-        $object = ilObjectFactory::getInstanceByObjId($this->ctrl->getContextObjId());
-        $query = new RecordQuery(new ilConsumerObject($object));
-        /** @var ilObjectMapping $mapping */
-        foreach ($mappings as $mapping) {
-            foreach ($mapping->getFieldGroups() as $group) {
-                $records = array_map(function($field_id) use ($query, $group) {
-                    $field = Field::find($field_id);
-                    return $query->getRecord($group, $field);
-                }, $mapping->getShowBlockFieldIds($group->getId()));
-                $records = array_filter($records, function($record) { return $record !== null; });
-                if (!count($records)) {
-                    continue;
-                }
-                $gui = new srmdBlockGUI();
-                $gui->setTitle($group->getTitle());
-                $gui->setData($records);
-                $out .= $gui->getHTML();
-            }
-        }
-        return $out;
-    }
 
     /**
      * Add tabs for all object mappings that are editable
@@ -170,21 +90,16 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
     protected function addObjectMappingTab(ilTabsGUI $tabs)
     {
         global $tpl;
-        // We only add the tab if the user has write access to the current object
-        if (!$this->access->checkAccess('write', '', (int)$_GET['ref_id'])) {
-            return;
-        }
-        $mappings = array_filter($this->getMappings($this->ctrl->getContextObjType()), function($mapping) {
-            return ($mapping->isEditable());
+
+        $mappings = array_filter(MetadataService::getInstance()->getMappings($this->ctrl->getContextObjType()), function (ilObjectMapping $mapping) : bool {
+            return MetadataService::getInstance()->canBeShow($this->getObject(), $mapping, MetadataService::SHOW_CONTEXT_EDIT_IN_TAB);
         });
         static $added = false;
         foreach ($mappings as $mapping) {
             /** @var $mapping ilObjectMapping */
-            $this->ctrl->setParameterByClass('srmdGUI', 'ref_id', (int)$_GET['ref_id']);
-            $this->ctrl->setParameterByClass('srmdGUI', 'back_target', urlencode(base64_encode($_SERVER['REQUEST_URI'])));
-            $this->ctrl->setParameterByClass('srmdGUI', 'mapping_id', $mapping->getId());
-            $this->ctrl->setParameterByClass('srmdGUI', 'mapping_obj_id', $this->ctrl->getContextObjId());
-            $link = $this->ctrl->getLinkTargetByClass(array('ilUIPluginRouterGUI', 'srmdGUI'));
+            $this->ctrl->setParameterByClass(srmdGUI::class, 'ref_id', $this->getObject()->getRefId());
+            $this->ctrl->setParameterByClass(srmdGUI::class, 'mapping_id', $mapping->getId());
+            $link = $this->ctrl->getLinkTargetByClass(array(ilUIPluginRouterGUI::class, srmdGUI::class), srmdGUI::CMD_SHOW);
             $tabs->addTab('srmd_mapping_' . $mapping->getId(), $mapping->getTabTitle(), $link);
             if (!$added) {
                 $added = true;
@@ -200,24 +115,131 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
         }
     }
 
-    /**
-     * Return the MetaData FieldGroups mapped to the given object type
-     *
-     * @param string $obj_type
-     * @return ilObjectMapping[]
-     */
-    protected function getMappings($obj_type)
+
+    public function getHTML($a_comp, $a_part, $a_par = array())
     {
-        static $cache = array();
-        if (isset($cache[$obj_type])) {
-            return $cache[$obj_type];
+        if (!$this->getObject()) {
+            return parent::getHTML($a_comp, $a_part, $a_par);
         }
-        $mappings = ilObjectMapping::where(array(
-            'obj_type' => $obj_type,
-            'active' => 1,
-        ))->get();
-        $cache[$obj_type] = $mappings;
-        return $mappings;
+        global $tpl;
+
+        if (is_object($tpl)) {
+            $tpl->addCss('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/MetaData/templates/css/srmd.css');
+        }
+        if (!$this->ctrl->getContextObjType() || !$this->ctrl->getContextObjId()) {
+            return parent::getHTML($a_comp, $a_part, $a_par);
+        }
+        if (!count(MetadataService::getInstance()->getMappings($this->ctrl->getContextObjType()))) {
+            return parent::getHTML($a_comp, $a_part, $a_par);
+        }
+        // Check if metadata should be displayed in blocks on the right side
+        if ($a_comp == 'Services/Container' && $a_part == 'right_column') {
+            $html = $this->getRightColumnBoxes();
+
+            return array(
+                'mode' => ilUIHookPluginGUI::PREPEND,
+                'html' => $html,
+            );
+        }
+        //        // Check if metadata should be displayed in the object list GUI
+        //        static $rendered = false;
+        //        if ($a_part == 'template_get' && $a_par['tpl_id'] == 'Services/Container/tpl.container_list_item.html' && !$rendered) {
+        //            /** @var ilTemplate $tpl */
+        //            $rendered = true;
+        //            $tpl = $a_par['tpl_obj'];
+        //            return array(
+        //                "mode" => ilUIHookPluginGUI::REPLACE,
+        //                "html" => $tpl->get() . 'blub',
+        //            );
+        //        }
+        static $rendered = false;
+        if ($this->ctrl->getCmdClass() === strtolower(ilInfoScreenGUI::class) && $a_part == 'template_get' && $a_par['tpl_id'] == 'Services/InfoScreen/tpl.infoscreen.html' && !$rendered) {
+            $rendered = true;
+
+            return array(
+                "mode" => ilUIHookPluginGUI::PREPEND,
+                "html" => $this->getInfoScreenHTML(),
+            );
+        }
+
+        return parent::getHTML($a_comp, $a_part, $a_par);
     }
 
+
+    /**
+     * @return string
+     */
+    protected function getRightColumnBoxes()
+    {
+        $mappings = array_filter(MetadataService::getInstance()->getMappings($this->ctrl->getContextObjType()), function (ilObjectMapping $mapping) : bool {
+            return MetadataService::getInstance()->canBeShow($this->getObject(), $mapping, MetadataService::SHOW_CONTEXT_SHOW_RIGHT_BLOCK);
+        });
+        if (!count($mappings)) {
+            return '';
+        }
+        $out = '';
+        $query = new RecordQuery($this->getObject());
+        /** @var ilObjectMapping $mapping */
+        foreach ($mappings as $mapping) {
+            foreach ($mapping->getFieldGroups() as $group) {
+                $records = array_map(function ($field_id) use ($query, $group) {
+                    $field = Field::find($field_id);
+
+                    return $query->getRecord($group, $field);
+                }, $mapping->getShowBlockFieldIds($group->getId()));
+                $records = array_filter($records, function ($record) { return $record !== null; });
+                if (!count($records)) {
+                    continue;
+                }
+                if (self::version()->is54()) {
+                    $gui = new srmdBlockGUI54();
+                } else {
+                    $gui = new srmdBlockGUI53();
+                }
+                $gui->setTitle($group->getTitle());
+                $gui->setData($records);
+                $out .= $gui->getHTML();
+            }
+        }
+
+        return $out;
+    }
+
+
+    /**
+     * Prepend metadata fields on info screen
+     *
+     * @return string
+     */
+    protected function getInfoScreenHTML()
+    {
+        require_once('./Services/InfoScreen/classes/class.ilInfoScreenGUI.php');
+        $info = new ilInfoScreenGUI(null);
+        $mappings = array_filter(MetadataService::getInstance()->getMappings($this->ctrl->getContextObjType()), function (ilObjectMapping $mapping) : bool {
+            return MetadataService::getInstance()->canBeShow($this->getObject(), $mapping, MetadataService::SHOW_CONTEXT_SHOW_INFO_SCREEN);
+        });
+        if (!count($mappings)) {
+            return '';
+        }
+        $query = new RecordQuery($this->getObject());
+        foreach ($mappings as $mapping) {
+            foreach ($mapping->getFieldGroups() as $group) {
+                $records = array_map(function ($field_id) use ($query, $group) {
+                    $field = Field::find($field_id);
+
+                    return $query->getRecord($group, $field);
+                }, $mapping->getShowInfoFieldIds($group->getId()));
+                $records = array_filter($records, function ($record) { return $record !== null; });
+                if (!count($records)) {
+                    continue;
+                }
+                $info->addSection($group->getTitle($this->user->getLanguage()));
+                foreach ($records as $record) {
+                    $info->addProperty($record->getField()->getLabel($this->user->getLanguage()), $record->getFormattedValue());
+                }
+            }
+        }
+
+        return $info->getHtml();
+    }
 }

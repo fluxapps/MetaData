@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Record;
 
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
@@ -15,14 +16,14 @@ class RecordQuery
 {
 
     /**
+     * @var array
+     */
+    protected static $cache = array();
+    /**
      * @var ConsumerObject
      */
     protected $object;
 
-    /**
-     * @var array
-     */
-    protected static $cache = array();
 
     /**
      * @param ConsumerObject $object
@@ -51,6 +52,7 @@ class RecordQuery
      * ordered in the same order as the fields in the group
      *
      * @param FieldGroup $group
+     *
      * @return Record[]
      */
     public function getRecords(FieldGroup $group)
@@ -61,7 +63,7 @@ class RecordQuery
         }
         $records = Record::where(array(
             'obj_type' => $this->object->getType(),
-            'obj_id' => $this->object->getId(),
+            'obj_id'   => $this->object->getId(),
             'group_id' => $group->getId()
         ))->get();
         // Sort records according to the fields in the field group
@@ -87,34 +89,13 @@ class RecordQuery
         return $sorted;
     }
 
-    /**
-     * @param FieldGroup $group
-     * @param Field $field
-     * @return Record|null
-     */
-    public function getRecord(FieldGroup $group, Field $field)
-    {
-        $key = $this->getCacheKey($group, $field);
-        if (isset(self::$cache[$key])) {
-            return self::$cache[$key];
-        }
-        /** @var Record $record */
-        $record = Record::where(array(
-            'obj_type' => $this->object->getType(),
-            'obj_id' => $this->object->getId(),
-            'group_id' => $group->getId(),
-            'field_id' => $field->getId(),
-        ))->first();
-        self::$cache[$key] = $record;
-
-        return $record;
-    }
 
     /**
      * Generate a cache key for records
      *
      * @param FieldGroup $group
      * @param Field|null $field
+     *
      * @return string
      */
     protected function getCacheKey(FieldGroup $group, Field $field = null)
@@ -127,7 +108,32 @@ class RecordQuery
         if ($field) {
             $keys[] = $field->getId();
         }
+
         return implode('_', $keys);
     }
 
+
+    /**
+     * @param FieldGroup $group
+     * @param Field      $field
+     *
+     * @return Record|null
+     */
+    public function getRecord(FieldGroup $group, Field $field)
+    {
+        $key = $this->getCacheKey($group, $field);
+        if (isset(self::$cache[$key])) {
+            return self::$cache[$key];
+        }
+        /** @var Record $record */
+        $record = Record::where(array(
+            'obj_type' => $this->object->getType(),
+            'obj_id'   => $this->object->getId(),
+            'group_id' => $group->getId(),
+            'field_id' => $field->getId(),
+        ))->first();
+        self::$cache[$key] = $record;
+
+        return $record;
+    }
 }

@@ -1,14 +1,18 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Config;
 
 require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
 
+use ilRepositorySelector2InputGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Field\FieldGroup;
 use SRAG\ILIAS\Plugins\MetaData\Field\NullField;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
 use SRAG\ILIAS\Plugins\MetaData\FormProperty\ilAsmSelectInputGUI;
 use SRAG\ILIAS\Plugins\MetaData\Language\Language;
+use ilCheckboxInputGUI;
+use SRAG\ILIAS\Plugins\MetaData\MetadataService;
 
 /**
  * Class ilObjectMappingFormGUI
@@ -17,15 +21,16 @@ use SRAG\ILIAS\Plugins\MetaData\Language\Language;
  */
 class ilObjectMappingFormGUI extends \ilPropertyFormGUI
 {
+
     /**
      * @var ilObjectMapping
      */
     protected $mapping;
-
     /**
      * @var Language
      */
     protected $language;
+
 
     public function __construct(ilObjectMapping $mapping, Language $language)
     {
@@ -35,6 +40,7 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
         $this->setTitle(($mapping->getId()) ? "Edit Mapping: " . $mapping->getTabTitle() : "Add new Mapping");
         $this->init();
     }
+
 
     protected function init()
     {
@@ -60,8 +66,8 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
 
         $options = array();
         /** @var FieldGroup $group */
-        foreach (FieldGroup::get() as $group) {
-            $options[$group->getId()] = $group->getTitle(). ' [' . $group->getIdentifier() . ']';
+        foreach (MetadataService::getInstance()->getFieldGroups() as $group) {
+            $options[$group->getId()] = $group->getTitle() . ' [' . $group->getIdentifier() . ']';
         }
         $item = new ilAsmSelectInputGUI('Field Groups', 'field_group_ids');
         $item->setInfo('Select the Field Groups containing the fields you want to map to objects of the type defined above');
@@ -118,10 +124,26 @@ class ilObjectMappingFormGUI extends \ilPropertyFormGUI
 
         foreach ($this->mapping->getFieldGroups() as $group) {
             $item = new ilAsmSelectInputGUI($group->getTitle(), 'show_info_group_' . $group->getId());
+            $options = array();
+            foreach ($group->getFields() as $field) {
+                $options[$field->getId()] = $field->getLabel() . ' [' . $field->getIdentifier() . ']';
+            }
             $item->setOptions($options);
             $item->setValue($this->mapping->getShowInfoFieldIds($group->getId()));
             $show_info->addSubItem($item);
         }
 
+        $only_certain_places = new ilCheckboxInputGUI('Only show in certain places', 'only_certain_places');
+        $only_certain_places->setChecked($this->mapping->isOnlyCertainPlaces());
+        $this->addItem($only_certain_places);
+
+        $only_certain_places_ref_id = new ilRepositorySelector2InputGUI('Parent Object', 'only_certain_places_ref_id');
+        $only_certain_places_ref_id->getExplorerGUI()->setSelectableTypes(["root", "cat", "grp", "fold"]);
+        $only_certain_places_ref_id->setValue($this->mapping->getOnlyCertainPlacesRefId());
+        $only_certain_places->addSubItem($only_certain_places_ref_id);
+
+        $only_certain_places_whole_tree = new ilCheckboxInputGUI('Whole sub tree', 'only_certain_places_whole_tree');
+        $only_certain_places_whole_tree->setChecked($this->mapping->isOnlyCertainPlacesWholeTree());
+        $only_certain_places->addSubItem($only_certain_places_whole_tree);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
 use SRAG\ILIAS\Plugins\MetaData\Storage\TextStorage;
@@ -6,17 +7,11 @@ use SRAG\ILIAS\Plugins\MetaData\Storage\TextStorage;
 /**
  * Class TextareaField
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 class TextareaField extends TextField
 {
-
-    protected function getFieldOptions(array $data)
-    {
-        return new TextareaFieldOptions($data);
-    }
-
 
     /**
      * @return TextareaFieldOptions
@@ -42,5 +37,11 @@ class TextareaField extends TextField
             'SRAG\\ILIAS\\Plugins\\MetaData\\Inputfield\\InputfieldTextarea',
             'SRAG\\ILIAS\\Plugins\\MetaData\\Inputfield\\InputfieldRichtext',
         );
+    }
+
+
+    protected function getFieldOptions(array $data)
+    {
+        return new TextareaFieldOptions($data);
     }
 }

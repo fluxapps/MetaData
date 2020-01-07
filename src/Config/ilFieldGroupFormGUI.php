@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Config;
 
 require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
@@ -16,15 +17,16 @@ use SRAG\ILIAS\Plugins\MetaData\Language\Language;
  */
 class ilFieldGroupFormGUI extends \ilPropertyFormGUI
 {
+
     /**
      * @var FieldGroup
      */
     protected $group;
-
     /**
      * @var Language
      */
     protected $lang;
+
 
     public function __construct(FieldGroup $group, Language $lang)
     {
@@ -33,6 +35,7 @@ class ilFieldGroupFormGUI extends \ilPropertyFormGUI
         $this->lang = $lang;
         $this->init();
     }
+
 
     protected function init()
     {
@@ -44,6 +47,7 @@ class ilFieldGroupFormGUI extends \ilPropertyFormGUI
         $this->addCommandButton('saveFieldGroup', 'Save');
         $this->addCommandButton('cancelFieldGroup', 'Cancel');
     }
+
 
     protected function addGeneral()
     {
@@ -72,12 +76,13 @@ class ilFieldGroupFormGUI extends \ilPropertyFormGUI
         }
     }
 
+
     protected function addFields()
     {
         $options = array();
         /** @var Field $field */
         foreach (NullField::get() as $field) {
-            $options[$field->getId()] = $field->getLabel(). ' [' . $field->getIdentifier() . ']';
+            $options[$field->getId()] = $field->getLabel() . ' [' . $field->getIdentifier() . ']';
         }
         $item = new ilAsmSelectInputGUI('Fields', 'fields');
         $item->setOptions($options);

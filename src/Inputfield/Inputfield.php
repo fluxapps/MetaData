@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
@@ -16,15 +17,17 @@ interface Inputfield
 
     /**
      * @param Record $record
+     *
      * @return \ilFormPropertyGUI
      */
     public function getILIASFormInputs(Record $record);
 
+
     /**
-     * @param Record $record
+     * @param Record             $record
      * @param \ilPropertyFormGUI $form
+     *
      * @return mixed
      */
     public function getRecordValue(Record $record, \ilPropertyFormGUI $form);
-
 }

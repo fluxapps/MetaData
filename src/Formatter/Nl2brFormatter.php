@@ -1,6 +1,5 @@
 <?php
 
-
 namespace SRAG\ILIAS\Plugins\MetaData\Formatter;
 
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
@@ -8,7 +7,7 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class Nl2brFormatter
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Formatter
  */
 class Nl2brFormatter implements Formatter
@@ -22,10 +21,12 @@ class Nl2brFormatter implements Formatter
         return "Apply PHP's nl2br function";
     }
 
+
     public function getInType()
     {
         return 'string';
     }
+
 
     public function getOutType()
     {
@@ -35,7 +36,8 @@ class Nl2brFormatter implements Formatter
 
     /**
      * @param Record $record
-     * @param $value
+     * @param        $value
+     *
      * @return mixed
      */
     public function format(Record $record, $value)

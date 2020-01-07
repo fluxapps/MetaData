@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
 use arConnector;
@@ -10,11 +11,13 @@ use SRAG\ILIAS\Plugins\MetaData\Language\Language;
  *
  * Groups some fields together with a title and description
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 class FieldGroup extends \ActiveRecord
 {
+
+    const TABLE_NAME = 'srmd_field_group';
     /**
      * @var int
      *
@@ -25,7 +28,6 @@ class FieldGroup extends \ActiveRecord
      * @db_sequence     true
      */
     protected $id = 0;
-
     /**
      * @var string
      *
@@ -36,8 +38,6 @@ class FieldGroup extends \ActiveRecord
      * @db_is_notnull   true
      */
     protected $identifier;
-
-
     /**
      * @var array
      *
@@ -46,7 +46,6 @@ class FieldGroup extends \ActiveRecord
      * @db_length       1204
      */
     protected $title = array();
-
     /**
      * @var array
      *
@@ -55,7 +54,6 @@ class FieldGroup extends \ActiveRecord
      * @db_length       2048
      */
     protected $description = array();
-
     /**
      * @var array
      *
@@ -64,20 +62,40 @@ class FieldGroup extends \ActiveRecord
      * @db_length       1204
      */
     protected $field_ids = array();
-
     /**
      * @var Language
      */
     protected $lang;
 
+
     /**
-     * @param int $primary_key
+     * @param int              $primary_key
      * @param arConnector|NULL $connector
      */
-    public function __construct($primary_key = 0, arConnector $connector = NULL)
+    public function __construct($primary_key = 0, arConnector $connector = null)
     {
         $this->lang = new ilLanguage();
         parent::__construct($primary_key, $connector);
+    }
+
+
+    /**
+     * @param $identifier
+     *
+     * @return FieldGroup
+     */
+    public static function findByIdentifier($identifier)
+    {
+        return self::where(array('identifier' => $identifier))->first();
+    }
+
+
+    /**
+     * @return string
+     */
+    static function returnDbTableName()
+    {
+        return self::TABLE_NAME;
     }
 
 
@@ -93,6 +111,7 @@ class FieldGroup extends \ActiveRecord
         return parent::sleep($field_name);
     }
 
+
     public function wakeUp($field_name, $field_value)
     {
         switch ($field_name) {
@@ -105,14 +124,6 @@ class FieldGroup extends \ActiveRecord
         return parent::wakeUp($field_name, $field_value);
     }
 
-    /**
-     * @param $identifier
-     * @return FieldGroup
-     */
-    public static function findByIdentifier($identifier)
-    {
-        return self::where(array('identifier' => $identifier))->first();
-    }
 
     /**
      * @return int
@@ -131,6 +142,7 @@ class FieldGroup extends \ActiveRecord
         return $this->identifier;
     }
 
+
     /**
      * @param string $identifier
      */
@@ -142,7 +154,8 @@ class FieldGroup extends \ActiveRecord
 
     /**
      * @param string $lang
-     * @param bool $substitute_default
+     * @param bool   $substitute_default
+     *
      * @return string
      */
     public function getTitle($lang = '', $substitute_default = true)
@@ -155,8 +168,10 @@ class FieldGroup extends \ActiveRecord
         }
         // Try to return in default language if available, otherwise empty string
         $default = $this->lang->getDefaultLanguage();
+
         return (isset($this->title[$default])) ? $this->title[$default] : '';
     }
+
 
     /**
      * @param string $title
@@ -167,9 +182,11 @@ class FieldGroup extends \ActiveRecord
         $this->title[$lang] = $title;
     }
 
+
     /**
      * @param string $lang
-     * @param bool $substitute_default
+     * @param bool   $substitute_default
+     *
      * @return string
      */
     public function getDescription($lang = '', $substitute_default = true)
@@ -182,17 +199,37 @@ class FieldGroup extends \ActiveRecord
         }
         // Try to return in default language if available, otherwise empty string
         $default = $this->lang->getDefaultLanguage();
+
         return (isset($this->description[$default])) ? $this->description[$default] : '';
     }
 
+
     /**
      * @param string $description
-     * @param $lang
+     * @param        $lang
      */
     public function setDescription($description, $lang)
     {
         $this->description[$lang] = $description;
     }
+
+
+    /**
+     * @return Field[]
+     */
+    public function getFields()
+    {
+        $fields = array();
+        foreach ($this->getFieldIds() as $field_id) {
+            $field = Field::find($field_id);
+            if ($field) {
+                $fields[] = $field;
+            }
+        }
+
+        return $fields;
+    }
+
 
     /**
      * @return array
@@ -202,33 +239,12 @@ class FieldGroup extends \ActiveRecord
         return $this->field_ids;
     }
 
+
     /**
      * @param array $ids
      */
     public function setFieldIds(array $ids)
     {
         $this->field_ids = $ids;
-    }
-
-    /**
-     * @return Field[]
-     */
-    public function getFields()
-    {
-        $fields = array();
-        foreach ($this->getFieldIds() as $field_id) {
-            $fields[] = Field::find($field_id);
-        }
-
-        return $fields;
-    }
-
-
-    /**
-     * @return string
-     */
-    static function returnDbTableName()
-    {
-        return 'srmd_field_group';
     }
 }

@@ -1,6 +1,8 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
+use ilNonEditableValueGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\TextField;
 use SRAG\ILIAS\Plugins\MetaData\Language\ilLanguage;
 use SRAG\ILIAS\Plugins\MetaData\Language\Language;
@@ -9,7 +11,7 @@ use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 /**
  * Class InputfieldText
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Inputfield
  */
 class InputfieldText extends BaseInputfield
@@ -20,11 +22,13 @@ class InputfieldText extends BaseInputfield
      */
     protected $language;
 
+
     public function __construct(TextField $field, $lang = '')
     {
         parent::__construct($field, $lang);
         $this->language = new ilLanguage();
     }
+
 
     public function getILIASFormInputs(Record $record)
     {
@@ -32,35 +36,30 @@ class InputfieldText extends BaseInputfield
         $value = $record->getValue();
         $options = $this->field->options();
         foreach ($this->getLanguages() as $lang) {
-            $input = new \ilTextInputGUI($this->getLabel($lang), $this->getPostVar($record) . "_$lang");
+            if ($options->isOnlyDisplay()) {
+                $input = new ilNonEditableValueGUI($this->field->getLabel($this->lang));
+            } else {
+                $input = new \ilTextInputGUI($this->getLabel($lang), $this->getPostVar($record) . "_$lang");
+                // Field is required only in the default language, even if rendered for multiple languages
+                $input->setRequired($options->isRequired() && $lang == $this->language->getDefaultLanguage());
+                if ($options->getMaxLength()) {
+                    $input->setMaxLength($options->getMaxLength());
+                }
+                if ($options->getRegex()) {
+                    $input->setValidationRegexp($options->getRegex());
+                }
+            }
             if ($this->field->getDescription($this->lang)) {
                 $input->setInfo($this->field->getDescription($this->lang));
             }
             if (isset($value[$lang])) {
                 $input->setValue($value[$lang]);
             }
-            // Field is required only in the default language, even if rendered for multiple languages
-            $input->setRequired($options->isRequired() && $lang == $this->language->getDefaultLanguage());
-            if ($options->getMaxLength()) {
-                $input->setMaxLength($options->getMaxLength());
-            }
-            if ($options->getRegex()) {
-                $input->setValidationRegexp($options->getRegex());
-            }
             $inputs[] = $input;
         }
         $this->initLanguageTabs($this->getPostVar($record));
-        return $inputs;
-    }
 
-    public function getRecordValue(Record $record, \ilPropertyFormGUI $form)
-    {
-        $values = array();
-        foreach ($this->getLanguages() as $lang) {
-            $value = $form->getInput($this->getPostVar($record) . "_$lang");
-            $values[$lang] = $value;
-        }
-        return $values;
+        return $inputs;
     }
 
 
@@ -72,7 +71,24 @@ class InputfieldText extends BaseInputfield
     protected function getLanguages()
     {
         $options = $this->field->options();
+
         return ($options->isMultiLang()) ? $this->language->getAvailableLanguages() : array($this->language->getDefaultLanguage());
+    }
+
+
+    /**
+     * Return the label for the field in the given language
+     *
+     * @param string $lang
+     *
+     * @return string
+     */
+    protected function getLabel($lang)
+    {
+        $options = $this->field->options();
+        $suffix = ($options->isMultiLang() && !$options->getUseLanguageTabs()) ? strtoupper(" $lang") : '';
+
+        return $this->field->getLabel($this->lang) . $suffix;
     }
 
 
@@ -94,17 +110,15 @@ class InputfieldText extends BaseInputfield
         $tpl->addOnLoadCode("srmd.languageTabs.useTabs('{$post_var}', '{$default}', {$languages});");
     }
 
-    /**
-     * Return the label for the field in the given language
-     *
-     * @param string $lang
-     * @return string
-     */
-    protected function getLabel($lang)
-    {
-        $options = $this->field->options();
-        $suffix = ($options->isMultiLang() && !$options->getUseLanguageTabs()) ? strtoupper(" $lang") : '';
-        return $this->field->getLabel($this->lang) . $suffix;
-    }
 
+    public function getRecordValue(Record $record, \ilPropertyFormGUI $form)
+    {
+        $values = array();
+        foreach ($this->getLanguages() as $lang) {
+            $value = $form->getInput($this->getPostVar($record) . "_$lang");
+            $values[$lang] = $value;
+        }
+
+        return $values;
+    }
 }

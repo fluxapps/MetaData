@@ -1,4 +1,5 @@
 <?php
+
 namespace SRAG\ILIAS\Plugins\MetaData\Field;
 
 use SRAG\ILIAS\Plugins\MetaData\Storage\IntegerStorage;
@@ -7,21 +8,11 @@ use SRAG\ILIAS\Plugins\MetaData\Storage\LocationStorage;
 /**
  * Class LocationField
  *
- * @author Stefan Wanzenried <sw@studer-raimann.ch>
+ * @author  Stefan Wanzenried <sw@studer-raimann.ch>
  * @package SRAG\ILIAS\Plugins\MetaData\Field
  */
 class LocationField extends Field
 {
-
-
-    /**
-     * @inheritdoc
-     */
-    protected function getFieldOptions(array $data)
-    {
-        return new FieldOptions($data);
-    }
-
 
     /**
      * @inheritdoc
@@ -45,5 +36,14 @@ class LocationField extends Field
             $this->formatters[] = 'SRAG\\ILIAS\\Plugins\\MetaData\\Formatter\\GoogleMapsFormatter';
         }
         parent::create();
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function getFieldOptions(array $data)
+    {
+        return new FieldOptions($data);
     }
 }
