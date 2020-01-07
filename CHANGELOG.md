@@ -1,6 +1,6 @@
 # Changelog
 
-## [x]
+## [1.0.0]
 - Only display field
 - Only show in certain places config
 - User field type
