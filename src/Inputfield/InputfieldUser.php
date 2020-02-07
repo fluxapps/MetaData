@@ -3,8 +3,9 @@
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
 use ilNonEditableValueGUI;
+use ilObjUser;
 use ilPropertyFormGUI;
-use ilTextInputGUI;
+use srag\CustomInputGUIs\MetaData\MultiSelectSearchNewInputGUI\MultiSelectSearchNewInputGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\UserField;
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 use srmdGUI;
@@ -37,13 +38,21 @@ class InputfieldUser extends BaseInputfield
             $input = new ilNonEditableValueGUI($this->field->getLabel($this->lang));
             $input->setValue(self::dic()->objDataCache()->lookupTitle($record->getValue()));
         } else {
-            $input = new ilTextInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
+            $input = new MultiSelectSearchNewInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
             $input->setRequired($this->field->options()->isRequired());
-            $input->setValue($record->getValue());
+            $input->setOptions(array_reduce(ilObjUser::searchUsers(null), function (array $users, array $user) : array {
+                $users[$user["usr_id"]] = $user["firstname"] . " " . $user["lastname"] . " (" . $user["login"] . ")";
+
+                return $users;
+            }, []));
+            if ($record->getValue()) {
+                $input->setValue([$record->getValue()]);
+            }
             //$cmdClass self::dic()->ctrl()->getCmdClass(); // is broken with namespace (ilCtrl), use with filter_input the original raw value
             $cmdClass = filter_input(INPUT_GET, "cmdClass");
             self::dic()->ctrl()->setParameterByClass($cmdClass, "field_id", $this->field->getId());
-            $input->setDataSource(self::dic()->ctrl()->getLinkTargetByClass($cmdClass, srmdGUI::CMD_USER_AUTOCOMPLETE, "", true, false));
+            $input->setAjaxLink(self::dic()->ctrl()->getLinkTargetByClass($cmdClass, srmdGUI::CMD_USERS_AUTOCOMPLETE, "", true, false));
+            $input->setLimitCount(1);
             self::dic()->ctrl()->clearParameterByClass($cmdClass, "field_id");
         }
 

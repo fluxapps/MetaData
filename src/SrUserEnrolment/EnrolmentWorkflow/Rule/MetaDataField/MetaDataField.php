@@ -50,7 +50,7 @@ class MetaDataField extends AbstractRule
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getRuleTypeTitle() : string
     {

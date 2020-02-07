@@ -70,7 +70,13 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
     {
         static $object = false;
         if ($object === false) {
-            $object = ilObjectFactory::getInstanceByRefId(filter_input(INPUT_GET, 'ref_id'), false);
+            $ref_id = filter_input(INPUT_GET, 'ref_id');
+            if (empty($ref_id)) {
+                $param_target = filter_input(INPUT_GET, 'target');
+                $ref_id = explode('_', $param_target)[1];
+            }
+            $ref_id = intval($ref_id);
+            $object = ilObjectFactory::getInstanceByRefId($ref_id, false);
             if ($object) {
                 $object = new ilConsumerObject($object);
             } else {
