@@ -78,6 +78,6 @@ class srmdGUI extends AbstractMetadataGUI
      */
     protected function back()
     {
-        self::dic()->ctrl()->redirectByClass([ilRepositoryGUI::class, get_class(((new ilObjectGUIFactory())->getInstanceByRefId($this->object->getRefId())))]);
+        self::dic()->ctrl()->redirectToURL(ilLink::_getStaticLink($this->object->getRefId()));
     }
 }

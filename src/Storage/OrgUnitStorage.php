@@ -20,10 +20,21 @@ class OrgUnitStorage extends IntegerStorage
      */
     protected function validateValue($value)
     {
+        $value = current($value);
+
         parent::validateValue($value);
 
         if (!empty($value) && !ilObjOrgUnit::_exists($value, true)) {
             throw new InvalidArgumentException("'$value' is not an exists org unit id!");
         }
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function normalizeValue($value)
+    {
+        return parent::normalizeValue(current($value));
     }
 }
