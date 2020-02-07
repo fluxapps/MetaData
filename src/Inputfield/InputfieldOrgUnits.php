@@ -5,7 +5,7 @@ namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 use ilNonEditableValueGUI;
 use ilOrgUnitPathStorage;
 use ilPropertyFormGUI;
-use srag\CustomInputGUIs\MetaData\MultiSelectSearchInputGUI\MultiSelectSearchInputGUI;
+use srag\CustomInputGUIs\MetaData\MultiSelectSearchNewInputGUI\MultiSelectSearchNewInputGUI;
 use SRAG\ILIAS\Plugins\MetaData\Field\OrgUnitsField;
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 use srmdGUI;
@@ -42,11 +42,13 @@ class InputfieldOrgUnits extends BaseInputfield
                 }, $record->getValue())),
                 false));
         } else {
-            $input = new MultiSelectSearchInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
+            $input = new MultiSelectSearchNewInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
             $input->setRequired($this->field->options()->isRequired());
-            $input->setOptions(array_combine($record->getValue(), array_map(function (int $org_unit_ref_id) : string {
-                return self::dic()->objDataCache()->lookupTitle(self::dic()->objDataCache()->lookupObjId($org_unit_ref_id));
-            }, $record->getValue())));
+            $input->setOptions(array_reduce(self::dic()->tree()->getSubTree(self::dic()->tree()->getNodeData($this->field->options()->getOrgUnitParentRefId())), function (array $org_units, array $item) : array {
+                $org_units[$item["child"]] = $item["title"];
+
+                return $org_units;
+            }, []));
             $input->setValue($record->getValue());
             //$cmdClass self::dic()->ctrl()->getCmdClass(); // is broken with namespace (ilCtrl), use with filter_input the original raw value
             $cmdClass = filter_input(INPUT_GET, "cmdClass");

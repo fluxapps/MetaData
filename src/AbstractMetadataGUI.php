@@ -5,8 +5,8 @@ namespace SRAG\ILIAS\Plugins\MetaData;
 use ilFormSectionHeaderGUI;
 use ilMetaDataPlugin;
 use ilNonEditableValueGUI;
+use ilObjUser;
 use ilPropertyFormGUI;
-use ilUserAutoComplete;
 use ilUtil;
 use InvalidArgumentException;
 use srag\DIC\MetaData\DICTrait;
@@ -34,8 +34,7 @@ abstract class AbstractMetadataGUI
     const PLUGIN_CLASS_NAME = ilMetaDataPlugin::class;
     const CMD_SHOW = "show";
     const CMD_SAVE = "save";
-    const CMD_USER_AUTOCOMPLETE = "userAutoComplete";
-    const CMD_ORG_UNIT_AUTOCOMPLETE = "orgUnitAutoComplete";
+    const CMD_USERS_AUTOCOMPLETE = "usersAutoComplete";
     const CMD_ORG_UNITS_AUTOCOMPLETE = "orgUnitsAutoComplete";
     const CMD_BACK = "back";
     /**
@@ -84,8 +83,7 @@ abstract class AbstractMetadataGUI
                 switch ($cmd) {
                     case self::CMD_SHOW:
                     case self::CMD_SAVE:
-                    case self::CMD_USER_AUTOCOMPLETE:
-                    case self::CMD_ORG_UNIT_AUTOCOMPLETE:
+                    case self::CMD_USERS_AUTOCOMPLETE:
                     case self::CMD_ORG_UNITS_AUTOCOMPLETE:
                     case self::CMD_BACK:
                         $this->{$cmd}();
@@ -237,7 +235,7 @@ abstract class AbstractMetadataGUI
     /**
      *
      */
-    protected function userAutoComplete()
+    protected function usersAutoComplete()
     {
         $field = Field::findOrFail(filter_input(INPUT_GET, "field_id"));
 
@@ -245,47 +243,15 @@ abstract class AbstractMetadataGUI
             throw new InvalidArgumentException("Field need to be type " . UserField::class);
         }
 
-        $auto = new ilUserAutoComplete();
-        $auto->setSearchFields(["login", "firstname", "lastname", "email", "usr_id"]);
-        $auto->setMoreLinkAvailable(true);
-        $auto->setResultField("usr_id");
-
-        if (filter_input(INPUT_GET, "fetchall")) {
-            $auto->setLimit(ilUserAutoComplete::MAX_ENTRIES);
-        }
-
-        echo $auto->getList(filter_input(INPUT_GET, "term"));
-
-        exit;
-    }
-
-
-    /**
-     *
-     */
-    protected function orgUnitAutoComplete()
-    {
-        $field = Field::findOrFail(filter_input(INPUT_GET, "field_id"));
-
-        if (!($field instanceof OrgUnitField) || $field->options()->isOnlyDisplay()) {
-            throw new InvalidArgumentException("Field need to be type " . OrgUnitField::class);
-        }
-
-        $term = strval(filter_input(INPUT_GET, "term"));
+        $term = strval(filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"]);
 
         echo json_encode([
-            "items" => array_values(array_map(function (array $item) : array {
+            "results" => array_values(array_map(function (array $user) : array {
                 return [
-                    "value" => $item["child"],
-                    "label" => $item["title"]
+                    "id"   => $user["usr_id"],
+                    "text" => $user["firstname"] . " " . $user["lastname"] . " (" . $user["login"] . ")"
                 ];
-            }, array_filter(self::dic()->tree()->getSubTree(self::dic()->tree()->getNodeData($field->options()->getOrgUnitParentRefId())), function (array $item) use ($term): bool {
-                if (is_numeric($term)) {
-                    return ($item["child"] == $term);
-                } else {
-                    return (stripos($item["title"], $term) !== false);
-                }
-            })))
+            }, ilObjUser::searchUsers($term)))
         ]);
 
         exit;
@@ -299,14 +265,14 @@ abstract class AbstractMetadataGUI
     {
         $field = Field::findOrFail(filter_input(INPUT_GET, "field_id"));
 
-        if (!($field instanceof OrgUnitsField) || $field->options()->isOnlyDisplay()) {
+        if (!($field instanceof OrgUnitField || $field instanceof OrgUnitsField) || $field->options()->isOnlyDisplay()) {
             throw new InvalidArgumentException("Field need to be type " . OrgUnitsField::class);
         }
 
         $term = strval(filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"]);
 
         echo json_encode([
-            "result" => array_values(array_map(function (array $item) : array {
+            "results" => array_values(array_map(function (array $item) : array {
                 return [
                     "id"   => $item["child"],
                     "text" => $item["title"]
