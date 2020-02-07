@@ -49,6 +49,7 @@ class MetadataService
     public function setValue(ilObject $object, string $field_group_id, string $field_id, $value)
     {
         $record = $this->getRecord($object, $field_group_id, $field_id);
+        if(!is_object($record)) { return; }
         $record->setValue($value);
         $record->save();
     }
@@ -67,6 +68,7 @@ class MetadataService
         $query = new RecordQuery($consumer);
         $fieldGroup = $this->getFieldGroupByIdentifier($field_group_id);
         $field = $this->getFieldByIdentifier($field_id);
+        if(!is_object($field)) {return null;}
         $record = $query->getRecord($fieldGroup, $field);
         if (!$record) {
             $record = new Record();
