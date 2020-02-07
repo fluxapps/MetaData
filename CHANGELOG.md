@@ -1,10 +1,11 @@
 # Changelog
 
-## [x]
+## [1.1.0]
 - Improve single user and org unit field
 - Fix latest SrUserEnrolment plugin version
 - Fix tab not show on object short link
 - Fix back to object may not work
+- Fix MetaDataService handle non valid objects
 
 ## [1.0.0]
 - Only display field
