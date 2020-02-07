@@ -9,10 +9,10 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
     public static $prefixLengthsPsr4 = array (
         's' => 
         array (
-            'srag\\RemovePluginDataConfirm\\MetaData\\' => 38,
+            'srag\\RemovePluginDataConfirm\\' => 29,
             'srag\\LibrariesNamespaceChanger\\' => 31,
-            'srag\\DIC\\MetaData\\' => 18,
-            'srag\\CustomInputGUIs\\MetaData\\' => 30,
+            'srag\\DIC\\' => 9,
+            'srag\\CustomInputGUIs\\' => 21,
         ),
         'S' => 
         array (
@@ -21,7 +21,7 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
     );
 
     public static $prefixDirsPsr4 = array (
-        'srag\\RemovePluginDataConfirm\\MetaData\\' => 
+        'srag\\RemovePluginDataConfirm\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
         ),
@@ -29,11 +29,11 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
         ),
-        'srag\\DIC\\MetaData\\' => 
+        'srag\\DIC\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
-        'srag\\CustomInputGUIs\\MetaData\\' => 
+        'srag\\CustomInputGUIs\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),
@@ -165,6 +165,7 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         'srag\\CustomInputGUIs\\MetaData\\MultiLineNewInputGUI\\MultiLineNewInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiLineNewInputGUI/MultiLineNewInputGUI.php',
         'srag\\CustomInputGUIs\\MetaData\\MultiSelectSearchInputGUI\\MultiSelectSearchInput2GUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchInputGUI/MultiSelectSearchInput2GUI.php',
         'srag\\CustomInputGUIs\\MetaData\\MultiSelectSearchInputGUI\\MultiSelectSearchInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchInputGUI/MultiSelectSearchInputGUI.php',
+        'srag\\CustomInputGUIs\\MetaData\\MultiSelectSearchNewInputGUI\\MultiSelectSearchNewInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchNewInputGUI/MultiSelectSearchNewInputGUI.php',
         'srag\\CustomInputGUIs\\MetaData\\NumberInputGUI\\NumberInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/NumberInputGUI/NumberInputGUI.php',
         'srag\\CustomInputGUIs\\MetaData\\PieChart\\Component\\LegendEntry' => __DIR__ . '/..' . '/srag/custominputguis/src/PieChart/Component/LegendEntry.php',
         'srag\\CustomInputGUIs\\MetaData\\PieChart\\Component\\PieChart' => __DIR__ . '/..' . '/srag/custominputguis/src/PieChart/Component/PieChart.php',
@@ -234,10 +235,9 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         'srag\\DIC\\MetaData\\Version\\VersionInterface' => __DIR__ . '/..' . '/srag/dic/src/Version/VersionInterface.php',
         'srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/LibrariesNamespaceChanger.php',
         'srag\\LibrariesNamespaceChanger\\PHP7Backport' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/PHP7Backport.php',
-        'srag\\RemovePluginDataConfirm\\MetaData\\AbstractPluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/AbstractPluginUninstallTrait.php',
-        'srag\\RemovePluginDataConfirm\\MetaData\\AbstractRemovePluginDataConfirm' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/AbstractRemovePluginDataConfirm.php',
-        'srag\\RemovePluginDataConfirm\\MetaData\\Exception\\RemovePluginDataConfirmException' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/Exception/RemovePluginDataConfirmException.php',
+        'srag\\RemovePluginDataConfirm\\MetaData\\BasePluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/BasePluginUninstallTrait.php',
         'srag\\RemovePluginDataConfirm\\MetaData\\PluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/PluginUninstallTrait.php',
+        'srag\\RemovePluginDataConfirm\\MetaData\\RemovePluginDataConfirmCtrl' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/class.RemovePluginDataConfirmCtrl.php',
         'srag\\RemovePluginDataConfirm\\MetaData\\RepositoryObjectPluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/RepositoryObjectPluginUninstallTrait.php',
         'srmdBlockGUI' => __DIR__ . '/../..' . '/classes/class.srmdBlockGUI.php',
         'srmdBlockGUI53' => __DIR__ . '/../..' . '/classes/class.srmdBlockGUI53.php',

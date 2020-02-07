@@ -2,8 +2,6 @@
 
 namespace srag\RemovePluginDataConfirm\MetaData;
 
-use srag\RemovePluginDataConfirm\MetaData\Exception\RemovePluginDataConfirmException;
-
 /**
  * Trait RepositoryObjectPluginUninstallTrait
  *
@@ -14,31 +12,26 @@ use srag\RemovePluginDataConfirm\MetaData\Exception\RemovePluginDataConfirmExcep
 trait RepositoryObjectPluginUninstallTrait
 {
 
-    use AbstractPluginUninstallTrait;
+    use BasePluginUninstallTrait;
 
 
     /**
      * @return bool
-     * @throws RemovePluginDataConfirmException
      *
      * @internal
      */
-    protected final function beforeUninstallCustom()/*: bool*/
+    protected final function beforeUninstallCustom() : bool
     {
         return $this->pluginUninstall(false); // Remove plugin data after ilRepUtil::deleteObjectType($this->getId() because may data needs for reading ilObject's!
     }
 
 
     /**
-     * @throws RemovePluginDataConfirmException
-     *
      * @internal
      */
     protected final function uninstallCustom()/*: void*/
     {
-        $remove_plugin_data_confirm_class = self::getRemovePluginDataConfirmClass();
-
-        $uninstall_removes_data = $remove_plugin_data_confirm_class->getUninstallRemovesData();
+        $uninstall_removes_data = RemovePluginDataConfirmCtrl::getUninstallRemovesData();
 
         $uninstall_removes_data = boolval($uninstall_removes_data);
 
@@ -46,7 +39,7 @@ trait RepositoryObjectPluginUninstallTrait
             $this->deleteData();
         }
 
-        $remove_plugin_data_confirm_class->removeUninstallRemovesData();
+        RemovePluginDataConfirmCtrl::removeUninstallRemovesData();
     }
 
 
