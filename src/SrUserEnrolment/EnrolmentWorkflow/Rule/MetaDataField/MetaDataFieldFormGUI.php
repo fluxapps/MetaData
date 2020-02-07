@@ -27,15 +27,15 @@ class MetaDataFieldFormGUI extends AbstractRuleFormGUI
     /**
      * @var MetaDataField
      */
-    protected $object;
+    protected $rule;
 
 
     /**
      * @inheritDoc
      */
-    public function __construct(RuleGUI $parent, MetaDataField $object)
+    public function __construct(RuleGUI $parent, MetaDataField $rule)
     {
-        parent::__construct($parent, $object);
+        parent::__construct($parent, $rule);
     }
 
 
