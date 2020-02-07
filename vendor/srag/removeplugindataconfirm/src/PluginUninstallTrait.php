@@ -2,8 +2,6 @@
 
 namespace srag\RemovePluginDataConfirm\MetaData;
 
-use srag\RemovePluginDataConfirm\MetaData\Exception\RemovePluginDataConfirmException;
-
 /**
  * Trait PluginUninstallTrait
  *
@@ -14,16 +12,15 @@ use srag\RemovePluginDataConfirm\MetaData\Exception\RemovePluginDataConfirmExcep
 trait PluginUninstallTrait
 {
 
-    use AbstractPluginUninstallTrait;
+    use BasePluginUninstallTrait;
 
 
     /**
      * @return bool
-     * @throws RemovePluginDataConfirmException
      *
      * @internal
      */
-    protected final function beforeUninstall()/*: bool*/
+    protected final function beforeUninstall() : bool
     {
         return $this->pluginUninstall();
     }
