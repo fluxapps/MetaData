@@ -243,9 +243,9 @@ abstract class AbstractMetadataGUI
             throw new InvalidArgumentException("Field need to be type " . UserField::class);
         }
 
-        $term = strval(filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"]);
+        $term = strval(filter_input(INPUT_GET, "term"));
 
-        echo json_encode([
+        self::output()->outputJSON([
             "results" => array_values(array_map(function (array $user) : array {
                 return [
                     "id"   => $user["usr_id"],
@@ -253,8 +253,6 @@ abstract class AbstractMetadataGUI
                 ];
             }, ilObjUser::searchUsers($term)))
         ]);
-
-        exit;
     }
 
 
@@ -269,9 +267,9 @@ abstract class AbstractMetadataGUI
             throw new InvalidArgumentException("Field need to be type " . OrgUnitsField::class);
         }
 
-        $term = strval(filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"]);
+        $term = strval(filter_input(INPUT_GET, "term"));
 
-        echo json_encode([
+        self::output()->outputJSON([
             "results" => array_values(array_map(function (array $item) : array {
                 return [
                     "id"   => $item["child"],
@@ -281,7 +279,5 @@ abstract class AbstractMetadataGUI
                 return (stripos($item["title"], $term) !== false);
             })))
         ]);
-
-        exit;
     }
 }

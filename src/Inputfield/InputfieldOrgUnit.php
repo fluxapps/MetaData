@@ -68,6 +68,6 @@ class InputfieldOrgUnit extends BaseInputfield
      */
     public function getRecordValue(Record $record, ilPropertyFormGUI $form)
     {
-        return $form->getInput($this->getPostVar($record));
+        return $form->getItemByPostVar($this->getPostVar($record))->getValue();
     }
 }
