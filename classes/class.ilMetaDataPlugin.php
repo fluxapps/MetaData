@@ -68,7 +68,7 @@ class ilMetaDataPlugin extends ilUserInterfaceHookPlugin
             switch ($a_component) {
                 case IL_COMP_PLUGIN . "/" . ilSrUserEnrolmentPlugin::PLUGIN_NAME:
                     switch ($a_event) {
-                        case ilSrUserEnrolmentPlugin::EVENT_EXTENDS_SRUSRENR;
+                        case ilSrUserEnrolmentPlugin::EVENT_EXTENDS_SRUSRENR:
                             ExtendsSrUserEnrolment::getInstance()->handleExtends();
                             break;
 

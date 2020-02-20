@@ -212,15 +212,17 @@ class FormAdapter
         /** @var Inputfield $inputfield */
         $inputfield = new $class($field, $this->lang);
         $record = $this->getRecord($group, $field);
+        $old_value = $record->getValue();
         $record->setValue($inputfield->getRecordValue($record, $this->form));
         try {
             $record->save();
 
-            $ilAppEventHandler->raise('Plugin/Sragmetadata',
+            $ilAppEventHandler->raise(IL_COMP_PLUGIN . '/MetaData',
                 'aftersave',
                 array(
                     'group'    => $group,
                     'field'    => $field,
+                    'old_value' => $old_value,
                     'record'   => $record,
                     'obj_type' => $record->getObjType(),
                     'obj_id'   => $record->getObjId()
