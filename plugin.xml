@@ -2,6 +2,7 @@
 <plugin id="sragmetadata">
 	<events>
 		<event type="listen" id="Plugins/SrUserEnrolment" />
+		<event type="listen" id="Services/Object" />
 		<event type="raise" id="aftersave" />
 	</events>
 </plugin>
