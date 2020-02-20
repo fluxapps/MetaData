@@ -44,7 +44,7 @@ class MetaDataFieldChecker extends AbstractRuleChecker
             $metadata_field_value = current($metadata_field_value);
         }
 
-        return $this->checkOperator($metadata_field_value, $this->rule->getValue());
+        return $this->checkOperator($metadata_field_value, $this->rule->getValue(), $this->rule->getOperator(), $this->rule->isOperatorNegated(), $this->rule->isOperatorCaseSensitive());
     }
 
 

@@ -3,6 +3,7 @@
 ## [x]
 - Clone metadata on object clone
 - Fix autocomplete
+- Event changes
 
 ## [1.1.0]
 - Improve single user and org unit field
