@@ -2,7 +2,8 @@
 
 ## [x]
 - Clone metadata on object clone
-- Fix autocomplete
+- Improve/fix autocomplete
+- Fix crash on some object types
 - Event changes
 
 ## [1.1.0]
