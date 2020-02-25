@@ -5,10 +5,11 @@ namespace SRAG\ILIAS\Plugins\MetaData;
 use ilFormSectionHeaderGUI;
 use ilMetaDataPlugin;
 use ilNonEditableValueGUI;
-use ilObjUser;
 use ilPropertyFormGUI;
 use ilUtil;
 use InvalidArgumentException;
+use srag\CustomInputGUIs\MetaData\MultiSelectSearchNewInputGUI\ObjectChildrenAjaxAutoCompleteCtrl;
+use srag\CustomInputGUIs\MetaData\MultiSelectSearchNewInputGUI\UsersAjaxAutoCompleteCtrl;
 use srag\DIC\MetaData\DICTrait;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Field\OrgUnitField;
@@ -34,8 +35,6 @@ abstract class AbstractMetadataGUI
     const PLUGIN_CLASS_NAME = ilMetaDataPlugin::class;
     const CMD_SHOW = "show";
     const CMD_SAVE = "save";
-    const CMD_USERS_AUTOCOMPLETE = "usersAutoComplete";
-    const CMD_ORG_UNITS_AUTOCOMPLETE = "orgUnitsAutoComplete";
     const CMD_BACK = "back";
     /**
      * @var ConsumerObject[]
@@ -77,14 +76,32 @@ abstract class AbstractMetadataGUI
         $next_class = self::dic()->ctrl()->getNextClass($this);
 
         switch (strtolower($next_class)) {
+            case strtolower(UsersAjaxAutoCompleteCtrl::class):
+                $field = Field::findOrFail(filter_input(INPUT_GET, "field_id"));
+
+                if (!($field instanceof UserField) || $field->options()->isOnlyDisplay()) {
+                    throw new InvalidArgumentException("Field need to be type " . UserField::class);
+                }
+
+                self::dic()->ctrl()->forwardCommand(new UsersAjaxAutoCompleteCtrl());
+                break;
+
+            case strtolower(ObjectChildrenAjaxAutoCompleteCtrl::class):
+                $field = Field::findOrFail(filter_input(INPUT_GET, "field_id"));
+
+                if (!($field instanceof OrgUnitField || $field instanceof OrgUnitsField) || $field->options()->isOnlyDisplay()) {
+                    throw new InvalidArgumentException("Field need to be type " . OrgUnitsField::class);
+                }
+
+                self::dic()->ctrl()->forwardCommand(new ObjectChildrenAjaxAutoCompleteCtrl("orgu", $field->options()->getOrgUnitParentRefId()));
+                break;
+
             default:
                 $cmd = self::dic()->ctrl()->getCmd(self::CMD_SHOW);
 
                 switch ($cmd) {
                     case self::CMD_SHOW:
                     case self::CMD_SAVE:
-                    case self::CMD_USERS_AUTOCOMPLETE:
-                    case self::CMD_ORG_UNITS_AUTOCOMPLETE:
                     case self::CMD_BACK:
                         $this->{$cmd}();
                         break;
@@ -229,55 +246,5 @@ abstract class AbstractMetadataGUI
         }
 
         self::output()->output($form, true);
-    }
-
-
-    /**
-     *
-     */
-    protected function usersAutoComplete()
-    {
-        $field = Field::findOrFail(filter_input(INPUT_GET, "field_id"));
-
-        if (!($field instanceof UserField) || $field->options()->isOnlyDisplay()) {
-            throw new InvalidArgumentException("Field need to be type " . UserField::class);
-        }
-
-        $term = strval(filter_input(INPUT_GET, "term"));
-
-        self::output()->outputJSON([
-            "results" => array_values(array_map(function (array $user) : array {
-                return [
-                    "id"   => $user["usr_id"],
-                    "text" => $user["firstname"] . " " . $user["lastname"] . " (" . $user["login"] . ")"
-                ];
-            }, ilObjUser::searchUsers($term)))
-        ]);
-    }
-
-
-    /**
-     *
-     */
-    protected function orgUnitsAutoComplete()
-    {
-        $field = Field::findOrFail(filter_input(INPUT_GET, "field_id"));
-
-        if (!($field instanceof OrgUnitField || $field instanceof OrgUnitsField) || $field->options()->isOnlyDisplay()) {
-            throw new InvalidArgumentException("Field need to be type " . OrgUnitsField::class);
-        }
-
-        $term = strval(filter_input(INPUT_GET, "term"));
-
-        self::output()->outputJSON([
-            "results" => array_values(array_map(function (array $item) : array {
-                return [
-                    "id"   => $item["child"],
-                    "text" => $item["title"]
-                ];
-            }, array_filter(self::dic()->tree()->getSubTree(self::dic()->tree()->getNodeData($field->options()->getOrgUnitParentRefId())), function (array $item) use ($term): bool {
-                return (stripos($item["title"], $term) !== false);
-            })))
-        ]);
     }
 }

@@ -11,6 +11,8 @@ use SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject;
  * @author            Stefan Wanzenried <sw@studer-raimann.ch>
  *
  * @ilCtrl_IsCalledBy srmdGUI: ilUIPluginRouterGUI
+ * @ilCtrl_IsCalledBy srag\CustomInputGUIs\MetaData\MultiSelectSearchNewInputGUI\ObjectChildrenAjaxAutoCompleteCtrl: srmdGUI
+ * @ilCtrl_IsCalledBy srag\CustomInputGUIs\MetaData\MultiSelectSearchNewInputGUI\UsersAjaxAutoCompleteCtrl: srmdGUI
  */
 class srmdGUI extends AbstractMetadataGUI
 {

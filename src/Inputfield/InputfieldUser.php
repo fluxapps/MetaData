@@ -3,12 +3,11 @@
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
 use ilNonEditableValueGUI;
-use ilObjUser;
 use ilPropertyFormGUI;
 use srag\CustomInputGUIs\MetaData\MultiSelectSearchNewInputGUI\MultiSelectSearchNewInputGUI;
+use srag\CustomInputGUIs\MetaData\MultiSelectSearchNewInputGUI\UsersAjaxAutoCompleteCtrl;
 use SRAG\ILIAS\Plugins\MetaData\Field\UserField;
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
-use srmdGUI;
 
 /**
  * Class InputfieldUser
@@ -40,20 +39,13 @@ class InputfieldUser extends BaseInputfield
         } else {
             $input = new MultiSelectSearchNewInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
             $input->setRequired($this->field->options()->isRequired());
-            $input->setOptions(array_reduce(ilObjUser::searchUsers(null), function (array $users, array $user) : array {
-                $users[$user["usr_id"]] = $user["firstname"] . " " . $user["lastname"] . " (" . $user["login"] . ")";
-
-                return $users;
-            }, []));
             if ($record->getValue()) {
                 $input->setValue([$record->getValue()]);
             }
             //$cmdClass self::dic()->ctrl()->getCmdClass(); // is broken with namespace (ilCtrl), use with filter_input the original raw value
-            $cmdClass = filter_input(INPUT_GET, "cmdClass");
-            self::dic()->ctrl()->setParameterByClass($cmdClass, "field_id", $this->field->getId());
-            $input->setAjaxLink(self::dic()->ctrl()->getLinkTargetByClass($cmdClass, srmdGUI::CMD_USERS_AUTOCOMPLETE, "", true, false));
+            self::dic()->ctrl()->setParameterByClass(UsersAjaxAutoCompleteCtrl::class, "field_id", $this->field->getId());
+            $input->setAjaxAutoCompleteCtrl(new UsersAjaxAutoCompleteCtrl());
             $input->setLimitCount(1);
-            self::dic()->ctrl()->clearParameterByClass($cmdClass, "field_id");
         }
 
         if ($this->field->getDescription($this->lang)) {
