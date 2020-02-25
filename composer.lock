@@ -8,20 +8,20 @@
     "packages": [
         {
             "name": "srag/custominputguis",
-            "version": "v0.31.6",
+            "version": "v0.32.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/CustomInputGUIs.git",
-                "reference": "d07cce5eb25b5f8b92604f95c2f7ba7eac327389"
+                "reference": "d96a9619ecd581cadeed47f831f7687920dfda2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/d07cce5eb25b5f8b92604f95c2f7ba7eac327389",
-                "reference": "d07cce5eb25b5f8b92604f95c2f7ba7eac327389",
+                "url": "https://api.github.com/repos/studer-raimann/CustomInputGUIs/zipball/d96a9619ecd581cadeed47f831f7687920dfda2e",
+                "reference": "d96a9619ecd581cadeed47f831f7687920dfda2e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6",
+                "php": ">=7.0",
                 "srag/dic": ">=0.1.0"
             },
             "type": "library",
@@ -51,20 +51,20 @@
                 "input",
                 "table"
             ],
-            "time": "2020-01-31T10:07:32+00:00"
+            "time": "2020-02-21T08:17:21+00:00"
         },
         {
             "name": "srag/dic",
-            "version": "v0.20.1",
+            "version": "v0.20.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "c79a0e0cd0f9db586b556c92db38d5548ef7305b"
+                "reference": "e5d3265eb83b722f95579c36ce1b59dca0f1316f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/c79a0e0cd0f9db586b556c92db38d5548ef7305b",
-                "reference": "c79a0e0cd0f9db586b556c92db38d5548ef7305b",
+                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/e5d3265eb83b722f95579c36ce1b59dca0f1316f",
+                "reference": "e5d3265eb83b722f95579c36ce1b59dca0f1316f",
                 "shasum": ""
             },
             "require": {
@@ -96,7 +96,7 @@
                 "globals",
                 "trait"
             ],
-            "time": "2020-02-05T07:30:05+00:00"
+            "time": "2020-02-13T07:39:21+00:00"
         },
         {
             "name": "srag/librariesnamespacechanger",
@@ -162,7 +162,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "srag\\RemovePluginDataConfirm\\": "src/"
+                    "srag\\RemovePluginDataConfirm\\MetaData\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",

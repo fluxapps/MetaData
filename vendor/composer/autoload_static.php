@@ -9,7 +9,7 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
     public static $prefixLengthsPsr4 = array (
         's' => 
         array (
-            'srag\\RemovePluginDataConfirm\\' => 29,
+            'srag\\RemovePluginDataConfirm\\MetaData\\' => 38,
             'srag\\LibrariesNamespaceChanger\\' => 31,
             'srag\\DIC\\' => 9,
             'srag\\CustomInputGUIs\\' => 21,
@@ -21,7 +21,7 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
     );
 
     public static $prefixDirsPsr4 = array (
-        'srag\\RemovePluginDataConfirm\\' => 
+        'srag\\RemovePluginDataConfirm\\MetaData\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
         ),
@@ -165,7 +165,11 @@ class ComposerStaticInit5adb131a8aff774fa7543c68d1fc6314
         'srag\\CustomInputGUIs\\MetaData\\MultiLineNewInputGUI\\MultiLineNewInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiLineNewInputGUI/MultiLineNewInputGUI.php',
         'srag\\CustomInputGUIs\\MetaData\\MultiSelectSearchInputGUI\\MultiSelectSearchInput2GUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchInputGUI/MultiSelectSearchInput2GUI.php',
         'srag\\CustomInputGUIs\\MetaData\\MultiSelectSearchInputGUI\\MultiSelectSearchInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchInputGUI/MultiSelectSearchInputGUI.php',
+        'srag\\CustomInputGUIs\\MetaData\\MultiSelectSearchNewInputGUI\\AbstractAjaxAutoCompleteCtrl' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchNewInputGUI/AbstractAjaxAutoCompleteCtrl.php',
         'srag\\CustomInputGUIs\\MetaData\\MultiSelectSearchNewInputGUI\\MultiSelectSearchNewInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchNewInputGUI/MultiSelectSearchNewInputGUI.php',
+        'srag\\CustomInputGUIs\\MetaData\\MultiSelectSearchNewInputGUI\\ObjectChildrenAjaxAutoCompleteCtrl' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchNewInputGUI/class.ObjectChildrenAjaxAutoCompleteCtrl.php',
+        'srag\\CustomInputGUIs\\MetaData\\MultiSelectSearchNewInputGUI\\ObjectsAjaxAutoCompleteCtrl' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchNewInputGUI/class.ObjectsAjaxAutoCompleteCtrl.php',
+        'srag\\CustomInputGUIs\\MetaData\\MultiSelectSearchNewInputGUI\\UsersAjaxAutoCompleteCtrl' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchNewInputGUI/class.UsersAjaxAutoCompleteCtrl.php',
         'srag\\CustomInputGUIs\\MetaData\\NumberInputGUI\\NumberInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/NumberInputGUI/NumberInputGUI.php',
         'srag\\CustomInputGUIs\\MetaData\\PieChart\\Component\\LegendEntry' => __DIR__ . '/..' . '/srag/custominputguis/src/PieChart/Component/LegendEntry.php',
         'srag\\CustomInputGUIs\\MetaData\\PieChart\\Component\\PieChart' => __DIR__ . '/..' . '/srag/custominputguis/src/PieChart/Component/PieChart.php',
