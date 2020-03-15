@@ -276,6 +276,29 @@ class MetadataService
         return $field_groups;
     }
 
+    public function getMetaDataStringValuesOfObjType(
+        string $obj_type,
+        string $metadata_identifier) {
+
+            $sql = 'SELECT ref.ref_id,srmd_string.value as value FROM srmd_string 
+            inner join srmd_record as rec on rec.id = srmd_string.record_id
+            inner join srmd_field as field on field.id = rec.field_id 
+            inner join object_reference as ref on ref.obj_id = rec.obj_id and ref.deleted is null
+            where 
+            field.identifier = "'.$metadata_identifier.'" 
+            and obj_type = "'.$obj_type.'"';
+
+            $arr_data = [];
+
+            $res = self::dic()->database()->query($sql);
+
+            while($row = self::dic()->database()->fetchAssoc($res)) {
+                $arr_data[$row["ref_id"]] = trim($row["value"]);
+            }
+
+            return $arr_data;
+    }
+
 
     /**
      * @param ilObject $object
