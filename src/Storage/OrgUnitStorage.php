@@ -20,7 +20,9 @@ class OrgUnitStorage extends IntegerStorage
      */
     protected function validateValue($value)
     {
-        $value = current($value);
+        if (is_array($value)) {
+            $value = current($value);
+        }
 
         parent::validateValue($value);
 
@@ -35,6 +37,10 @@ class OrgUnitStorage extends IntegerStorage
      */
     protected function normalizeValue($value)
     {
-        return parent::normalizeValue(current($value));
+        if (is_array($value)) {
+            $value = current($value);
+        }
+
+        return parent::normalizeValue($value);
     }
 }

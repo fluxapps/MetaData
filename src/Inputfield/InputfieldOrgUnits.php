@@ -3,12 +3,11 @@
 namespace SRAG\ILIAS\Plugins\MetaData\Inputfield;
 
 use ilNonEditableValueGUI;
-use ilOrgUnitPathStorage;
 use ilPropertyFormGUI;
 use srag\CustomInputGUIs\MetaData\MultiSelectSearchNewInputGUI\MultiSelectSearchNewInputGUI;
+use srag\CustomInputGUIs\MetaData\MultiSelectSearchNewInputGUI\ObjectChildrenAjaxAutoCompleteCtrl;
 use SRAG\ILIAS\Plugins\MetaData\Field\OrgUnitsField;
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
-use srmdGUI;
 
 /**
  * Class InputfieldOrgUnits
@@ -44,17 +43,10 @@ class InputfieldOrgUnits extends BaseInputfield
         } else {
             $input = new MultiSelectSearchNewInputGUI($this->field->getLabel($this->lang), $this->getPostVar($record));
             $input->setRequired($this->field->options()->isRequired());
-            $input->setOptions(array_reduce(self::dic()->tree()->getSubTree(self::dic()->tree()->getNodeData($this->field->options()->getOrgUnitParentRefId())), function (array $org_units, array $item) : array {
-                $org_units[$item["child"]] = $item["title"];
-
-                return $org_units;
-            }, []));
             $input->setValue($record->getValue());
             //$cmdClass self::dic()->ctrl()->getCmdClass(); // is broken with namespace (ilCtrl), use with filter_input the original raw value
-            $cmdClass = filter_input(INPUT_GET, "cmdClass");
-            self::dic()->ctrl()->setParameterByClass($cmdClass, "field_id", $this->field->getId());
-            $input->setAjaxLink(self::dic()->ctrl()->getLinkTargetByClass($cmdClass, srmdGUI::CMD_ORG_UNITS_AUTOCOMPLETE, "", true, false));
-            self::dic()->ctrl()->clearParameterByClass($cmdClass, "field_id");
+            self::dic()->ctrl()->setParameterByClass(ObjectChildrenAjaxAutoCompleteCtrl::class, "field_id", $this->field->getId());
+            $input->setAjaxAutoCompleteCtrl(new ObjectChildrenAjaxAutoCompleteCtrl("orgu", $this->field->options()->getOrgUnitParentRefId()));
         }
 
         if ($this->field->getDescription($this->lang)) {
@@ -70,6 +62,6 @@ class InputfieldOrgUnits extends BaseInputfield
      */
     public function getRecordValue(Record $record, ilPropertyFormGUI $form)
     {
-        return $form->getInput($this->getPostVar($record));
+        return $form->getItemByPostVar($this->getPostVar($record))->getValue();
     }
 }

@@ -7,6 +7,7 @@ use ilObject;
 use srag\DIC\MetaData\DICTrait;
 use SRAG\ILIAS\Plugins\MetaData\Field\Field;
 use SRAG\ILIAS\Plugins\MetaData\Field\FieldGroup;
+use SRAG\ILIAS\Plugins\MetaData\Field\NullField;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
 use SRAG\ILIAS\Plugins\MetaData\Object\ConsumerObject;
 use SRAG\ILIAS\Plugins\MetaData\Object\ilConsumerObject;
@@ -83,6 +84,19 @@ class MetadataService
 
 
     /**
+     * @param int $field_group_id
+     *
+     * @return FieldGroup|null
+     */
+    public function getFieldGroupById(int $field_group_id)/*: ?FieldGroup*/
+    {
+        return FieldGroup::where([
+            "id" => $field_group_id
+        ])->first();
+    }
+
+
+    /**
      * @param string $field_group_identifier
      *
      * @return FieldGroup|null
@@ -90,6 +104,19 @@ class MetadataService
     public function getFieldGroupByIdentifier(string $field_group_identifier)/*: ?FieldGroup*/
     {
         return FieldGroup::findByIdentifier($field_group_identifier);
+    }
+
+
+    /**
+     * @param int $field_id
+     *
+     * @return Field|null
+     */
+    public function getFieldById(int $field_id)/*: ?Field*/
+    {
+        return NullField::where([
+            "id" => $field_id
+        ])->first();
     }
 
 
@@ -247,5 +274,67 @@ class MetadataService
         }
 
         return $field_groups;
+    }
+
+    public function getMetaDataStringValuesOfObjType(
+        string $obj_type,
+        string $metadata_identifier) {
+
+            $sql = 'SELECT ref.ref_id,srmd_string.value as value FROM srmd_string 
+            inner join srmd_record as rec on rec.id = srmd_string.record_id
+            inner join srmd_field as field on field.id = rec.field_id 
+            inner join object_reference as ref on ref.obj_id = rec.obj_id and ref.deleted is null
+            where 
+            field.identifier = "'.$metadata_identifier.'" 
+            and obj_type = "'.$obj_type.'"';
+
+            $arr_data = [];
+
+            $res = self::dic()->database()->query($sql);
+
+            while($row = self::dic()->database()->fetchAssoc($res)) {
+                $arr_data[$row["ref_id"]] = trim($row["value"]);
+            }
+
+            return $arr_data;
+    }
+
+
+    /**
+     * @param ilObject $object
+     *
+     * @return Record[]
+     */
+    public function getRecordsForObject(ilObject $object) : array
+    {
+        return Record::where([
+            "obj_type" => $object->getType(),
+            "obj_id"   => $object->getId()
+        ])->get();
+    }
+
+
+    /**
+     * @param ilObject $old_obj
+     * @param ilObject $new_obj
+     */
+    public function cloneMetadata(ilObject $old_obj, ilObject $new_obj)/*:void*/
+    {
+        /**
+         * @var Record $record
+         */
+        foreach ($this->getRecordsForObject($old_obj) as $record) {
+            $group = $this->getFieldGroupById($record->getFieldGroupId());
+            if (!$group) {
+                continue;
+            }
+
+            $field = $this->getFieldById($record->getFieldId());
+            if (!$field) {
+                continue;
+            }
+
+            $this->setValue($new_obj, $group->getIdentifier(), $field->getIdentifier(), $this->getValue($old_obj, $group->getIdentifier(), $field->getIdentifier()));
+        };
     }
 }

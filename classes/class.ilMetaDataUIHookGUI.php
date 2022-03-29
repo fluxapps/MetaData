@@ -48,13 +48,13 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
     function modifyGUI($a_comp, $a_part, $a_par = array())
     {
         parent::modifyGUI($a_comp, $a_part, $a_par);
-        if (!$this->getObject()) {
-            return;
-        }
         if (!$this->ctrl->getContextObjType() || !$this->ctrl->getContextObjId()) {
             return;
         }
         if (!count(MetadataService::getInstance()->getMappings($this->ctrl->getContextObjType()))) {
+            return;
+        }
+        if (!$this->getObject()) {
             return;
         }
         if ($a_part == 'tabs') {
@@ -124,9 +124,6 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
 
     public function getHTML($a_comp, $a_part, $a_par = array())
     {
-        if (!$this->getObject()) {
-            return parent::getHTML($a_comp, $a_part, $a_par);
-        }
         global $tpl;
 
         if (is_object($tpl)) {
@@ -136,6 +133,9 @@ class ilMetaDataUIHookGUI extends ilUIHookPluginGUI
             return parent::getHTML($a_comp, $a_part, $a_par);
         }
         if (!count(MetadataService::getInstance()->getMappings($this->ctrl->getContextObjType()))) {
+            return parent::getHTML($a_comp, $a_part, $a_par);
+        }
+        if (!$this->getObject()) {
             return parent::getHTML($a_comp, $a_part, $a_par);
         }
         // Check if metadata should be displayed in blocks on the right side

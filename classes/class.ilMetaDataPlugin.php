@@ -5,6 +5,7 @@ use SRAG\ILIAS\Plugins\MetaData\Field\ArFieldData;
 use SRAG\ILIAS\Plugins\MetaData\Field\FieldGroup;
 use SRAG\ILIAS\Plugins\MetaData\Field\NullField;
 use SRAG\ILIAS\Plugins\MetaData\Form\ilObjectMapping;
+use SRAG\ILIAS\Plugins\MetaData\MetadataService;
 use SRAG\ILIAS\Plugins\MetaData\Record\Record;
 use SRAG\ILIAS\Plugins\MetaData\RecordValue\DateTimeRecordValue;
 use SRAG\ILIAS\Plugins\MetaData\RecordValue\FloatRecordValue;
@@ -64,11 +65,27 @@ class ilMetaDataPlugin extends ilUserInterfaceHookPlugin
      */
     public function handleEvent($a_component, $a_event, $a_parameter)
     {
+        switch ($a_component) {
+            case "Services/Object":
+                switch ($a_event) {
+                    case "cloneObject":
+                        MetadataService::getInstance()->cloneMetadata($a_parameter["cloned_from_object"], $a_parameter["object"]);
+                        break;
+
+                    default:
+                        break;
+                }
+                break;
+
+            default:
+                break;
+        }
+
         if (file_exists(__DIR__ . "/../../SrUserEnrolment/vendor/autoload.php")) {
             switch ($a_component) {
                 case IL_COMP_PLUGIN . "/" . ilSrUserEnrolmentPlugin::PLUGIN_NAME:
                     switch ($a_event) {
-                        case ilSrUserEnrolmentPlugin::EVENT_EXTENDS_SRUSRENR;
+                        case ilSrUserEnrolmentPlugin::EVENT_EXTENDS_SRUSRENR:
                             ExtendsSrUserEnrolment::getInstance()->handleExtends();
                             break;
 

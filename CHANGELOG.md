@@ -1,5 +1,11 @@
 # Changelog
 
+## [x]
+- Clone metadata on object clone
+- Improve/fix autocomplete
+- Fix crash on some object types
+- Event changes
+
 ## [1.1.0]
 - Improve single user and org unit field
 - Fix latest SrUserEnrolment plugin version
